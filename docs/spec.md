@@ -27,8 +27,9 @@ Every number shown on the site is produced by a script in the site's repository 
 | LIM-3 History | Pull requests merged before 15 Nov 2026 were merged by an automated routine. They are excluded from every number and the cut-off date is shown. |
 | LIM-4 Private work | Nothing from private repositories or from any employer is counted or shown. |
 | LIM-5 Legal | The legal page carries the owner's decided text. This specification does not say what German law requires. |
+| LIM-6 One account | The agent and the owner use one GitHub account. A comment or a merge from it does not show who wrote it, and the rule that the agent never merges is one it follows, not one GitHub enforces. |
 
-The Method page repeats LIM-1 to LIM-3 in the owner's words.
+The Method page repeats LIM-1 to LIM-3 and LIM-6 in the owner's words.
 
 ## 2. Conventions
 
@@ -71,17 +72,17 @@ The Method page repeats LIM-1 to LIM-3 in the owner's words.
 
 | Id | Level | Requirement | Proof |
 | --- | --- | --- | --- |
-| REQ-001 | MUST | `/` (Home) renders, in this order: the header with the name, the two-sentence introduction, the mark (section 6.2), the method summary with a link to `/method/`, one project card per project in the data file in `order`, the upstream list (REQ-004), the footer. (Session 5.1 builds the header, introduction, project cards, upstream list and footer. The mark is session 5.2 or later and the method summary is session 5.3; see `docs/phase.txt`.) | PW: locate each block by its `data-block` attribute and assert document order |
+| REQ-001 | MUST | `/` (Home) renders, in this order: the header with the name, the two-sentence introduction, the mark (section 6.2), the method summary with a link to `/method/`, one project card per project in the data file in `order`, the upstream list (REQ-004), the footer. (The mark is not built yet; see `docs/phase.txt`.) | PW: locate each block by its `data-block` attribute and assert document order |
 | REQ-002 | MUST | Each project card on Home shows the project name, the pitch, exactly one number (REQ-020), the release tag, and links to the repository and to the example pull request. | PW: per card, count of `[data-headline]` is 1; links match the data file |
 | REQ-003 | MUST | The introduction on Home is exactly two sentences and is the page's only `h1` or the paragraph directly after it, as `DESIGN.md` sets out. | PW: sentence count of `[data-block=intro]` by splitting on full stops is 2 |
 | REQ-004 | MUST | Home shows a list of merged upstream pull requests from the `prs` list of `src/data/upstream.json`, newest first, at most five, each as a pull request evidence row. When the file's list is empty, the heading and the list MUST NOT be in the page. | PW with two fixture data files: five-of-seven rows shown in date order; zero rows gives no `[data-block=upstream]` |
-| REQ-005 | MUST | `/method/` renders, in this order: the loop, what the owner's approval means, the two modes (own repositories and upstream), how to read the mark (with the mark), the numbers (section 7) with the date they were generated, the five most recent own pull requests as evidence rows, the limits LIM-1 to LIM-3. | PW: block order by `data-block` |
+| REQ-005 | MUST | `/method/` renders, in this order: the loop, what the owner's approval means, the two modes (own repositories and upstream), how to read the mark (with the mark), the numbers (section 7) with the date they were generated, the five most recent own pull requests as evidence rows, the limits LIM-1 to LIM-3 and LIM-6. (The reading block and its mark are not built yet; see `docs/phase.txt`.) | PW: block order by `data-block` |
 | REQ-006 | MUST | `/contact/` lists each channel in `src/data/site.yml` `contact` as a link, and nothing else that collects data: no form, no embedded frame. | PW: links equal the data file; count of `form, iframe, input, textarea` is 0 |
 | REQ-007 | MUST | `/legal/` has two sections with ids `imprint` and `privacy`. Their text comes from `src/content/legal/imprint.md` and `privacy.md`. The build fails while either file is missing or still contains the string `OWNER-DECISION-PENDING`. | VT on the content check with a pending fixture; PW: both ids present |
 | REQ-008 | MUST | Every page's footer links to `/legal/#imprint` with the text "Imprint" and to `/legal/#privacy` with the text "Privacy", and to `/contact/`. | PW on every route |
 | REQ-009 | MUST | An unknown path serves a `404.html` page with a link to Home, the same header and footer, and `noindex`. | PW: request `/no-such-page/` from the local server; assert status 404 and the link |
 | REQ-010 | MUST | `/cv/` and `/in/` render the same main content as Home, carry `<link rel="canonical">` pointing at `/` and `<meta name="robots" content="noindex">`, and are absent from the sitemap. (Session 5.2. They exist so that the analytics path shows which document sent the visitor.) | PW: main content text equals Home's; head tags present; VT on the sitemap |
-| REQ-011 | MUST | Every page has a header with the owner's name linking to `/` and navigation links to `/method/` and `/contact/` (the `/method/` link is added by session 5.3, when the route exists; a link to a missing page would break REQ-046). The link to the current page carries `aria-current="page"`. | PW on every route |
+| REQ-011 | MUST | Every page has a header with the owner's name linking to `/` and navigation links to `/method/` and `/contact/`. The link to the current page carries `aria-current="page"`. | PW on every route |
 | REQ-012 | MUST | Every page has exactly one `h1`, a unique `<title>`, a meta description between 50 and 160 characters, `<html lang="en-GB">`, and a canonical link. | PW on every route; uniqueness across routes |
 | REQ-013 | SHOULD | A `sitemap.xml` lists the routes of this section except those marked `noindex`. | VT |
 
@@ -121,7 +122,7 @@ The fields, all required, are those of the build standard: `name`, `pitch` (one 
 | REQ-018 | MUST | `scripts/sync-check` reads each entry's repository `portfolio.yml` from the default branch and its latest release tag, compares them with the entry's `portfolio` block, prints one line per difference, and exits 1 if any entry is stale or its `portfolio.yml` is missing or fails the schema. | VT with recorded responses: equal, field differs, release differs, file missing, schema failure |
 | REQ-019 | MUST | A workflow runs `scripts/sync-check` weekly and on manual dispatch. On exit 1 it opens one issue titled "Project data is stale", or adds a comment if that issue is already open. It never pushes a commit. (Session 5.2.) | CI: workflow file has no `contents: write`; VT on the issue-or-comment decision |
 
-The test job of the pull request workflow MUST NOT call the network for project data (REQ-038). Schema failures stop a pull request; staleness is found by the weekly run.
+`scripts/numbers` and the CI step that compares the committed outputs with the snapshot are in section 7. The test job of the pull request workflow MUST NOT call the network for project data (REQ-038). Schema failures stop a pull request; staleness is found by the weekly run.
 
 ## 6. Components and their content rules
 
@@ -235,12 +236,14 @@ Measured on 21 Nov 2026 in session 5.1, with Astro 7.4.13, Vitest 5.1.1, Playwri
 
 Measured on 21 Nov 2026 in session 5.2: the offline link check in CI reported 37 links OK and 0 errors on the 5.1 build (lychee 0.24.2 through lychee-action 2.9.0), so root-relative links resolve with `--root-dir`. The Pages site at the user address is currently the legacy Jekyll build of `main`, and the project page of `german-b1-tutor` is served by that repository, not by this one.
 
+Measured on 21 Nov 2026 in session 5.3: GitHub's issue timeline for a pull request returns `ready_for_review` events with their times (checked on this repository's pull request 3), so `hours_to_merge` can use the last time a pull request was marked ready. The numbers script ran against the public repositories and wrote its outputs; two runs on the same snapshot gave identical bytes. On that run the median was not shown, because 15 pull requests are below the floor of 20.
+
 Not checked:
 
 1. (Resolved in session 5.2: see above.) Whether lychee's offline mode resolves root-relative links in `dist/` with `--root-dir`. It is not installed locally. The first CI run is the evidence.
 2. Whether axe can evaluate contrast on text over the tinted tag backgrounds in both schemes. The 5.1 pages have no tinted tags.
 3. Whether GoatCounter's counting script may be self-hosted under its licence (REQ-035). Not looked at in session 5.2: the script is not in the repository (DEV-014).
-4. Whether GitHub's API exposes the time a pull request was last marked ready for review (`hours_to_merge`). Session 5.3.
+4. (Resolved in session 5.3: see above.) Whether GitHub's API exposes the time a pull request was last marked ready for review.
 5. Whether cookie-free analytics need consent in Germany, and what the imprint must contain. The owner's decision.
 6. Whether Safari and Firefox draw the mark as Chrome does. The mark is not built.
 7. Any browser other than Chrome and CI's Chromium.

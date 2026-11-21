@@ -1,0 +1,174 @@
+{
+  "generated_at": "2026-11-21T19:13:24Z",
+  "cutoff": "2026-11-15",
+  "projects": [
+    {
+      "repo": "ampaduchris/inkproof",
+      "sessions": [
+        {
+          "session": "1.1",
+          "model": "Sonnet 5.5",
+          "effort": "medium",
+          "minutes": 4,
+          "not_verified": 2,
+          "pr_number": 1,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0
+        },
+        {
+          "session": "1.2",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 8,
+          "not_verified": 5,
+          "pr_number": 2,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0.2
+        },
+        {
+          "session": "1.2a",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 8,
+          "not_verified": 5,
+          "pr_number": 3,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0.2
+        },
+        {
+          "session": "1.2b",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 10,
+          "not_verified": 4,
+          "pr_number": 4,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0
+        },
+        {
+          "session": "1.3",
+          "model": "Sonnet 5.5",
+          "effort": "medium",
+          "minutes": 9,
+          "not_verified": 4,
+          "pr_number": 5,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 26.1
+        },
+        {
+          "session": "1.4",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 24,
+          "not_verified": 9,
+          "pr_number": 6,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0.5
+        },
+        {
+          "session": "1.5",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 14,
+          "not_verified": 8,
+          "pr_number": 7,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0
+        },
+        {
+          "session": "1.6",
+          "model": "Sonnet 5.5",
+          "effort": "medium",
+          "minutes": 10,
+          "not_verified": 4,
+          "pr_number": 8,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0
+        },
+        {
+          "session": "1.7",
+          "model": "Opus 5.5",
+          "effort": "high",
+          "minutes": 13,
+          "not_verified": 9,
+          "pr_number": 13,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0
+        },
+        {
+          "session": "1.8",
+          "model": "Sonnet 5.5",
+          "effort": "medium",
+          "minutes": 7,
+          "not_verified": 5,
+          "pr_number": 14,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0.1
+        },
+        {
+          "session": "1.9",
+          "model": "Sonnet 5.5",
+          "effort": "medium",
+          "minutes": 25,
+          "not_verified": 4,
+          "pr_number": 15,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0.1
+        },
+        {
+          "session": "1.10",
+          "model": "Sonnet 5.5",
+          "effort": "low",
+          "minutes": 34,
+          "not_verified": 3,
+          "pr_number": 16,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0.5
+        }
+      ]
+    },
+    {
+      "repo": "ampaduchris/german-b1-tutor",
+      "sessions": []
+    },
+    {
+      "repo": "ampaduchris/ampaduchris.github.io",
+      "sessions": [
+        {
+          "session": "5.1",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 22,
+          "not_verified": 4,
+          "pr_number": 1,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0
+        },
+        {
+          "session": "5.2",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 10,
+          "not_verified": 6,
+          "pr_number": 3,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0
+        }
+      ]
+    }
+  ]
+}

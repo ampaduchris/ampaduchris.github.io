@@ -9,7 +9,7 @@ const html = files.filter((f) => f.endsWith('.html'));
 test('[REQ-013] the sitemap lists the indexable routes and not the 404 page', () => {
   const xml = readFileSync('dist/sitemap-0.xml', 'utf8');
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  expect(locs).toEqual(['https://ampaduchris.github.io/', 'https://ampaduchris.github.io/contact/', 'https://ampaduchris.github.io/legal/']);
+  expect(locs).toEqual(['https://ampaduchris.github.io/', 'https://ampaduchris.github.io/contact/', 'https://ampaduchris.github.io/legal/', 'https://ampaduchris.github.io/method/']);
 });
 
 test('[REQ-037] fonts are WOFF2 files from the site and each family has its licence', () => {

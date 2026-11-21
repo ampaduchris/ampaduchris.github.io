@@ -1,0 +1,28 @@
+---
+import type { Stat } from '../lib/numbers';
+import { valueText, statName } from '../lib/format';
+interface Props { stat: Stat; wide?: boolean }
+const { stat, wide = false } = Astro.props;
+const text = valueText(stat);
+const models = Array.isArray(stat.value) ? stat.value : null;
+---
+<div class="stat" id={`stat-${stat.id}`} role="group" aria-label={statName(stat)} data-stat data-src={`method.json#${stat.id}`} style={wide ? 'grid-column: span 2' : undefined}>
+  {models ? (
+    <>
+      <span class="l" style="margin:0 0 var(--s3)">{stat.label}</span>
+      <span class="meta">{models.map((m) => <span class="prov" data-prov>{m.name} · {m.sessions} {m.sessions === 1 ? 'session' : 'sessions'}</span>)}</span>
+      <span class="n" data-n>n = {stat.n}</span>
+    </>
+  ) : text === null ? (
+    <>
+      <span class="none">Shown from 20 pull requests. Today: <span data-n>n = {stat.n}</span>.</span>
+      <span class="l">{stat.label}</span>
+    </>
+  ) : (
+    <>
+      <span class="v">{text}</span>
+      <span class="l">{stat.label}</span>
+      <span class="n" data-n>n = {stat.n}</span>
+    </>
+  )}
+</div>

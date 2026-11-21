@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { parse } from 'yaml';
 
-const ROUTES = ['/', '/contact/', '/legal/'];
+const ROUTES = ['/', '/method/', '/contact/', '/legal/'];
 const ALL = [...ROUTES, '/cv/', '/in/', '/no-such-page/'];
 const site = parse(readFileSync('src/data/site.yml', 'utf8'));
 const projects = (parse(readFileSync('src/data/projects.yml', 'utf8')) as any[]).sort((a, b) => a.order - b.order);
@@ -11,8 +11,8 @@ const blocks = (page: Page) => page.$$eval('[data-block]', (els) => els.map((e) 
 
 test('[REQ-001] Home shows its blocks in the specified order', async ({ page }) => {
   await page.goto('/');
-  // The mark and the method summary are later sessions (docs/phase.txt); the upstream list is absent while empty (REQ-004).
-  expect(await blocks(page)).toEqual(['header', 'intro', 'projects', 'footer']);
+  // The mark is a later session (docs/phase.txt); the upstream list is absent while empty (REQ-004).
+  expect(await blocks(page)).toEqual(['header', 'intro', 'method-summary', 'projects', 'footer']);
 });
 
 test('[REQ-002] each project card shows name, pitch, one number, release and two links', async ({ page }) => {
@@ -89,9 +89,10 @@ for (const route of ALL) {
     const header = page.locator('header');
     await expect(header.locator('a.name')).toHaveAttribute('href', '/');
     await expect(header.locator('a.name')).toHaveText('Chris Ampadu');
+    await expect(header.getByRole('link', { name: 'Method' })).toHaveAttribute('href', '/method/');
     await expect(header.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', '/contact/');
     const current = await header.locator('[aria-current=page]').count();
-    expect(current).toBe(route === '/' || route === '/contact/' ? 1 : 0);
+    expect(current).toBe(['/', '/method/', '/contact/'].includes(route) ? 1 : 0);
   });
 
   test(`[REQ-012] one h1, a title, a description, a language and a canonical link on ${route}`, async ({ page }) => {

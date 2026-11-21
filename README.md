@@ -8,37 +8,46 @@ Status: active.
 
 ## What it is
 
-A static site built with Astro and TypeScript. It builds Home and Contact, the Legal and not-found pages, and two short paths, `/cv/` and `/in/`, that show Home's content with a canonical link to Home and no indexing. The Method page and the proof mark follow in later sessions. A workflow deploys `dist/` to GitHub Pages from `main` only, after the checks pass, and refuses while the legal text is pending. The live address will be https://ampaduchris.github.io once the owner has switched the Pages source and decided the legal text. It is not live on this build yet.
+A static site built with Astro and TypeScript. It builds Home and Contact, the Legal and not-found pages, and two short paths, `/cv/` and `/in/`, that show Home's content with a canonical link to Home and no indexing. The Method page computes every number from public sources. The proof mark follows in a later session. A workflow deploys `dist/` to GitHub Pages from `main` only, after the checks pass, and refuses while the legal text is pending. The live address will be https://ampaduchris.github.io once the owner has switched the Pages source and decided the legal text. It is not live on this build yet.
 
 The authority for behaviour is `docs/spec.md`. Requirements carry `REQ-###` and MUST or SHOULD, and `scripts/trace.py` fails CI when a MUST that is due has no test. `docs/phase.txt` lists the requirements that later sessions build.
 
 ## Verify it yourself
 
-Set up once, with Node 24 or 26:
+Set up once, with Node 24 or 26 and the GitHub command line (`gh`) logged in:
 
 ```bash
 git clone https://github.com/ampaduchris/ampaduchris.github.io && cd ampaduchris.github.io && npm ci
 ```
 
-Then three commands. CI runs the same checks on every pull request.
+The numbers on the Method page are computed from public build logs and pull request records. Three commands rebuild them and compare them with the committed file. CI runs the second command against the recorded snapshot on every pull request.
 
 ```bash
-npm run check && npm test && npm run build
+npm run numbers -- --live
 ```
 
 ```bash
-python3 scripts/contrast.py src/styles/tokens.json && python3 scripts/trace.py
+npm run numbers -- --from-snapshot --check
 ```
 
 ```bash
-npm run build:fixture && npm run e2e
+git diff --stat -- src/data/method.json
 ```
 
-The last command runs the browser tests, including the axe accessibility check on every route in both colour schemes and at two widths. Locally it uses an installed Google Chrome. In CI it uses Chromium.
+The first command fetches the sources again and overwrites `src/data/snapshot.json` and the three output files. The third shows what changed. A difference is expected when the owner has opened or merged pull requests since `generated_at`. The time stamp is the only difference when nothing has happened.
+
+To run the checks that CI runs:
+
+```bash
+npm run check && npm test && npm run build && npm run build:fixture && npm run e2e
+```
+
+The last step runs the browser tests, including the axe accessibility check on every route in both colour schemes and at two widths. Locally it uses an installed Google Chrome. In CI it uses Chromium.
 
 ## Limits
 
-- The numbers on the Method page, and the mark, are not built yet. Nothing on the site today is a measured statistic except each project's own test count, which links to where it is reproduced.
+- The proof mark and its legend are not built yet. The Method page shows no median until 20 pull requests exist.
+- The numbers are as of `generated_at`, not live. The agent and the owner share one GitHub account, so the comment and merge figures cannot tell who wrote a comment.
 - The legal text is pending the owner's decision. The build prints a warning for it and the deploy job fails on it.
 - Analytics is off. `site.yml` has no endpoint and the repository holds no counting script.
 - Project data in `src/data/projects.yml` is checked against each project repository by `npm run sync-check`, which needs the network. It is not part of the pull request checks. Today it reports that `german-b1-tutor` has no `portfolio.yml`.

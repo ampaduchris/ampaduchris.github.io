@@ -35,3 +35,16 @@ describe('pull request workflow', () => {
     expect(step?.with?.args).toContain('dist');
   });
 });
+
+describe('numbers in CI and the README', () => {
+  test('[REQ-033] CI compares the committed outputs with the snapshot, and the README gives the three commands', () => {
+    const step = wf.jobs.test.steps.find((s) => s.name === 'Numbers match the snapshot');
+    expect(step?.run).toBe('npm run numbers -- --from-snapshot --check');
+    const readme = readFileSync('README.md', 'utf8');
+    const section = readme.slice(readme.indexOf('## Verify it yourself'), readme.indexOf('## Limits'));
+    const blocks = [...section.matchAll(/```bash\n([^`]+)```/g)].map((m) => m[1].trim());
+    expect(blocks).toContain('npm run numbers -- --live');
+    expect(blocks).toContain('npm run numbers -- --from-snapshot --check');
+    expect(blocks).toContain('git diff --stat -- src/data/method.json');
+  });
+});
