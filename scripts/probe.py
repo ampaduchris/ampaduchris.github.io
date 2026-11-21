@@ -1,3 +1,5 @@
+"""Break the code behind each probed requirement, run its tests, expect them to fail, restore the file. Evidence for tier V3.
+Usage: python3 scripts/probe.py   (rebuilds the site for the browser probes; takes about a minute)"""
 import subprocess,sys
 def run(cmd): return subprocess.run(cmd,shell=True,capture_output=True,text=True)
 probes=[
