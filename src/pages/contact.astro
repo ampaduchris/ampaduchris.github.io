@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import { loadSite } from '../lib/data';
+const site = loadSite();
+const [first, ...rest] = site.contact;
+---
+<Base
+  title="Contact. Chris Ampadu"
+  description="How to reach Chris Ampadu: email first, then GitHub. He is open to conversations about expert-track roles and about his method."
+  path="/contact/"
+  current="/contact/"
+>
+  <div class="contact wrap" data-src="site.yml">
+    <p class="kicker">Contact</p>
+    <h1>Write to me.</h1>
+    <p><a class="mail" href={first.href}>{first.label}</a></p>
+    <p class="lede">I am open to conversations about expert-track roles in strategy and applied artificial intelligence, and about the method on this site.</p>
+    {rest.length > 0 && <p class="links">{rest.map((c) => <a href={c.href}>{c.label}</a>)}</p>}
+  </div>
+</Base>

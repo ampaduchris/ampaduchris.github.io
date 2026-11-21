@@ -1,0 +1,11 @@
+---
+import type { UpstreamPr } from '../lib/upstream';
+import { formatDate, dateOnly } from '../lib/dates';
+interface Props { pr: UpstreamPr }
+const { pr } = Astro.props;
+---
+<a class="pr" href={pr.url} data-pr>
+  <span class="state">Merged by a maintainer</span>
+  <span class="body"><span class="t">{pr.title}</span><span class="repo">{pr.repo} #{pr.number}</span></span>
+  <time datetime={dateOnly(pr.merged_at)}>{formatDate(pr.merged_at)}</time>
+</a>

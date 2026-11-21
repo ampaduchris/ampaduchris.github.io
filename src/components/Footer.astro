@@ -1,0 +1,8 @@
+---
+import { loadSite } from '../lib/data';
+const site = loadSite();
+---
+<footer class="wrap" data-block="footer">
+  <nav aria-label="Footer"><a href="/contact/">Contact</a><a href="/legal/#imprint">Imprint</a><a href="/legal/#privacy">Privacy</a><a href={site.github_url}>GitHub</a></nav>
+  <span>This site was built by directing Claude Code. The model and effort for every session are in the <a href={site.build_log_url}>build log</a>.</span>
+</footer>

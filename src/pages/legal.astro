@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import { readFileSync, existsSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { legalProblems } from '../lib/legal';
+import * as Imprint from '../content/legal/imprint.md';
+import * as Privacy from '../content/legal/privacy.md';
+
+const read = (n: string) => {
+  const path = resolve(process.cwd(), 'src/content/legal', n);
+  return existsSync(path) ? readFileSync(path, 'utf8') : undefined;
+};
+// Session 5.2 turns this warning into a build failure (REQ-007, DEV-004).
+for (const problem of legalProblems({ imprint: read('imprint.md'), privacy: read('privacy.md') })) console.warn(`[legal] ${problem}`);
+---
+<Base
+  title="Legal. Chris Ampadu"
+  description="Imprint and privacy notice for the personal site of Chris Ampadu."
+  path="/legal/"
+>
+  <div class="legal wrap" data-src="content">
+    <p class="kicker">Legal</p>
+    <h1>Imprint and privacy</h1>
+    <section id="imprint" aria-labelledby="h-imprint">
+      <h3 id="h-imprint">Imprint</h3>
+      <Imprint.Content />
+    </section>
+    <section id="privacy" aria-labelledby="h-privacy">
+      <h3 id="h-privacy">Privacy</h3>
+      <Privacy.Content />
+    </section>
+  </div>
+</Base>

@@ -1,0 +1,121 @@
+/* Direction D, the proof mark, in its business restyle (option 4, chosen 16 Nov 2026).
+   One style sheet for every page. Tokens are DESIGN.md section 4. Light by default; dark only by the reader's toggle. */
+@font-face{font-family:"Inter";src:url(/fonts/inter-latin-opsz-normal.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url(/fonts/jetbrains-mono-latin-wght-normal.woff2) format("woff2");font-weight:100 800;font-display:swap}
+
+:root{
+  --bg:#FFFFFF;--surface:#F4F6FA;--surface-2:#E9EDF3;--text:#0B1F3A;--text-2:#4A5A70;
+  --border:#DCE2EA;--border-strong:#76828F;--accent:#1549D6;--on-accent:#FFFFFF;
+  --ok:#0B6B45;--ok-bg:#DFF1E8;--warn:#7A4300;--warn-bg:#FBEBD3;
+  --iris-1:#1549D6;--iris-2:#0C69A6;--iris-3:#007070;
+  color-scheme:light;
+  --sans:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --s1:.25rem;--s2:.5rem;--s3:.75rem;--s4:1rem;--s5:1.5rem;--s6:2rem;--s7:3rem;--s8:4rem;--s9:6rem;
+  --iris:linear-gradient(90deg,var(--iris-1),var(--iris-2),var(--iris-3));
+}
+:root[data-theme="dark"]{
+  --bg:#070B14;--surface:#0F1522;--surface-2:#172033;--text:#E8ECF3;--text-2:#9AA6B8;
+  --border:#232C3D;--border-strong:#66728A;--accent:#8FB0FF;--on-accent:#06102A;
+  --ok:#7FE0B0;--ok-bg:#0F2A1E;--warn:#F2B45A;--warn-bg:#33240C;
+  --iris-1:#8FB0FF;--iris-2:#5CC8F0;--iris-3:#4FE0D0;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--text);font:400 1rem/1.6 var(--sans);font-optical-sizing:auto;font-feature-settings:"cv11"}
+a{color:inherit;text-decoration-color:var(--border-strong);text-underline-offset:.22em;text-decoration-thickness:1px}
+a:hover{text-decoration-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+abbr{text-decoration:none;border-bottom:1px dotted var(--border-strong)}
+.wrap{max-width:78rem;margin-inline:auto;padding-inline:var(--s6)}
+.skip{position:absolute;left:-999rem}
+.skip:focus{left:var(--s4);top:var(--s4);background:var(--surface);padding:var(--s2) var(--s4);z-index:9}
+
+/* small type. Label: section headings, name, navigation, kicker. Micro: tags, states, notes. Data: sample sizes and dates, the only monospace. */
+h2,.name,.site nav a,.kicker,.theme{font-size:.875rem;line-height:1.5;font-weight:600}
+.micro,.tag,.prov,footer,.state,.hint,summary,.pr .repo{font-size:.8125rem;line-height:1.5;font-weight:400}
+.n,time,th{font-family:var(--mono);font-size:.75rem;line-height:1.5;letter-spacing:.01em;font-weight:400}
+
+/* header */
+.site{display:flex;justify-content:space-between;align-items:center;padding-block:var(--s5)}
+.name{display:flex;align-items:center;gap:var(--s3);text-decoration:none}
+.glyph{width:1.5rem;height:1.5rem;flex:none}
+.glyph circle{fill:none;stroke:currentColor;stroke-width:1.5}
+.glyph .e{fill:currentColor;stroke:none}
+.site nav{display:flex;gap:var(--s6);align-items:center}
+.site nav a{text-decoration:none;padding:var(--s2) 0;background:var(--iris) 0 100%/0 2px no-repeat;transition:background-size .3s}
+.site nav a:hover,.site nav a[aria-current]{background-size:100% 2px}
+.theme{font-family:inherit;color:var(--text-2);background:none;border:1px solid var(--border-strong);border-radius:999px;padding:.15rem .8rem;cursor:pointer}
+.theme:hover{color:var(--text);border-color:var(--text)}
+
+/* display type */
+h1{font-weight:600;font-size:clamp(1.75rem,1rem + 2vw,2.75rem);line-height:1.16;letter-spacing:-.025em;margin:0}
+h2{color:var(--text-2);margin:0 0 var(--s5)}
+h3{font-weight:600;font-size:1.375rem;line-height:1.25;letter-spacing:-.015em;margin:0}
+.kicker{color:var(--text-2);margin:0 0 var(--s4)}
+.lede{font-size:1.1875rem;line-height:1.5;max-width:36em;margin:0}
+p{margin:0 0 var(--s4);max-width:40em}
+section{padding-top:var(--s7)}
+main{padding-bottom:var(--s9)}
+
+/* hero */
+.hero{padding-top:var(--s6)}
+.hero h1{max-width:24em}
+
+/* project card with one number */
+.project{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,15rem);gap:var(--s6);align-items:center;background:var(--surface);border-radius:8px;padding:var(--s5) var(--s6);margin-bottom:var(--s4)}
+.project h3 a{text-decoration:none}
+.project h3 a:hover{text-decoration:underline}
+.tag{display:inline-block;color:var(--text-2);margin-left:var(--s3);vertical-align:.15em;letter-spacing:0}
+.pitch{margin:var(--s2) 0 var(--s4);max-width:36em}
+.meta{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5);align-items:center;font-size:.9375rem}
+.prov{display:inline-block;border:1px solid var(--border-strong);border-radius:999px;padding:.15rem .7rem;color:var(--text-2);white-space:nowrap}
+.figure{text-align:right;text-decoration:none;display:block}
+.figure .v{display:block;font-weight:600;font-size:clamp(2.25rem,1.7rem + 1.6vw,3rem);line-height:1;letter-spacing:-.035em;white-space:nowrap}
+.figure .l{display:block;font-size:.9375rem;line-height:1.35;color:var(--text-2);margin-top:var(--s2)}
+.figure:hover .v{background:var(--iris);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* pull request evidence row */
+.pr{display:grid;grid-template-columns:15rem minmax(0,1fr) auto;gap:var(--s1) var(--s5);align-items:baseline;padding:var(--s4) 0;border-bottom:1px solid var(--border);text-decoration:none}
+.pr:first-of-type{border-top:1px solid var(--border)}
+.pr:hover .t{text-decoration:underline;text-decoration-color:var(--accent)}
+.state{color:var(--ok);white-space:nowrap;font-weight:500}
+.state::before{content:"";display:inline-block;width:.55rem;height:.55rem;border-radius:50%;background:var(--ok);margin-right:var(--s2)}
+.state.open{color:var(--text-2)}
+.state.open::before{background:none;border:1.5px solid var(--text-2)}
+.pr .t{display:block;font-weight:500}
+.pr .repo{display:block;color:var(--text-2)}
+time{color:var(--text-2);white-space:nowrap}
+
+/* contact */
+.contact{min-height:60vh;padding-top:var(--s6)}
+.links{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s5);font-size:.9375rem;font-weight:600;margin-top:var(--s6)}
+.mail{display:inline-block;font-weight:600;font-size:clamp(1.375rem,.8rem + 2.6vw,2.75rem);line-height:1.15;letter-spacing:-.03em;text-decoration:none;background:var(--iris) 0 100%/100% 2px no-repeat;padding-bottom:.08em;overflow-wrap:anywhere;margin:var(--s4) 0 var(--s5)}
+.mail:hover{background-size:100% 100%;color:var(--bg)}
+
+/* footer */
+footer{border-top:1px solid var(--border);padding-block:var(--s5) var(--s7);color:var(--text-2);display:flex;flex-wrap:wrap;gap:var(--s3) var(--s6);justify-content:space-between}
+footer nav{display:flex;gap:var(--s5)}
+
+@media (max-width:56rem){
+  .wrap{padding-inline:1.125rem}
+  .project{grid-template-columns:1fr;gap:var(--s4);padding:var(--s5)}
+  .project .figure{grid-row:1;text-align:left}
+  .prov{white-space:normal}
+  .pr{grid-template-columns:1fr auto}
+  .pr .body{grid-column:1/-1;grid-row:2}
+  /* the name, three links and the toggle do not fit on one line at 375: the navigation takes its own line, on every page */
+  .site{flex-wrap:wrap;row-gap:var(--s1);padding-block:var(--s4)}
+  .site nav{flex:1 0 100%;gap:var(--s4)}
+  .site .theme{margin-left:auto}
+  .contact{min-height:0}
+}
+
+/* legal and 404 use only Body type; sections keep the page rhythm */
+.legal h3{margin-bottom:var(--s3)}
+.legal section{padding-top:var(--s6)}
+
+.more{display:inline-block;font-size:.9375rem;font-weight:600;color:var(--accent);text-decoration:none;background:var(--iris) 0 100% / 100% 2px no-repeat;padding-bottom:.2rem}
+.hero .more{margin-top:var(--s5)}
