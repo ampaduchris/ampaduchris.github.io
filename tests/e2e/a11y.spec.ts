@@ -2,7 +2,6 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 const ROUTES = ['/', '/method/', '/contact/', '/legal/', '/cv/', '/in/', '/no-such-page/'];
-test.describe.configure({ timeout: 60_000 }); // axe is slow on the first page of a busy run
 const WIDTHS = { narrow: 375, wide: 1280 } as const;
 
 for (const route of ROUTES) {

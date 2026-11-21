@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-21T19:13:24Z",
+  "generated_at": "2026-11-21T19:30:21Z",
   "cutoff": "2026-11-15",
   "projects": [
     {
@@ -164,6 +164,17 @@
           "minutes": 10,
           "not_verified": 6,
           "pr_number": 3,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0
+        },
+        {
+          "session": "5.3",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 14,
+          "not_verified": 5,
+          "pr_number": 4,
           "state": "merged",
           "merged_by_owner": true,
           "hours_to_merge": 0

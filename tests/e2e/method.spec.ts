@@ -81,11 +81,12 @@ test('[REQ-001] Home summarises four statistics from the data file and links to 
   await expect(page.locator('[data-block=method-summary]').getByRole('link', { name: 'How the work is checked' })).toHaveAttribute('href', '/method/');
 });
 
-test('[REQ-021] an own pull request row says who merged it and when it was ready', async ({ page }) => {
+test('[REQ-021] an own pull request row shows its state, who merged it and how long after it was ready', async ({ page }) => {
   await page.goto('/method/');
-  const first = method.recent[0];
-  const row = page.locator('[data-block=recent] [data-pr]').first();
-  await expect(row).toHaveAttribute('href', first.url);
-  await expect(row).toContainText(`${first.repo} #${first.number}`);
-  await expect(row).toContainText(`Merged by me after ${first.hours_to_merge.toFixed(1)} hours`);
+  for (const [i, r] of method.recent.entries()) {
+    const row = page.locator('[data-block=recent] [data-pr]').nth(i);
+    await expect(row).toHaveAttribute('href', r.url);
+    await expect(row).toContainText(`${r.repo} #${r.number}`);
+    await expect(row).toContainText(r.state === 'merged' ? `Merged by me after ${r.hours_to_merge.toFixed(1)} hours` : r.state === 'open' ? 'Open' : 'Closed');
+  }
 });

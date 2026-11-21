@@ -238,6 +238,8 @@ Measured on 21 Nov 2026 in session 5.2: the offline link check in CI reported 37
 
 Measured on 21 Nov 2026 in session 5.3: GitHub's issue timeline for a pull request returns `ready_for_review` events with their times (checked on this repository's pull request 3), so `hours_to_merge` can use the last time a pull request was marked ready. The numbers script ran against the public repositories and wrote its outputs; two runs on the same snapshot gave identical bytes. On that run the median was not shown, because 15 pull requests are below the floor of 20.
 
+Measured on 21 Nov 2026 in session 5.3a: the `v1.0.0` tag of `german-b1-tutor` holds 172 tests (exported tag, collected from its lockfile), not the 177 on its `main`; the data file was corrected. The numbers parser run on the `inkproof` `v1.0.0` build log gives the twelve rows and four model pairs in the data file. A second live fetch compared with the committed outputs reported them equal apart from the time stamp (`npm run numbers -- --live --check`).
+
 Not checked:
 
 1. (Resolved in session 5.2: see above.) Whether lychee's offline mode resolves root-relative links in `dist/` with `--root-dir`. It is not installed locally. The first CI run is the evidence.

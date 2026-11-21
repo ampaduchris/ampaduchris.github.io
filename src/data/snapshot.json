@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-21T19:13:24Z",
+  "generated_at": "2026-11-21T19:30:21Z",
   "cutoff": "2026-11-15",
   "owner": "ampaduchris",
   "queries": [
@@ -80,6 +80,11 @@
     "gh api repos/ampaduchris/ampaduchris.github.io/contents/docs/BUILD-LOG.md",
     "gh api repos/ampaduchris/ampaduchris.github.io/commits?since=2026-11-15T00:00:00Z&per_page=100",
     "gh api repos/ampaduchris/ampaduchris.github.io/pulls?state=all&per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/4",
+    "gh api repos/ampaduchris/ampaduchris.github.io/issues/4/timeline?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/issues/4/comments?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/4/comments?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/4/reviews?per_page=100",
     "gh api repos/ampaduchris/ampaduchris.github.io/pulls/3",
     "gh api repos/ampaduchris/ampaduchris.github.io/issues/3/timeline?per_page=100",
     "gh api repos/ampaduchris/ampaduchris.github.io/issues/3/comments?per_page=100",
@@ -742,13 +747,25 @@
           "merged_by": "ampaduchris",
           "ready_at": "2026-11-16T15:14:47Z",
           "owner_comment_times": []
+        },
+        {
+          "number": 40,
+          "title": "0.4: portfolio.yml",
+          "url": "https://github.com/ampaduchris/german-b1-tutor/pull/40",
+          "state": "open",
+          "author": "ampaduchris",
+          "created_at": "2026-11-21T19:28:30Z",
+          "merged_at": null,
+          "merged_by": null,
+          "ready_at": null,
+          "owner_comment_times": []
         }
       ]
     },
     {
       "repo": "ampaduchris/ampaduchris.github.io",
-      "build_log_commit": "d9e4242bc7a546d4ff26f14d298d6e6f1be8ba7f",
-      "build_log": "# Build log\n\nAppend-only. Read first, written last. One row per session.\n\n| Date | Session | Model | Effort (source) | Minutes | Tiers passed | NOT VERIFIED | PR |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| 2026-11-21 | 5.1 | Sonnet 5.5 (adopted draft: Fable 5.2 / high, 15 Nov 2026) | high (app session record; started at low, raised to high by the owner before work began) | 22 (from the timer hook start 18:11:35Z; includes the wait for the owner's answer on the Contact address) | V1-V6 PASS (CI green on Node 24 and 26) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/1 |\n| 2026-11-21 | 5.2 | Sonnet 5.5 | high (app session record; session line says medium, owner override of 21 Nov 2026) | 10 (from 18:49Z, no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 6 | https://github.com/ampaduchris/ampaduchris.github.io/pull/3 |\n",
+      "build_log_commit": "4cc5fd8ab66afe9958f3f492606d944a9b5890bb",
+      "build_log": "# Build log\n\nAppend-only. Read first, written last. One row per session.\n\n| Date | Session | Model | Effort (source) | Minutes | Tiers passed | NOT VERIFIED | PR |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| 2026-11-21 | 5.1 | Sonnet 5.5 (adopted draft: Fable 5.2 / high, 15 Nov 2026) | high (app session record; started at low, raised to high by the owner before work began) | 22 (from the timer hook start 18:11:35Z; includes the wait for the owner's answer on the Contact address) | V1-V6 PASS (CI green on Node 24 and 26) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/1 |\n| 2026-11-21 | 5.2 | Sonnet 5.5 | high (app session record; session line says medium, owner override of 21 Nov 2026) | 10 (from 18:49Z, no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 6 | https://github.com/ampaduchris/ampaduchris.github.io/pull/3 |\n| 2026-11-21 | 5.3 | Sonnet 5.5 | high (app session record; owner override of 21 Nov 2026) | 14 (from 19:09Z, the merge of 5.2; no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 5 | https://github.com/ampaduchris/ampaduchris.github.io/pull/4 |\n",
       "commits": [
         {
           "sha": "0c08ac958198d4ddabfba3a1f4e0762de5ecddc7",
@@ -783,6 +800,20 @@
           ]
         },
         {
+          "sha": "3258295f6d8551cd3b49f0c444dab0ac23379bc6",
+          "date": "2026-11-21T19:20:19Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
+          "sha": "4cc5fd8ab66afe9958f3f492606d944a9b5890bb",
+          "date": "2026-11-21T19:26:14Z",
+          "parents": 2,
+          "coauthor_lines": []
+        },
+        {
           "sha": "638eb08ada8a2f21313121eb87e7934f809b529b",
           "date": "2026-11-21T19:02:39Z",
           "parents": 1,
@@ -801,6 +832,14 @@
         {
           "sha": "6f1574377c758c2f141487a8a3150c8d71301e5e",
           "date": "2026-11-21T18:16:50Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
+          "sha": "826c5336513da59c655090fa10d59d795931170b",
+          "date": "2026-11-21T19:22:59Z",
           "parents": 1,
           "coauthor_lines": [
             "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
@@ -831,6 +870,14 @@
         {
           "sha": "bf8c6c56157100d28313666a01dc3d918e29ba08",
           "date": "2026-11-21T18:29:17Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
+          "sha": "c11dbb83a364e7dc4b077c812ac313de80ffe1d1",
+          "date": "2026-11-21T19:20:19Z",
           "parents": 1,
           "coauthor_lines": [
             "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
@@ -894,6 +941,18 @@
           "merged_at": "2026-11-21T19:09:10Z",
           "merged_by": "ampaduchris",
           "ready_at": "2026-11-21T19:06:13Z",
+          "owner_comment_times": []
+        },
+        {
+          "number": 4,
+          "title": "5.3: Method page",
+          "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/4",
+          "state": "merged",
+          "author": "ampaduchris",
+          "created_at": "2026-11-21T19:22:57Z",
+          "merged_at": "2026-11-21T19:26:14Z",
+          "merged_by": "ampaduchris",
+          "ready_at": "2026-11-21T19:24:58Z",
           "owner_comment_times": []
         }
       ]
