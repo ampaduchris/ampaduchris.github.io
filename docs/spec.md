@@ -233,11 +233,13 @@ Measured on 21 Nov 2026 in session 5.1, with Astro 7.4.13, Vitest 5.1.1, Playwri
 - Type check, Vitest, the build, the contrast script, the trace script and the Playwright suite (every route, axe in both schemes at two widths) pass locally.
 - The sync check against the public repositories reports `inkproof` current and `german-b1-tutor` missing its `portfolio.yml`.
 
+Measured on 21 Nov 2026 in session 5.2: the offline link check in CI reported 37 links OK and 0 errors on the 5.1 build (lychee 0.24.2 through lychee-action 2.9.0), so root-relative links resolve with `--root-dir`. The Pages site at the user address is currently the legacy Jekyll build of `main`, and the project page of `german-b1-tutor` is served by that repository, not by this one.
+
 Not checked:
 
-1. Whether lychee's offline mode resolves root-relative links in `dist/` with `--root-dir`. It is not installed locally. The first CI run is the evidence.
+1. (Resolved in session 5.2: see above.) Whether lychee's offline mode resolves root-relative links in `dist/` with `--root-dir`. It is not installed locally. The first CI run is the evidence.
 2. Whether axe can evaluate contrast on text over the tinted tag backgrounds in both schemes. The 5.1 pages have no tinted tags.
-3. Whether GoatCounter's counting script may be self-hosted under its licence (REQ-035). Session 5.2.
+3. Whether GoatCounter's counting script may be self-hosted under its licence (REQ-035). Not looked at in session 5.2: the script is not in the repository (DEV-014).
 4. Whether GitHub's API exposes the time a pull request was last marked ready for review (`hours_to_merge`). Session 5.3.
 5. Whether cookie-free analytics need consent in Germany, and what the imprint must contain. The owner's decision.
 6. Whether Safari and Firefox draw the mark as Chrome does. The mark is not built.

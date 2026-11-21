@@ -1,0 +1,67 @@
+name: sync
+
+on:
+  schedule:
+    - cron: "41 5 * * 1" # weekly
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sync-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  project-data:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install from the lockfile
+        run: npm ci
+      - name: Compare the data file with the repositories
+        run: npx tsx scripts/sync-issue.ts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+
+  external-links:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install from the lockfile
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Check external links
+        id: lychee
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --no-progress --root-dir ${{ github.workspace }}/dist --scheme https './dist/**/*.html'
+          fail: false
+          output: lychee-report.md
+      - name: Open an issue when a link is broken
+        if: steps.lychee.outputs.exit_code != 0
+        run: npx tsx scripts/issue-from-file.ts "External links are broken" lychee-report.md
+        env:
+          GH_TOKEN: ${{ github.token }}

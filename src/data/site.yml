@@ -7,3 +7,5 @@ contact:
   - label: GitHub
     href: https://github.com/ampaduchris
     kind: github
+analytics:
+  endpoint: null # the GoatCounter count URL, set by the owner after creating the account; needs public/count.js
