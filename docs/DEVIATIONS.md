@@ -1,0 +1,19 @@
+# Deviations
+
+Every departure from `docs/spec.md`, numbered, with the reason. Any hand edit to code by the owner is logged here.
+
+| # | Departure | Reason | Logged |
+| --- | --- | --- | --- |
+| DEV-001 | The first commit on `main` carried the AGPL text, copied from another repository by mistake. The licence is MIT as `BUILD.md` says. The pull request replaces it. History on `main` keeps the first commit, because the standard allows no force push. | Agent error, found before any other commit. | 5.1 |
+| DEV-002 | REQ-001 and REQ-011 are built in part. Home has no mark and no method summary. The header has no `/method/` link. The spec rows carry a parenthetical that says so. | The mark needs `mark.json` from the numbers script, and `DESIGN.md` proposal P17 is not yet answered. A link to a route that does not exist would fail REQ-046. Session 5.3 adds Method and its link. | 5.1 |
+| DEV-003 | `models` in the project data file is a list of `{name, sessions}` mappings, not a list of strings. | REQ-022 needs the number of sessions per model and effort pair. A list of strings cannot carry it. The spec row is changed to match. | 5.1 |
+| DEV-004 | The legal guard (REQ-007) warns instead of failing the build. REQ-007 stays in `docs/phase.txt`. | The owner's legal text is not decided (GATE in `PLAN.md`). Session 5.2 turns the warning into a failure. | 5.1 |
+| DEV-005 | Home has no kicker line. The draft copy reads "Remote, Europe · building in public since July 2026". | The owner deferred the location line on 21 Nov 2026, and the date would be an unsourced number under REQ-030. | 5.1 |
+| DEV-006 | The project card has two columns, not three. The ring column is absent until the mark exists. A card shows one tag for each model and effort pair in `models`. The mockup shows one tag. | REQ-022 says the tag shows what the data holds, and `inkproof` holds four pairs. | 5.1 |
+| DEV-007 | `german-b1-tutor` has no `portfolio.yml`, so its `portfolio` block in `projects.yml` is written from its README and `pyproject.toml`, not copied. Its pitch is a one-sentence summary of the README. It has `sessions: 0` and `models: []` because its build log has no table at the release tag. `npm run sync-check` reports the file as missing. | The repository was released before the standard existed. Adding the file is a pull request in that repository. | 5.1 |
+| DEV-008 | The `german-b1-tutor` headline (177) is linked to the README on `main`. The `v1.0.0` README does not state the number. The count was measured on `main` on 21 Nov 2026 with `pytest --collect-only`. It was not measured at the tag. | The spec asks for a source at the release tag. None exists. | 5.1 |
+| DEV-009 | The `inkproof` build log has twelve rows at `v1.0.0`. Row 1.10 reads "low at start; raised to high". It is counted as `Sonnet 5.5 / low`. | The row names two efforts. The first recorded one is used. Session 5.3 sets the rule for the numbers script. | 5.1 |
+| DEV-010 | `portfolio.yml` for this repository is not present. | Its fields `release` and `released_on` do not exist before the first release. The release session adds it. | 5.1 |
+| DEV-011 | Node versions in CI are 24 and 26, the two newest long-term releases on 21 Nov 2026 (nodejs.org). The README says Node 24 or 26. | `STANDARD.md`: the two newest long-term releases. | 5.1 |
+| DEV-012 | The weekly scheduled run is in `ci.yml` from the start. | `STANDARD.md`: a weekly run while the build is CURRENT. | 5.1 |
+| DEV-013 | Contact lists GitHub only. The email address the owner chose for it is not in the repository. | The address is on the owner's denylist, and the scrubber and its guard stop any commit that holds it. A hook block is final. The owner decides whether to change the denylist. `src/data/site.yml` takes the entry back in one line. | 5.1 |

@@ -1,0 +1,19 @@
+---
+import type { Project } from '../lib/schema';
+import { withAbbr } from '../lib/abbr';
+import { formatDate, dateOnly } from '../lib/dates';
+interface Props { project: Project }
+const { project: p } = Astro.props;
+const pf = p.portfolio;
+---
+<article class="project" data-project={p.slug} data-src={`projects.yml#${p.slug}`}>
+  <div>
+    <h3>{pf.name}<span class="tag">{pf.release} · <time datetime={dateOnly(pf.released_on)}>{formatDate(pf.released_on)}</time></span></h3>
+    <p class="pitch" set:html={withAbbr(pf.pitch)} />
+    <div class="meta">
+      {p.models.map((m) => <span class="prov" data-prov>{m.name} · {m.sessions} {m.sessions === 1 ? 'session' : 'sessions'}</span>)}
+      <a href={pf.repo_url}>Repository</a><a href={pf.example_pr_url}>Example pull request</a><a href={pf.demo_url}>Demo</a>
+    </div>
+  </div>
+  <a class="figure" data-headline href={p.headline.source_url}><span class="v">{p.headline.value}</span><span class="l" set:html={withAbbr(p.headline.label)} />{p.headline.n !== null && <span class="n">n = {p.headline.n}</span>}</a>
+</article>
