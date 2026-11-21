@@ -1,0 +1,53 @@
+{
+ "prs": [
+  {
+   "repo": "example-org/example-repo",
+   "number": 103,
+   "title": "Fixture pull request D",
+   "url": "https://github.com/example-org/example-repo/pull/103",
+   "merged_at": "2026-10-02T10:00:00Z"
+  },
+  {
+   "repo": "example-org/example-repo",
+   "number": 106,
+   "title": "Fixture pull request G",
+   "url": "https://github.com/example-org/example-repo/pull/106",
+   "merged_at": "2026-10-28T10:00:00Z"
+  },
+  {
+   "repo": "example-org/example-repo",
+   "number": 105,
+   "title": "Fixture pull request F",
+   "url": "https://github.com/example-org/example-repo/pull/105",
+   "merged_at": "2026-10-15T10:00:00Z"
+  },
+  {
+   "repo": "example-org/example-repo",
+   "number": 102,
+   "title": "Fixture pull request C",
+   "url": "https://github.com/example-org/example-repo/pull/102",
+   "merged_at": "2026-09-20T10:00:00Z"
+  },
+  {
+   "repo": "example-org/example-repo",
+   "number": 100,
+   "title": "Fixture pull request A",
+   "url": "https://github.com/example-org/example-repo/pull/100",
+   "merged_at": "2026-09-01T10:00:00Z"
+  },
+  {
+   "repo": "example-org/example-repo",
+   "number": 104,
+   "title": "Fixture pull request E",
+   "url": "https://github.com/example-org/example-repo/pull/104",
+   "merged_at": "2026-10-11T10:00:00Z"
+  },
+  {
+   "repo": "example-org/example-repo",
+   "number": 101,
+   "title": "Fixture pull request B",
+   "url": "https://github.com/example-org/example-repo/pull/101",
+   "merged_at": "2026-09-09T10:00:00Z"
+  }
+ ]
+}
