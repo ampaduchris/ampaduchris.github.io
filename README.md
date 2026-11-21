@@ -8,7 +8,7 @@ Status: active.
 
 ## What it is
 
-A static site built with Astro and TypeScript. This first release builds Home and Contact, plus the Legal and not-found pages. The Method page, the proof mark, deployment and analytics follow in later sessions. The live address will be https://ampaduchris.github.io once the deploy session has merged. It is not live yet.
+A static site built with Astro and TypeScript. It builds Home and Contact, the Legal and not-found pages, and two short paths, `/cv/` and `/in/`, that show Home's content with a canonical link to Home and no indexing. The Method page and the proof mark follow in later sessions. A workflow deploys `dist/` to GitHub Pages from `main` only, after the checks pass, and refuses while the legal text is pending. The live address will be https://ampaduchris.github.io once the owner has switched the Pages source and decided the legal text. It is not live on this build yet.
 
 The authority for behaviour is `docs/spec.md`. Requirements carry `REQ-###` and MUST or SHOULD, and `scripts/trace.py` fails CI when a MUST that is due has no test. `docs/phase.txt` lists the requirements that later sessions build.
 
@@ -39,7 +39,8 @@ The last command runs the browser tests, including the axe accessibility check o
 ## Limits
 
 - The numbers on the Method page, and the mark, are not built yet. Nothing on the site today is a measured statistic except each project's own test count, which links to where it is reproduced.
-- The legal text is pending the owner's decision. The build prints a warning for it.
+- The legal text is pending the owner's decision. The build prints a warning for it and the deploy job fails on it.
+- Analytics is off. `site.yml` has no endpoint and the repository holds no counting script.
 - Project data in `src/data/projects.yml` is checked against each project repository by `npm run sync-check`, which needs the network. It is not part of the pull request checks. Today it reports that `german-b1-tutor` has no `portfolio.yml`.
 - Link checking in CI is offline and covers internal links only.
 

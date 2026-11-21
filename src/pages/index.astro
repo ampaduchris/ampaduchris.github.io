@@ -1,11 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import PrRow from '../components/PrRow.astro';
-import { loadProjects, loadUpstream } from '../lib/data';
-
-const projects = loadProjects();
-const upstream = loadUpstream();
+import Home from '../components/Home.astro';
 ---
 <Base
   title="Chris Ampadu"
@@ -13,19 +8,5 @@ const upstream = loadUpstream();
   path="/"
   current="/"
 >
-  <section class="hero wrap" data-block="intro">
-    <h1>I direct coding agents to build software, and I do not write the code by hand. I write the specification, decide what evidence would prove the work wrong, and approve every change myself.</h1>
-  </section>
-
-  <section class="wrap" data-block="projects" aria-labelledby="h-projects">
-    <h2 id="h-projects">Projects</h2>
-    {projects.map((p) => <ProjectCard project={p} />)}
-  </section>
-
-  {upstream.length > 0 && (
-    <section class="wrap" data-block="upstream" aria-labelledby="h-up" data-src="upstream.json">
-      <h2 id="h-up">Accepted by other projects</h2>
-      {upstream.map((pr) => <PrRow pr={pr} />)}
-    </section>
-  )}
+  <Home />
 </Base>

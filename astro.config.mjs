@@ -6,6 +6,6 @@ export default defineConfig({
   output: 'static',
   trailingSlash: 'always',
   build: { format: 'directory' },
-  integrations: [sitemap({ filter: (page) => !page.includes('/404') })],
+  integrations: [sitemap({ filter: (page) => !/\/(404|cv|in)(\/|$)/.test(page) })],
   devToolbar: { enabled: false },
 });

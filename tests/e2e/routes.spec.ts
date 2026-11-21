@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import { parse } from 'yaml';
 
 const ROUTES = ['/', '/contact/', '/legal/'];
-const ALL = [...ROUTES, '/no-such-page/'];
+const ALL = [...ROUTES, '/cv/', '/in/', '/no-such-page/'];
 const site = parse(readFileSync('src/data/site.yml', 'utf8'));
 const projects = (parse(readFileSync('src/data/projects.yml', 'utf8')) as any[]).sort((a, b) => a.order - b.order);
 
@@ -158,6 +158,19 @@ test('[REQ-012] every route has its own title', async ({ page }) => {
   }
   expect(new Set(titles).size).toBe(titles.length);
 });
+
+for (const route of ['/cv/', '/in/']) {
+  test(`[REQ-010] ${route} has Home's content, a canonical link to Home, noindex, and is not in the sitemap`, async ({ page }) => {
+    await page.goto('/');
+    const home = await page.locator('main').innerText();
+    await page.goto(route);
+    expect(await page.locator('main').innerText()).toBe(home);
+    await expect(page.locator('link[rel=canonical]')).toHaveAttribute('href', 'https://ampaduchris.github.io/');
+    await expect(page.locator('meta[name=robots]')).toHaveAttribute('content', 'noindex');
+    const sitemap = readFileSync('dist/sitemap-0.xml', 'utf8');
+    expect(sitemap).not.toContain(`ampaduchris.github.io${route}`);
+  });
+}
 
 test('[REQ-009] an unknown path gives status 404, a link Home, the shell and noindex', async ({ page }) => {
   const res = await page.goto('/no-such-page/');

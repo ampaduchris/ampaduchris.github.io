@@ -10,6 +10,10 @@ probes=[
  ("REQ-007","src/lib/legal.ts","text.includes(PENDING)","false","npx vitest run -t REQ-007",False),
  ("REQ-036","public/theme.js","localStorage.setItem(KEY, 'dark')","localStorage.setItem(KEY, '1')","npx playwright test -g REQ-036",True),
  ("REQ-009","src/pages/404.astro","  noindex\n","\n","npx playwright test -g REQ-009",True),
+ ("REQ-010","src/pages/cv.astro","  noindex\n","\n","npx playwright test -g REQ-010",True),
+ ("REQ-019","src/lib/issue.ts","i.title === title","false","npx vitest run -t REQ-019",False),
+ ("REQ-035","src/lib/origins.ts","if (o && o !== own) found.add(o);","if (false) found.add(o as string);","npx vitest run -t REQ-035",False),
+ ("REQ-052",".github/workflows/ci.yml","needs: [test, gitleaks, build-pages]","needs: [build-pages]","npx vitest run -t REQ-052",False),
  ("REQ-042","src/styles/site.css","color-scheme:dark;","color-scheme:dark;--bg:#FFFFFF;","npx playwright test -g REQ-042",True),
 ]
 for rid,f,a,b,cmd,build in probes:

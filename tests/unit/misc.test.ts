@@ -56,3 +56,31 @@ describe('no em dash in the source copy', () => {
     expect(bad).toEqual([]);
   });
 });
+
+describe('issue or comment', () => {
+  test('[REQ-019] opens one issue when none is open and comments when one is', async () => {
+    const { decideIssueAction, STALE_TITLE } = await import('../../src/lib/issue');
+    expect(decideIssueAction([])).toEqual({ kind: 'create', title: 'Project data is stale' });
+    expect(decideIssueAction([{ number: 3, title: 'Other' }])).toEqual({ kind: 'create', title: STALE_TITLE });
+    expect(decideIssueAction([{ number: 3, title: 'Other' }, { number: 7, title: STALE_TITLE }])).toEqual({ kind: 'comment', number: 7 });
+  });
+});
+
+describe('third-party origins', () => {
+  const own = 'https://ampaduchris.github.io';
+  const page = (head: string) => `<html><head>${head}</head><body><a href="https://example.org/x">elsewhere</a></body></html>`;
+  test('[REQ-035] with analytics on, only the endpoint origin may be named, and anchors are exempt', async () => {
+    const { originProblems } = await import('../../src/lib/origins');
+    const endpoint = 'https://me.goatcounter.com/count';
+    const on = page(`<link rel="canonical" href="${own}/"><script async data-goatcounter="${endpoint}" src="/count.js"></script>`);
+    expect(originProblems({ 'index.html': on }, own, endpoint)).toEqual([]);
+    const bad = page(`<script src="https://cdn.example.net/x.js"></script>`);
+    expect(originProblems({ 'index.html': bad }, own, endpoint)).toEqual(['index.html: names https://cdn.example.net']);
+    expect(originProblems({ 'a.css': '@import "https://fonts.example.net/f.css"; a{background:url(https://img.example.net/p.png)}' }, own, endpoint)).toHaveLength(2);
+  });
+  test('[REQ-035] with analytics off, the endpoint origin is not allowed either', async () => {
+    const { originProblems } = await import('../../src/lib/origins');
+    const on = page(`<script async data-goatcounter="https://me.goatcounter.com/count" src="/count.js"></script>`);
+    expect(originProblems({ 'index.html': on }, own, null)).toEqual(['index.html: names https://me.goatcounter.com']);
+  });
+});

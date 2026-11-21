@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from 'yaml';
 import { validateProjects, sortedProjects, type Project } from './schema';
@@ -11,10 +11,15 @@ const read = (name: string) => readFileSync(resolve(root, 'src/data', name), 'ut
 export interface Site {
   name: string; url: string; repo_url: string; build_log_url: string; github_url: string;
   contact: { label: string; href: string; kind: string }[];
+  analytics?: { endpoint: string | null };
 }
 
 export function loadSite(): Site {
-  return parse(read('site.yml')) as Site;
+  const site = parse(read('site.yml')) as Site;
+  // With an endpoint set, the counting script must be in the repository so that it is served from the site's own origin (REQ-035).
+  if (site.analytics?.endpoint && !existsSync(resolve(root, 'public/count.js')))
+    throw new Error('site.yml sets analytics.endpoint but public/count.js is missing');
+  return site;
 }
 
 /** Throws, naming the entry and the field, so the build fails (REQ-014 to REQ-017). */

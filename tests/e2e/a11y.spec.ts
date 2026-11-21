@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const ROUTES = ['/', '/contact/', '/legal/', '/no-such-page/'];
+const ROUTES = ['/', '/contact/', '/legal/', '/cv/', '/in/', '/no-such-page/'];
 const WIDTHS = { narrow: 375, wide: 1280 } as const;
 
 for (const route of ROUTES) {
