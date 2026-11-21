@@ -14,6 +14,16 @@ probes=[
  ("REQ-019","src/lib/issue.ts","i.title === title","false","npx vitest run -t REQ-019",False),
  ("REQ-035","src/lib/origins.ts","if (o && o !== own) found.add(o);","if (false) found.add(o as string);","npx vitest run -t REQ-035",False),
  ("REQ-052",".github/workflows/ci.yml","needs: [test, gitleaks, build-pages]","needs: [build-pages]","npx vitest run -t REQ-052",False),
+ ("REQ-025","src/lib/numbers.ts","export const MEDIAN_MIN_N = 20;","export const MEDIAN_MIN_N = 19;","npx vitest run -t REQ-025",False),
+ ("REQ-028","src/lib/numbers.ts","x.pr.merged_by === s.owner","true","npx vitest run -t REQ-028",False),
+ ("REQ-029","src/lib/numbers.ts",".sort((a, b) => b.sessions - a.sessions || a.name.localeCompare(b.name))",".sort((a, b) => b.sessions - a.sessions)","npx vitest run -t REQ-029",False),
+ ("REQ-031","src/components/StatTile.astro",'<span class="v">{text}</span>','<span class="v">{text}x</span>',"npx playwright test -g REQ-031",True),
+ ("REQ-032","src/pages/method.astro","{method.counts.pull_requests} pull requests","{method.counts.pull_requests + 1} pull requests","npx playwright test -g REQ-032",True),
+ ("REQ-023","src/lib/format.ts","n = ${stat.n}","${stat.n}","npx playwright test -g REQ-023",True),
+ ("REQ-033",".github/workflows/ci.yml","name: Numbers match the snapshot","name: Numbers","npx vitest run -t REQ-033",False),
+ ("REQ-005","src/pages/method.astro",'data-block="approval"','data-block="approvals"',"npx playwright test -g REQ-005",True),
+ ("REQ-001","src/components/Home.astro",'data-block="method-summary"','data-block="summary"',"npx playwright test -g REQ-001",True),
+ ("REQ-011","src/lib/nav.ts","  { href: '/method/', label: 'Method' },\n","","npx playwright test -g REQ-011",True),
  ("REQ-042","src/styles/site.css","color-scheme:dark;","color-scheme:dark;--bg:#FFFFFF;","npx playwright test -g REQ-042",True),
 ]
 for rid,f,a,b,cmd,build in probes:

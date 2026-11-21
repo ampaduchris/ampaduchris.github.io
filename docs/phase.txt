@@ -2,14 +2,6 @@
 # scripts/trace.py prints a listed id with no test as "deferred", not as a failure. Each later session shortens this list.
 REQ-005  # 5.3 Method
 REQ-007  # 5.2 legal text; the build guard only warns until the owner decides
-REQ-023  # 5.3 statistics
-REQ-025  # 5.3 median rule
-REQ-027  # 5.3 numbers script
-REQ-028  # 5.3
-REQ-029  # 5.3
-REQ-031  # 5.3
-REQ-032  # 5.3
-REQ-033  # 5.3
 REQ-053  # mark session
 REQ-054  # mark session
 REQ-055  # mark session

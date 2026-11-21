@@ -1,13 +1,24 @@
 ---
 import ProjectCard from './ProjectCard.astro';
 import PrRow from './PrRow.astro';
-import { loadProjects, loadUpstream } from '../lib/data';
+import StatTile from './StatTile.astro';
+import { loadProjects, loadUpstream, loadMethod } from '../lib/data';
 
 const projects = loadProjects();
 const upstream = loadUpstream();
+const method = loadMethod();
+const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map((id) => method.stats.find((s) => s.id === id)!);
 ---
   <section class="hero wrap" data-block="intro">
   <h1>I direct coding agents to build software, and I do not write the code by hand. I write the specification, decide what evidence would prove the work wrong, and approve every change myself.</h1>
+</section>
+
+<section class="wrap" data-block="method-summary" aria-labelledby="h-proof">
+  <h2 id="h-proof">The claims, counted</h2>
+  <div class="strip">
+    {summary.map((stat) => <StatTile stat={stat} />)}
+  </div>
+  <a class="more" href="/method/">How the work is checked</a>
 </section>
 
 <section class="wrap" data-block="projects" aria-labelledby="h-projects">
@@ -18,6 +29,6 @@ const upstream = loadUpstream();
 {upstream.length > 0 && (
   <section class="wrap" data-block="upstream" aria-labelledby="h-up" data-src="upstream.json">
     <h2 id="h-up">Accepted by other projects</h2>
-    {upstream.map((pr) => <PrRow pr={pr} />)}
+    {upstream.map((pr) => <PrRow row={{ repo: pr.repo, number: pr.number, title: pr.title, url: pr.url, date: pr.merged_at.slice(0, 10), state: 'merged', by: 'maintainer' }} />)}
   </section>
 )}

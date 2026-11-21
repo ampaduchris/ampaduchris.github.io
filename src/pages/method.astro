@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import StatTile from '../components/StatTile.astro';
+import PrRow from '../components/PrRow.astro';
+import { loadMethod, loadSite } from '../lib/data';
+import { formatDate, dateOnly } from '../lib/dates';
+
+const method = loadMethod();
+const site = loadSite();
+const byId = (id: string) => method.stats.find((s) => s.id === id)!;
+const order = ['sessions', 'agent_commits', 'prs_merged', 'prs_commented', 'hours_to_merge', 'not_verified', 'upstream_merged', 'models'];
+const steps: [string, boolean][] = [
+  ['I write the requirement and the test that ends the session.', true],
+  ['The agent restates the task in five lines, including what it will not do.', false],
+  ['The agent commits failing tests first, then the code that makes them pass.', false],
+  ['The agent verifies in six tiers and lists what it did not verify.', false],
+  ['I read the evidence, not the code, and write down what I checked.', true],
+  ['I merge it myself. The agent never approves and never merges.', true],
+];
+---
+<Base
+  title="Method. Chris Ampadu"
+  description="How the work is checked: the loop, what my approval means, and the numbers behind the claims, each with its sample size."
+  path="/method/"
+  current="/method/"
+>
+  <div class="pagehead wrap">
+    <p class="kicker" style="margin:0">Method</p>
+    <h1 style="max-width:21em">The agent writes the code. I decide what would prove it wrong, and nothing merges until I have seen that proof.</h1>
+  </div>
+
+  <section class="wrap" data-block="loop" aria-labelledby="h-loop" data-src="content">
+    <h2 id="h-loop">The loop</h2>
+    <div class="loop">
+      <svg viewBox="0 0 400 400" role="img" aria-label="The loop as a circle of six steps. Steps one, five and six are mine. Step five sits at the centre.">
+        <circle class="track" cx="200" cy="200" r="140"/>
+        <path class="path" d="M117.7 313.3L200 200L66.9 156.7"/>
+        <g data-step="1"><circle class="node me" cx="200" cy="60" r="9"/><text class="lab" x="200" y="36" text-anchor="middle">01 ME</text></g>
+        <g data-step="2"><rect class="node" x="324.1" y="147.7" width="18" height="18" transform="rotate(45 333.1 156.7)"/><text class="lab" x="354" y="161">02</text></g>
+        <g data-step="3"><rect class="node" x="273.3" y="304.3" width="18" height="18" transform="rotate(45 282.3 313.3)"/><text class="lab" x="300" y="336">03</text></g>
+        <g data-step="4"><rect class="node" x="108.7" y="304.3" width="18" height="18" transform="rotate(45 117.7 313.3)"/><text class="lab" x="100" y="336" text-anchor="end">04</text></g>
+        <g data-step="5"><circle class="node" cx="200" cy="200" r="26" style="fill:none"/><circle class="node me" cx="200" cy="200" r="8"/><text class="lab" x="200" y="246" text-anchor="middle">05 ME</text></g>
+        <g data-step="6"><circle class="node me" cx="66.9" cy="156.7" r="9"/><text class="lab" x="46" y="161" text-anchor="end">06 ME</text></g>
+      </svg>
+      <ol class="steps" data-steps>
+        {steps.map(([text, me], i) => (
+          <li class={me ? 'me' : undefined} data-step={i + 1}><span><b>{text}</b><span class="who">{me ? 'Me' : 'Agent'}</span></span></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap" data-block="approval" aria-labelledby="h-app" data-src="content">
+    <h2 id="h-app">What my approval means</h2>
+    <p class="lede">I approve evidence, not code. In my own repositories I do not read the code. The effort saved on writing it goes into deciding, before it exists, what would prove it wrong.</p>
+    <div class="two" style="margin-top:var(--s6)" data-block="modes">
+      <div class="panel">
+        <p class="kicker">Mode one</p>
+        <h3>In my own repositories</h3>
+        <p>For every pull request I check four things, write one comment naming them, and merge.</p>
+        <ul>
+          <li>The output of the exit test.</li>
+          <li>The table of six verification tiers, with a link or pasted output on every row.</li>
+          <li>The list of deviations from the specification.</li>
+          <li>The demo.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <p class="kicker">Mode two</p>
+        <h3>In other people's projects</h3>
+        <p>The opposite rule applies, because a maintainer is owed a contributor who understands the change.</p>
+        <ul>
+          <li>I read every line and can explain it.</li>
+          <li>I write every issue, description and reply myself.</li>
+          <li>The agent helps me reproduce a problem and drafts a fix. Nothing it writes is posted unread.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" data-block="numbers" aria-labelledby="h-num">
+    <h2 id="h-num">The numbers</h2>
+    <div class="grid3">
+      {order.map((id) => <StatTile stat={byId(id)} wide={id === 'models'} />)}
+    </div>
+    <p class="note" style="margin-top:var(--s5)" data-block="computed" data-src="method.json#counts">
+      Computed on <time datetime={dateOnly(method.generated_at)}>{formatDate(method.generated_at)}</time> from {method.counts.build_log_rows} build-log rows and {method.counts.pull_requests} pull requests.
+      Pull requests opened before <time datetime={method.cutoff}>{formatDate(method.cutoff)}</time> are not counted.{' '}
+      <a href={`${site.repo_url}#verify-it-yourself`}>Recompute them yourself</a>.
+    </p>
+  </section>
+
+  <section class="wrap" data-block="recent" aria-labelledby="h-recent" data-src="method.json#recent">
+    <h2 id="h-recent">The five most recent</h2>
+    {method.recent.map((r) => (
+      <PrRow row={{ repo: r.repo, number: r.number, title: r.title, url: r.url, date: r.date, state: r.state, by: 'me', hours: r.hours_to_merge, model: r.model, effort: r.effort, minutes: r.minutes }} />
+    ))}
+  </section>
+
+  <section class="wrap" data-block="limits" aria-labelledby="h-limits" data-src="content">
+    <h2 id="h-limits">What this does not show</h2>
+    <ul class="plain">
+      <li>The numbers show that I merged each pull request and how long after it was ready. They do not show how carefully I looked.</li>
+      <li>They are as of the date above. They are not live.</li>
+      <li>Before 15 Nov 2026 an automated routine merged pull requests in german-b1-tutor once its checks passed. Those are excluded from every number here.</li>
+      <li>The agent and I use one GitHub account. A comment or a merge from that account does not show who wrote it, and the rule that the agent never merges is one it follows, not one GitHub enforces.</li>
+    </ul>
+  </section>
+</Base>

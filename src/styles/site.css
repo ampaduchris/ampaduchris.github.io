@@ -89,6 +89,45 @@ main{padding-bottom:var(--s9)}
 .pr .repo{display:block;color:var(--text-2)}
 time{color:var(--text-2);white-space:nowrap}
 
+/* statistic with its sample size: a tile */
+.strip,.grid3{display:grid;gap:var(--s4)}
+.strip{grid-template-columns:repeat(4,1fr)}
+.grid3{grid-template-columns:repeat(3,1fr)}
+.stat{background:var(--surface);border-radius:8px;padding:var(--s5);scroll-margin-top:var(--s6)}
+.stat .v{display:block;font-weight:600;font-size:2.125rem;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.stat .l{display:block;font-size:.9375rem;line-height:1.4;margin-top:var(--s3);max-width:17em}
+.stat .n{display:block;color:var(--text-2);margin-top:var(--s2)}
+.stat .none{display:block;font-size:1rem;line-height:1.35;font-weight:500;color:var(--text-2);min-height:2.125rem;max-width:14em}
+.stat:target{box-shadow:inset 0 0 0 2px var(--accent)}
+.more{display:inline-block;margin-top:var(--s5);font-size:.9375rem;font-weight:600;color:var(--accent);text-decoration:none;background:var(--iris) 0 100%/100% 2px no-repeat;padding-bottom:.2rem}
+
+/* method page */
+.pagehead{padding-top:var(--s6);display:grid;gap:var(--s2)}
+.loop{display:grid;grid-template-columns:minmax(0,24rem) minmax(0,1fr);gap:var(--s7);align-items:center}
+.loop svg{width:100%;height:auto;overflow:visible}
+.loop .track{fill:none;stroke:var(--border-strong);stroke-width:1}
+.loop .path{fill:none;stroke:var(--iris-1);stroke-width:1.25;stroke-dasharray:3 4}
+.loop .node{fill:var(--bg);stroke:var(--text);stroke-width:1.5;transition:fill .2s}
+.loop .node.me{fill:var(--text)}
+.loop .lab{font:500 11px var(--mono);letter-spacing:.1em;fill:var(--text-2)}
+
+.loop g.on .node{stroke:var(--iris-2);stroke-width:3}
+.loop g.on .lab{fill:var(--text)}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:2.25rem 1fr;gap:var(--s3);padding:var(--s3) var(--s4);border-radius:8px;transition:background .2s}
+.steps li::before{content:"0" counter(s);font:400 .75rem/2.1 var(--mono);color:var(--text-2)}
+.steps b{font-weight:600;display:block}
+.steps .who{color:var(--text-2)}
+.steps li.me .who{color:var(--accent);font-weight:600}
+.steps li.on{background:var(--surface);box-shadow:inset 3px 0 0 var(--iris-2)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+.panel{background:var(--surface);border-radius:8px;padding:var(--s5) var(--s6)}
+.panel h3{margin-bottom:var(--s3)}
+.panel ul,.plain{margin:0;padding-left:1.1em}
+.panel li,.plain li{margin:.3rem 0}
+.note{font-size:.9375rem;color:var(--text-2)}
+pre{font:400 .8125rem/1.7 var(--mono);background:var(--surface);border-radius:8px;padding:var(--s4) var(--s5);overflow-x:auto;margin:0}
+
 /* contact */
 .contact{min-height:60vh;padding-top:var(--s6)}
 .links{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s5);font-size:.9375rem;font-weight:600;margin-top:var(--s6)}
@@ -101,10 +140,16 @@ footer nav{display:flex;gap:var(--s5)}
 
 @media (max-width:56rem){
   .wrap{padding-inline:1.125rem}
+  .strip,.grid3{grid-template-columns:1fr 1fr;gap:var(--s3)}
+  .stat{padding:var(--s4)}
+  .stat .v{font-size:1.75rem}
+  .loop{grid-template-columns:1fr;gap:var(--s6)}
+  .two{grid-template-columns:1fr}
   .project{grid-template-columns:1fr;gap:var(--s4);padding:var(--s5)}
   .project .figure{grid-row:1;text-align:left}
   .prov{white-space:normal}
-  .pr{grid-template-columns:1fr auto}
+  .pr{grid-template-columns:minmax(0,1fr) auto}
+  .pr .state{white-space:normal}
   .pr .body{grid-column:1/-1;grid-row:2}
   /* the name, three links and the toggle do not fit on one line at 375: the navigation takes its own line, on every page */
   .site{flex-wrap:wrap;row-gap:var(--s1);padding-block:var(--s4)}
@@ -119,3 +164,6 @@ footer nav{display:flex;gap:var(--s5)}
 
 .more{display:inline-block;font-size:.9375rem;font-weight:600;color:var(--accent);text-decoration:none;background:var(--iris) 0 100% / 100% 2px no-repeat;padding-bottom:.2rem}
 .hero .more{margin-top:var(--s5)}
+.strip + .more{margin-top:var(--s5)}
+.pr .body{min-width:0}
+.pr .t,.pr .repo{overflow-wrap:anywhere}

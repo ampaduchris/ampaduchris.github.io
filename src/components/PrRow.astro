@@ -1,11 +1,20 @@
 ---
-import type { UpstreamPr } from '../lib/upstream';
-import { formatDate, dateOnly } from '../lib/dates';
-interface Props { pr: UpstreamPr }
-const { pr } = Astro.props;
+import { formatDate } from '../lib/dates';
+import { hoursText } from '../lib/format';
+
+export interface Row {
+  repo: string; number: number; title: string; url: string; date: string;
+  state: 'open' | 'closed' | 'merged';
+  by: 'maintainer' | 'me';
+  hours?: number | null; model?: string | null; effort?: string | null; minutes?: number | null;
+}
+interface Props { row: Row }
+const { row: r } = Astro.props;
+const state = r.state === 'merged' ? (r.by === 'maintainer' ? 'Merged by a maintainer' : r.hours != null ? `Merged by me after ${hoursText(r.hours)} hours` : 'Merged by me') : r.state === 'open' ? 'Open' : 'Closed';
+const detail = [`${r.repo} #${r.number}`, r.model && r.effort ? `${r.model} / ${r.effort}` : null, r.minutes != null ? `${r.minutes} minutes` : null].filter(Boolean).join(' · ');
 ---
-<a class="pr" href={pr.url} data-pr>
-  <span class="state">Merged by a maintainer</span>
-  <span class="body"><span class="t">{pr.title}</span><span class="repo">{pr.repo} #{pr.number}</span></span>
-  <time datetime={dateOnly(pr.merged_at)}>{formatDate(pr.merged_at)}</time>
+<a class="pr" href={r.url} data-pr>
+  <span class={r.state === 'merged' ? 'state' : 'state open'}>{state}</span>
+  <span class="body"><span class="t">{r.title}</span><span class="repo">{detail}</span></span>
+  <time datetime={r.date}>{formatDate(r.date)}</time>
 </a>

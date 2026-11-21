@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { parse } from 'yaml';
 import { validateProjects, sortedProjects, type Project } from './schema';
 import { selectUpstream, type UpstreamPr } from './upstream';
+import type { MethodJson } from './numbers';
 
 // Paths start at the repository root: the build bundles these modules, so import.meta.url does not point at src/.
 const root = process.cwd();
@@ -37,4 +38,11 @@ export function loadUpstream(): UpstreamPr[] {
     ? readFileSync(resolve(root, 'tests/fixtures', fixture), 'utf8')
     : read('upstream.json');
   return selectUpstream((JSON.parse(text) as { prs: UpstreamPr[] }).prs);
+}
+
+/** METHOD_FIXTURE names a file under tests/fixtures/ and is used only by the fixture build in the tests. */
+export function loadMethod(): MethodJson {
+  const fixture = process.env.METHOD_FIXTURE;
+  const text = fixture ? readFileSync(resolve(root, 'tests/fixtures', fixture), 'utf8') : read('method.json');
+  return JSON.parse(text) as MethodJson;
 }
