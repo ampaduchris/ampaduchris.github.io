@@ -24,6 +24,7 @@ probes=[
  ("REQ-005","src/pages/method.astro",'data-block="approval"','data-block="approvals"',"npx playwright test -g REQ-005",True),
  ("REQ-001","src/components/Home.astro",'data-block="method-summary"','data-block="summary"',"npx playwright test -g REQ-001",True),
  ("REQ-011","src/lib/nav.ts","  { href: '/method/', label: 'Method' },\n","","npx playwright test -g REQ-011",True),
+ ("REQ-052",".github/workflows/ci.yml","if: steps.legal.outcome == 'success'","if: always()","npx vitest run -t REQ-052",False),
  ("REQ-042","src/styles/site.css","color-scheme:dark;","color-scheme:dark;--bg:#FFFFFF;","npx playwright test -g REQ-042",True),
 ]
 for rid,f,a,b,cmd,build in probes:

@@ -2,8 +2,9 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: 'tests/e2e',
-  timeout: 30_000,
+  timeout: 60_000,
   fullyParallel: true,
+  retries: process.env.CI ? 0 : 1, // locally one retry, reported as flaky; a stall has been seen about once in four runs on a busy machine, never in CI
   reporter: [['list']],
   // Locally the installed Chrome is used so that nothing is downloaded; CI installs Chromium.
   use: { baseURL: 'http://127.0.0.1:4321', browserName: 'chromium', channel: process.env.CI ? undefined : 'chrome' },

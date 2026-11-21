@@ -29,18 +29,18 @@
   portfolio:
     name: german-b1-tutor
     pitch: A writing trainer for the Goethe-Zertifikat B1 German exam, built on one agent and an append-only error log.
-    stack: [python, uv, google-adk, pytest]
-    tests: 177
+    stack: [python, uv, google-adk, google-genai, pytest]
+    tests: 172
     release: v1.0.0
     released_on: 2026-10-25
     demo_url: https://ampaduchris.github.io/german-b1-tutor/
     repo_url: https://github.com/ampaduchris/german-b1-tutor
     example_pr_url: https://github.com/ampaduchris/german-b1-tutor/pull/39
   headline:
-    value: "177"
+    value: "172"
     label: tests pass with no API key
     n: null
     kind: tests
-    source_url: https://github.com/ampaduchris/german-b1-tutor/blob/main/README.md
+    source_url: https://github.com/ampaduchris/german-b1-tutor/blob/v1.0.0/README.md
   sessions: 0
   models: []

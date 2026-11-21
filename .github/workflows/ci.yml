@@ -114,8 +114,14 @@ jobs:
           cache: npm
       - name: Install from the lockfile
         run: npm ci
-      - name: Refuse to publish while the legal text is pending
+      - name: Check the legal text
+        id: legal
+        continue-on-error: true
         run: npx tsx scripts/legal-check.ts
+      - name: Say why nothing was published
+        if: steps.legal.outcome == 'failure'
+        run: echo "::warning title=Not deployed::The legal text is pending (OWNER-DECISION-PENDING in src/content/legal). Nothing was published."
       - name: Deploy to GitHub Pages
         id: deployment
+        if: steps.legal.outcome == 'success'
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

@@ -29,8 +29,12 @@ describe('deploy', () => {
     expect(ci.permissions).toEqual({ contents: 'read' });
     expect(JSON.stringify(deploy)).toContain('actions/deploy-pages@');
   });
-  test('[REQ-052] the deploy job refuses to publish while the legal text is pending', () => {
-    const run = deploy.steps.map((s: any) => s.run ?? '').join('\n');
-    expect(run).toContain('scripts/legal-check.ts');
+  test('[REQ-052] the deploy step runs only when the legal check passed, and a failed check says so', () => {
+    const steps = deploy.steps;
+    const legal = steps.find((s: any) => s.id === 'legal');
+    expect(legal.run).toContain('scripts/legal-check.ts');
+    expect(legal['continue-on-error']).toBe(true);
+    expect(steps.find((s: any) => s.id === 'deployment').if).toContain("steps.legal.outcome == 'success'");
+    expect(steps.find((s: any) => s.name === 'Say why nothing was published').if).toContain("steps.legal.outcome == 'failure'");
   });
 });
