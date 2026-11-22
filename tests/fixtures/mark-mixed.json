@@ -1,0 +1,83 @@
+{
+ "generated_at": "2026-11-22T00:00:00Z",
+ "cutoff": "2026-11-15",
+ "projects": [
+  {
+   "repo": "ampaduchris/inkproof",
+   "sessions": [
+    {
+     "session": "F.1",
+     "model": "Sonnet 5.5",
+     "effort": "high",
+     "minutes": 30,
+     "not_verified": 0,
+     "pr_number": 1,
+     "state": "merged",
+     "merged_by_owner": true,
+     "hours_to_merge": 0.5
+    },
+    {
+     "session": "F.2",
+     "model": "Sonnet 5.5",
+     "effort": "medium",
+     "minutes": 20,
+     "not_verified": 2,
+     "pr_number": 2,
+     "state": "merged",
+     "merged_by_owner": true,
+     "hours_to_merge": 1.0
+    },
+    {
+     "session": "F.3",
+     "model": "Opus 5.5",
+     "effort": "high",
+     "minutes": 25,
+     "not_verified": 0,
+     "pr_number": 3,
+     "state": "open",
+     "merged_by_owner": false,
+     "hours_to_merge": null
+    },
+    {
+     "session": "F.4",
+     "model": "Sonnet 5.5",
+     "effort": "low",
+     "minutes": 10,
+     "not_verified": 1,
+     "pr_number": 4,
+     "state": "open",
+     "merged_by_owner": false,
+     "hours_to_merge": null
+    }
+   ]
+  },
+  {
+   "repo": "ampaduchris/ampaduchris.github.io",
+   "sessions": [
+    {
+     "session": "F.5",
+     "model": "Sonnet 5.5",
+     "effort": "high",
+     "minutes": 40,
+     "not_verified": 1,
+     "pr_number": 5,
+     "state": "merged",
+     "merged_by_owner": true,
+     "hours_to_merge": 2.0
+    },
+    {
+     "session": "F.6",
+     "model": "Sonnet 5.5",
+     "effort": "high",
+     "minutes": 15,
+     "not_verified": 0,
+     "pr_number": 6,
+     "state": "open",
+     "merged_by_owner": false,
+     "hours_to_merge": null
+    }
+   ]
+  }
+ ],
+ "upstream": []
+}

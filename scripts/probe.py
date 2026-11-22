@@ -39,6 +39,19 @@ probes=[
  ("REQ-053","src/components/Home.astro",'<Mark id="mark" />',"","npx playwright test -g REQ-053",True),
  ("REQ-006","src/pages/contact.astro","{site.location && <p class=\"kicker where\">{site.location}</p>}","","npx playwright test -g \"the email is the first\"",True),
  ("REQ-042","src/styles/site.css","color-scheme:dark;","color-scheme:dark;--bg:#FFFFFF;","npx playwright test -g REQ-042",True),
+# Session 5.5: claims (REQ-059) and the reading block (REQ-005). The browser tests of REQ-059 run on the fixture build (npm run build:fixture), which the probe rebuilds first.
+ ("REQ-059","public/mark.js","return Number(d.nv) > 0;","return true;","npm run build:fixture && npx playwright test -g REQ-059",True),
+ ("REQ-059","public/mark.js","return d.state === 'merged';","return true;","npm run build:fixture && npx playwright test -g REQ-059",True),
+ ("REQ-059","public/mark.js","tint: true","tint: false","npm run build:fixture && npx playwright test -g REQ-059",True),
+ ("REQ-059","public/mark.js","a.addEventListener('pointerleave', off);","a.addEventListener('pointerleavex', off);","npm run build:fixture && npx playwright test -g REQ-059",True),
+ ("REQ-059","public/mark.js","a.addEventListener('focus', on);","a.addEventListener('focusx', on);","npm run build:fixture && npx playwright test -g REQ-059",True),
+ ("REQ-059","src/components/Home.astro","#stat-prs_merged","#stat-prs_mergedx","npx playwright test -g REQ-059",True),
+ ("REQ-059","src/components/Home.astro",'data-probe="agent"','data-probe="agentx"',"npm run build:fixture && npx playwright test -g REQ-059",True),
+ ("REQ-005","src/pages/method.astro",'data-block="reading"','data-block="readings"',"npx playwright test -g REQ-005",True),
+ ("REQ-005","src/pages/method.astro","<b>A dot</b> outside","<i>A dot</i> outside","npx playwright test -g REQ-005",True),
+ ("REQ-053","src/pages/method.astro",'<Mark id="mark" />\n        <figcaption>','<figcaption>',"npx playwright test -g REQ-053",True),
+ ("REQ-056","src/pages/method.astro",'<div class="scroll" set:html={table} />','<div class="scroll" />',"npx playwright test -g REQ-056",True),
+ ("REQ-058","src/pages/method.astro",'data-motion aria-pressed="false" hidden>Pause motion','data-motionx aria-pressed="false" hidden>Pause motion',"npx playwright test -g REQ-058",True),
 ]
 for rid,f,a,b,cmd,build in probes:
     s=open(f).read()

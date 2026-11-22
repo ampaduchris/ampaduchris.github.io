@@ -1,6 +1,3 @@
 # Requirement ids not yet due. One id per line; the text after # is the session that builds it.
 # scripts/trace.py prints a listed id with no test as "deferred", not as a failure. Each later session shortens this list.
-REQ-005  # 5.3 Method
 REQ-007  # 5.2 legal text; the build guard only warns until the owner decides
-REQ-053  # mark session
-REQ-059  # mark session
