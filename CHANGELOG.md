@@ -9,3 +9,4 @@
 - Session 5.3a: corrections: `german-b1-tutor` test count at its tag, deploy job warns instead of failing while the legal text is pending, Dependabot ignores TypeScript major updates, numbers refreshed, local browser test retry.
 - Session 5.4: the proof mark on Home (build-time SVG, readout, keyboard, table, pause, reduced motion), rings in the project cards.
 - Session 5.4a: the owner's copy edits, and Contact with a site-only email, LinkedIn and a location line.
+- Session 5.5: the four claims in Home's introduction link to their statistics and light the matching arcs; Method gains "How to read the mark" with the legend, a live mark and its table.
