@@ -245,6 +245,9 @@ test('[REQ-070][REQ-077][REQ-078] the published notes list newest first, and eac
     for (const r of refs) expect(rows).toContain(r);
     expect(rows).toEqual([...rows].sort((a, b) => idNum(a) - idNum(b)));
     expect(new Set(refs)).toEqual(new Set(rows));
+    // Each marker's href names a row of the table on the same page, and its accessible name names the row.
+    const links = await page.$$eval('a.ref', (as) => as.map((a) => ({ text: (a.textContent ?? '').trim(), label: a.getAttribute('aria-label'), target: document.querySelector(a.getAttribute('href') ?? '#none')?.closest('table.evidence') ? document.querySelector(a.getAttribute('href')!)!.querySelector('td.id')!.textContent!.trim() : null })));
+    for (const l of links) { expect(l.target, `marker ${l.text}`).toBe(l.text); expect(l.label).toBe(`Evidence row ${l.text}`); }
     await expect(page.locator('[data-block=note-numbers] [data-src="note#rows"]')).toContainText(String(rows.length));
   }
 });
