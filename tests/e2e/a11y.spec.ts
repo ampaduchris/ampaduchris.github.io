@@ -12,7 +12,8 @@ for (const route of ROUTES) {
         await page.goto(route);
         if (scheme === 'dark') await page.locator('[data-theme-toggle]').click();
         // Colour transitions would otherwise be measured half way, which axe reads as low contrast.
-        await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))));
+        // Only transitions end; the mark's rings turn for ever, so waiting on every animation would never return.
+        await page.evaluate(() => Promise.all(document.getAnimations().filter((a) => a instanceof CSSTransition).map((a) => a.finished.catch(() => undefined))));
         const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
         const bad = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
         expect(bad.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(', ')}`)).toEqual([]);

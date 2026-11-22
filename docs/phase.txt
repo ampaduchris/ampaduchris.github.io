@@ -3,9 +3,4 @@
 REQ-005  # 5.3 Method
 REQ-007  # 5.2 legal text; the build guard only warns until the owner decides
 REQ-053  # mark session
-REQ-054  # mark session
-REQ-055  # mark session
-REQ-056  # mark session
-REQ-057  # mark session
-REQ-058  # mark session
 REQ-059  # mark session

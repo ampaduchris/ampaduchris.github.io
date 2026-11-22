@@ -2,11 +2,13 @@
 import type { Project } from '../lib/schema';
 import { withAbbr } from '../lib/abbr';
 import { formatDate, dateOnly } from '../lib/dates';
+import Mark from './Mark.astro';
 interface Props { project: Project }
 const { project: p } = Astro.props;
 const pf = p.portfolio;
 ---
 <article class="project" data-project={p.slug} data-src={`projects.yml#${p.slug}`}>
+  <div class="ringbox" aria-hidden="true"><Mark only={p.slug} id={`ring-${p.slug}`} /></div>
   <div>
     <h3>{pf.name}<span class="tag">{pf.release} · <time datetime={dateOnly(pf.released_on)}>{formatDate(pf.released_on)}</time></span></h3>
     <p class="pitch" set:html={withAbbr(pf.pitch)} />
