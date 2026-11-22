@@ -3,10 +3,14 @@ import Base from '../layouts/Base.astro';
 import StatTile from '../components/StatTile.astro';
 import PrRow from '../components/PrRow.astro';
 import { loadMethod, loadSite } from '../lib/data';
+import Mark from '../components/Mark.astro';
+import { tableHTML } from '../lib/mark';
+import { loadMarkData } from '../lib/markdata';
 import { formatDate, dateOnly } from '../lib/dates';
 
 const method = loadMethod();
 const site = loadSite();
+const table = tableHTML(loadMarkData());
 const byId = (id: string) => method.stats.find((s) => s.id === id)!;
 const order = ['sessions', 'agent_commits', 'prs_merged', 'prs_commented', 'hours_to_merge', 'not_verified', 'upstream_merged', 'models'];
 const steps: [string, boolean][] = [
@@ -25,6 +29,7 @@ const steps: [string, boolean][] = [
   current="/method/"
 >
   <script is:inline slot="head" defer src="/loop.js"></script>
+  <script is:inline slot="head" defer src="/mark.js"></script>
   <div class="pagehead wrap">
     <p class="kicker" style="margin:0">Method</p>
     <h1 style="max-width:21em">The agent writes the code. I decide what would prove it wrong, and I do not merge until I have seen that proof.</h1>
@@ -75,6 +80,36 @@ const steps: [string, boolean][] = [
           <li>I write every issue, description and reply myself.</li>
           <li>The agent helps me reproduce a problem and drafts a fix. Nothing it writes is posted unread.</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="reading" data-block="reading" aria-labelledby="h-read" data-src="mark.json">
+    <h2 id="h-read">How to read the mark</h2>
+    <div class="legend">
+      <figure class="mark-wrap">
+        <Mark id="mark" />
+        <figcaption><div class="tools"><button type="button" data-motion aria-pressed="false" hidden>Pause motion</button></div></figcaption>
+      </figure>
+      <div>
+        <dl>
+          <dt><svg viewBox="0 0 88 24" aria-hidden="true"><circle class="a" cx="44" cy="12" r="9" stroke-width="1.5"/></svg></dt><dd><b>A ring</b> is one project. The oldest is innermost.</dd>
+          <dt><svg viewBox="0 0 88 24" aria-hidden="true"><path class="a" d="M6 16Q44 2 82 16" stroke-width="5"/></svg></dt><dd><b>An arc</b> is one agent session. Its length is the minutes worked.</dd>
+          <dt><svg viewBox="0 0 88 24" aria-hidden="true"><path class="a" d="M6 8h20" stroke-width="2.5"/><path class="a" d="M34 8h20" stroke-width="5"/><path class="a" d="M62 8h20" stroke-width="8"/></svg></dt><dd><b>Thickness</b> is the effort level the model ran at.</dd>
+          <dt><svg viewBox="0 0 88 24" aria-hidden="true"><path class="a" d="M6 12h34" stroke-width="5"/><path class="a" d="M48 12h34" stroke-width="5" stroke-dasharray="6 4"/></svg></dt><dd><b>Solid</b> was merged by me. <b>Dashed</b> is still open.</dd>
+          <dt><svg viewBox="0 0 88 24" aria-hidden="true"><path class="a" d="M6 16h76" stroke-width="5"/><circle class="d" cx="44" cy="6" r="3.2"/></svg></dt><dd><b>A dot</b> outside an arc is one check the agent reported as not verified.</dd>
+          <dt><svg viewBox="0 0 88 24" aria-hidden="true"><circle class="u" cx="30" cy="12" r="5.5"/><circle cx="58" cy="12" r="5.5" fill="none" stroke="var(--ok)" stroke-width="1.75"/></svg></dt><dd><b>Outer nodes</b> are pull requests to other people's projects. Filled means a maintainer merged it.</dd>
+          <dt><svg viewBox="0 0 88 24" aria-hidden="true"><circle class="a" cx="44" cy="12" r="10" stroke-width="1.25"/><circle cx="44" cy="12" r="3.5" fill="var(--text)"/></svg></dt><dd><b>The centre</b> is me. Every solid arc passed through it.</dd>
+        </dl>
+        <div class="readout" data-readout aria-live="polite">
+          <span class="k">Try it</span>
+          <span class="v">Point at an arc to read that session.</span>
+          <span class="s">Or focus the mark and use the arrow keys.</span>
+        </div>
+        <details>
+          <summary>The mark as a table</summary>
+          <div class="scroll" set:html={table} />
+        </details>
       </div>
     </div>
   </section>

@@ -115,3 +115,128 @@ test('[REQ-058] the drift stops while the mark is hovered', async ({ page }) => 
   const s = await page.$$eval('figure[data-block=mark] .ring:not(.orbit)', (els) => els.map((e) => getComputedStyle(e).animationPlayState));
   expect(new Set(s)).toEqual(new Set(['paused']));
 });
+
+// ---- REQ-005 (the reading block) and REQ-059 (claims) ----
+
+const reading = (page: any) => page.locator('[data-block=reading]');
+
+test('[REQ-005] [REQ-053] Method has "How to read the mark": the mark with one arc per session, seven legend rows and the table', async ({ browser, baseURL }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const page = await ctx.newPage();
+  await page.goto(baseURL + '/method/');
+  await expect(reading(page).locator('h2')).toHaveText('How to read the mark');
+  await expect(reading(page).locator('svg.mark')).toHaveCount(1);
+  await expect(reading(page).locator('svg.mark .seg')).toHaveCount(total);
+  await expect(reading(page).locator('dl dt')).toHaveCount(7);
+  await expect(reading(page).locator('dl dd')).toHaveCount(7);
+  const names = await reading(page).locator('dd > b:first-child').allInnerTexts();
+  expect(names).toEqual(['A ring', 'An arc', 'Thickness', 'Solid', 'A dot', 'Outer nodes', 'The centre']);
+  await ctx.close();
+});
+
+test('[REQ-056] Method holds the table of the mark, one row per arc, inside a details element', async ({ page }) => {
+  await page.goto('/method/');
+  await expect(page.locator('[data-block=reading] details tbody tr')).toHaveCount(total);
+  const cells = await page.$$eval('[data-block=reading] details tbody tr', (trs) => trs.map((tr) => [...tr.querySelectorAll('td')].map((td) => td.textContent)));
+  const sessions = await page.$$eval('[data-block=reading] .seg', (els) => els.map((e) => (e as unknown as HTMLElement).dataset.session));
+  expect(cells.map((c) => c[1])).toEqual(sessions);
+});
+
+test('[REQ-057] on Method the mark has the counts in its name, the readout follows the arrow keys and Escape clears it', async ({ page }) => {
+  await page.goto('/method/');
+  const svg = reading(page).locator('svg.mark');
+  const name = await svg.getAttribute('aria-label');
+  expect(name).toContain(`${total} agent sessions`);
+  expect(name).toContain(`${merged} merged by the owner`);
+  await svg.focus();
+  for (let i = 0; i < 3; i++) await page.keyboard.press('ArrowRight');
+  const d = await reading(page).locator('.seg').nth(2).evaluate((e: Element) => ({ ...(e as HTMLElement).dataset }));
+  const readout = await reading(page).locator('[data-readout]').innerText();
+  expect(readout).toContain(`session ${d.session}`);
+  expect(readout).toContain(`${d.minutes} minutes`);
+  await page.keyboard.press('Escape');
+  await expect(reading(page).locator('[data-readout]')).toContainText('Try it');
+});
+
+test('[REQ-058] on Method the pause button stops and restarts the rings', async ({ page }) => {
+  await page.goto('/method/');
+  const state = () => page.$$eval('[data-block=reading] .ring:not(.orbit)', (els) => els.map((e) => getComputedStyle(e).animationPlayState));
+  expect(new Set(await state())).toEqual(new Set(['running']));
+  await reading(page).locator('[data-motion]').click();
+  await page.mouse.move(0, 0);
+  expect(new Set(await state())).toEqual(new Set(['paused']));
+});
+
+const CLAIMS = [
+  { name: 'sessions', stat: 'sessions', text: 'direct coding agents' },
+  { name: 'agent', stat: 'agent_commits', text: 'do not write the code by hand' },
+  { name: 'evidence', stat: 'not_verified', text: 'what evidence would prove the work wrong' },
+  { name: 'merged', stat: 'prs_merged', text: 'approve every change myself' },
+];
+
+test('[REQ-059] with scripts off the four claims are links to statistics that exist, in order', async ({ browser, baseURL }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const page = await ctx.newPage();
+  for (const route of ['/', '/cv/', '/in/']) {
+    await page.goto(baseURL + route);
+    const claims = page.locator('[data-block=intro] a.probe');
+    await expect(claims).toHaveCount(4);
+    expect(await claims.allInnerTexts()).toEqual(CLAIMS.map((c) => c.text));
+    expect(await claims.evaluateAll((as) => as.map((a) => a.getAttribute('href')))).toEqual(CLAIMS.map((c) => `#stat-${c.stat}`));
+    for (const c of CLAIMS) await expect(page.locator(`[data-block=method-summary] #stat-${c.stat}[data-stat]`)).toHaveCount(1);
+    // No text appears only on hover: the hint under the introduction is in the HTML.
+    await expect(page.locator('.hint')).toContainText('Each underlined phrase is a claim');
+  }
+  await ctx.close();
+});
+
+// The fixture build draws a synthetic mark in which the merged set, the not-verified set and the open set all differ (tests/fixtures/mark-mixed.json).
+const FIXTURE = 'http://127.0.0.1:4322';
+const fx = JSON.parse(readFileSync('tests/fixtures/mark-mixed.json', 'utf8'));
+const fxSessions: any[] = fx.projects.flatMap((p: any) => p.sessions);
+const expectedOn: Record<string, string[]> = {
+  sessions: fxSessions.map((s) => s.session),
+  agent: fxSessions.map((s) => s.session),
+  evidence: fxSessions.filter((s) => s.not_verified > 0).map((s) => s.session),
+  merged: fxSessions.filter((s) => s.merged_by_owner).map((s) => s.session),
+};
+const onSessions = (page: any) => page.$$eval('figure[data-block=mark] .seg.on', (els: Element[]) => els.map((e) => (e as HTMLElement).dataset.session).sort());
+
+for (const c of CLAIMS) {
+  test(`[REQ-059] pointing at "${c.text}" lights exactly the arcs that support it and the readout repeats its statistic`, async ({ page }) => {
+    await page.goto(`${FIXTURE}/`);
+    const svg = page.locator('figure[data-block=mark] svg.mark');
+    await page.locator(`a.probe[data-probe=${c.name}]`).hover();
+    expect(await onSessions(page)).toEqual([...expectedOn[c.name]].sort());
+    await expect(svg).toHaveAttribute('data-hl', c.name);
+    expect(await svg.evaluate((e) => e.classList.contains('tint'))).toBe(c.name === 'agent');
+    if (c.name === 'merged') {
+      await expect(page.locator('figure[data-block=mark] .seg.open.on')).toHaveCount(0); // no dashed arc
+      await expect(page.locator('figure[data-block=mark] .seg.merged.on')).toHaveCount(expectedOn.merged.length);
+    }
+    const tile = page.locator(`#stat-${c.stat}`);
+    const readout = await page.locator('[data-readout]').innerText();
+    expect(readout).toContain('Claim to evidence');
+    expect(readout).toContain((await tile.locator('.v').innerText()).trim());
+    expect(readout).toContain((await tile.locator('.l').innerText()).trim());
+    expect(readout).toContain((await tile.locator('[data-n]').innerText()).trim());
+    await page.mouse.move(0, 0);
+    await expect(page.locator('figure[data-block=mark] .seg.on')).toHaveCount(0);
+    await expect(page.locator('[data-readout]')).toContainText('The proof mark');
+  });
+}
+
+test('[REQ-059] focusing a claim with the keyboard lights its arcs and leaving it clears them', async ({ page }) => {
+  await page.goto(`${FIXTURE}/`);
+  await page.locator('a.probe[data-probe=evidence]').focus();
+  expect(await onSessions(page)).toEqual([...expectedOn.evidence].sort());
+  await page.locator('a.probe[data-probe=evidence]').blur();
+  await expect(page.locator('figure[data-block=mark] .seg.on')).toHaveCount(0);
+});
+
+test('[REQ-059] on the real data hovering the fourth claim lights every merged arc and no dashed arc', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('a.probe[data-probe=merged]').hover();
+  await expect(page.locator('figure[data-block=mark] .seg.merged.on')).toHaveCount(merged);
+  await expect(page.locator('figure[data-block=mark] .seg.open.on')).toHaveCount(0);
+});

@@ -16,8 +16,11 @@ const table = tableHTML(markData);
 const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map((id) => method.stats.find((s) => s.id === id)!);
 ---
 <section class="hero wrap">
+  <div>
   <div data-block="intro">
-    <h1>I direct coding agents to build software, and I do not write the code by hand. I provide the scope and methodology, write the specification, decide what evidence would prove the work wrong, and approve every change myself.</h1>
+    <h1>I <a class="probe" data-probe="sessions" href="#stat-sessions">direct coding agents</a> to build software, and I <a class="probe" data-probe="agent" href="#stat-agent_commits">do not write the code by hand</a>. I provide the scope and methodology, write the specification, decide <a class="probe" data-probe="evidence" href="#stat-not_verified">what evidence would prove the work wrong</a>, and <a class="probe" data-probe="merged" href="#stat-prs_merged">approve every change myself</a>.</h1>
+  </div>
+  <p class="hint">Each underlined phrase is a claim. Point at one, or tab to it, and the mark shows the evidence.</p>
   </div>
   <figure class="mark-wrap" data-block="mark" data-src="mark.json">
     <Mark id="mark" />
@@ -27,7 +30,7 @@ const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map(
         <span class="v"><b>{S.sessions}</b> agent sessions. <b>{S.merged}</b> merged by me. <b>{S.nv}</b> checks reported as not verified.</span>
         <span class="s">One arc per session. Point at an arc, tap it, or focus the mark and use the arrow keys.</span>
       </div>
-      <div class="tools"><button type="button" data-motion aria-pressed="false" hidden>Pause motion</button></div>
+      <div class="tools"><button type="button" data-motion aria-pressed="false" hidden>Pause motion</button><a href="/method/#reading">How to read the mark</a></div>
     </figcaption>
   </figure>
 </section>

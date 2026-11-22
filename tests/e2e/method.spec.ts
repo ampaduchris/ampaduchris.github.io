@@ -7,8 +7,7 @@ const valueOf = (s: any) => (s.value === null ? null : Array.isArray(s.value) ? 
 
 test('[REQ-005] Method shows its blocks in the specified order', async ({ page }) => {
   await page.goto('/method/');
-  // The reading block and its mark are a later session (docs/phase.txt).
-  expect(await blocks(page)).toEqual(['header', 'loop', 'approval', 'modes', 'numbers', 'computed', 'recent', 'limits', 'footer']);
+  expect(await blocks(page)).toEqual(['header', 'loop', 'approval', 'modes', 'reading', 'numbers', 'computed', 'recent', 'limits', 'footer']);
 });
 
 test('[REQ-005] the loop has six steps and the limits name the account and the date', async ({ page }) => {

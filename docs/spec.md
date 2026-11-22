@@ -76,7 +76,7 @@ The Method page repeats LIM-1 to LIM-3 and LIM-6 in the owner's words.
 | REQ-002 | MUST | Each project card on Home shows the project name, the pitch, exactly one number (REQ-020), the release tag, and links to the repository and to the example pull request. | PW: per card, count of `[data-headline]` is 1; links match the data file |
 | REQ-003 | MUST | The introduction on Home is exactly two sentences and is the page's only `h1` or the paragraph directly after it, as `DESIGN.md` sets out. | PW: sentence count of `[data-block=intro]` by splitting on full stops is 2 |
 | REQ-004 | MUST | Home shows a list of merged upstream pull requests from the `prs` list of `src/data/upstream.json`, newest first, at most five, each as a pull request evidence row. When the file's list is empty, the heading and the list MUST NOT be in the page. | PW with two fixture data files: five-of-seven rows shown in date order; zero rows gives no `[data-block=upstream]` |
-| REQ-005 | MUST | `/method/` renders, in this order: the loop, what the owner's approval means, the two modes (own repositories and upstream), how to read the mark (with the mark), the numbers (section 7) with the date they were generated, the five most recent own pull requests as evidence rows, the limits LIM-1 to LIM-3 and LIM-6. (The reading block and its mark are not built yet; see `docs/phase.txt`.) | PW: block order by `data-block` |
+| REQ-005 | MUST | `/method/` renders, in this order: the loop, what the owner's approval means, the two modes (own repositories and upstream), how to read the mark (with the mark), the numbers (section 7) with the date they were generated, the five most recent own pull requests as evidence rows, the limits LIM-1 to LIM-3 and LIM-6. | PW: block order by `data-block` |
 | REQ-006 | MUST | `/contact/` lists each channel in `src/data/site.yml` `contact` as a link, and nothing else that collects data: no form, no embedded frame. | PW: links equal the data file; count of `form, iframe, input, textarea` is 0 |
 | REQ-007 | MUST | `/legal/` has two sections with ids `imprint` and `privacy`. Their text comes from `src/content/legal/imprint.md` and `privacy.md`. The build fails while either file is missing or still contains the string `OWNER-DECISION-PENDING`. | VT on the content check with a pending fixture; PW: both ids present |
 | REQ-008 | MUST | Every page's footer links to `/legal/#imprint` with the text "Imprint" and to `/legal/#privacy` with the text "Privacy", and to `/contact/`. | PW on every route |
@@ -240,6 +240,8 @@ Measured on 21 Nov 2026 in session 5.3: GitHub's issue timeline for a pull reque
 
 Measured on 21 Nov 2026 in session 5.3a: the `v1.0.0` tag of `german-b1-tutor` holds 172 tests (exported tag, collected from its lockfile), not the 177 on its `main`; the data file was corrected. The numbers parser run on the `inkproof` `v1.0.0` build log gives the twelve rows and four model pairs in the data file. A second live fetch compared with the committed outputs reported them equal apart from the time stamp (`npm run numbers -- --live --check`).
 
+Measured on 22 Nov 2026 in session 5.5: the browser suite (140 tests, axe in both schemes at two widths on every route) passed locally in Chrome and in CI on Node 24 and 26, and the cross-browser job (Firefox and WebKit) passed on the same commit (run 45028891880). The claim sets were tested on a synthetic fixture mark in which the merged, open and not-verified sets differ, because the real build log has no open pull request. 48 of 48 probes were killed.
+
 Not checked:
 
 1. (Resolved in session 5.2: see above.) Whether lychee's offline mode resolves root-relative links in `dist/` with `--root-dir`. It is not installed locally. The first CI run is the evidence.
@@ -247,7 +249,7 @@ Not checked:
 3. Whether GoatCounter's counting script may be self-hosted under its licence (REQ-035). Not looked at in session 5.2: the script is not in the repository (DEV-014).
 4. (Resolved in session 5.3: see above.) Whether GitHub's API exposes the time a pull request was last marked ready for review.
 5. Whether cookie-free analytics need consent in Germany, and what the imprint must contain. The owner's decision.
-6. Whether Safari and Firefox draw the mark as Chrome does. The mark is not built.
+6. Whether Safari and Firefox draw the mark as Chrome does. Their browser tests pass (session 5.5), but no one has compared the drawings by eye.
 7. Any browser other than Chrome and CI's Chromium.
 8. Whether the Latin font subset covers every character the copy uses. The 5.1 copy was read for the two missing characters (check mark, rightward arrow) and has neither.
 9. The rendering of the header and cards against the mockup captures was not compared pixel by pixel.

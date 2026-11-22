@@ -31,7 +31,7 @@ test('[REQ-040] the only scripts the site ships are the theme script, the loop m
     const srcs = [...readFileSync(f, 'utf8').matchAll(/<script[^>]*>/g)].map((m) => m[0]);
     for (const s of srcs) expect(s).toMatch(/src="\/(theme|loop|mark)\.js"/);
     expect(srcs.some((s) => s.includes('loop.js')), f).toBe(f.endsWith('method/index.html'));
-    expect(srcs.some((s) => s.includes('mark.js')), f).toBe(['index.html', 'cv/index.html', 'in/index.html'].some((n) => f === `dist/${n}`));
+    expect(srcs.some((s) => s.includes('mark.js')), f).toBe(['index.html', 'cv/index.html', 'in/index.html', 'method/index.html'].some((n) => f === `dist/${n}`));
   }
 });
 

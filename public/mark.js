@@ -10,7 +10,7 @@
 
   function span(cls, text) { var e = document.createElement('span'); e.className = cls; e.textContent = text; return e; }
   function show(nodes) { if (!out) return; out.textContent = ''; nodes.forEach(function (n) { out.appendChild(n); }); }
-  function clear() { segs.forEach(function (e) { e.classList.remove('on'); }); svg.removeAttribute('data-hl'); }
+  function clear() { segs.forEach(function (e) { e.classList.remove('on'); }); svg.removeAttribute('data-hl'); svg.classList.remove('tint'); }
   function select(i) {
     clear(); current = i;
     var el = segs[i];
@@ -37,6 +37,33 @@
     e.preventDefault(); select(i);
   });
   svg.addEventListener('blur', function () { select(-1); });
+
+  // Claims (REQ-059). Each claim phrase in the introduction links to a statistic. Pointing at or focusing one lights the arcs
+  // that support it; the readout repeats the statistic's own value, label and sample size, read from its tile, so no number lives here.
+  var CLAIMS = {
+    sessions: { stat: 'sessions', pick: function () { return true; } },
+    agent: { stat: 'agent_commits', pick: function () { return true; }, tint: true },
+    evidence: { stat: 'not_verified', pick: function (d) { return Number(d.nv) > 0; } },
+    merged: { stat: 'prs_merged', pick: function (d) { return d.state === 'merged'; } }
+  };
+  function claim(name) {
+    var c = CLAIMS[name];
+    if (!c) return;
+    clear(); current = -1;
+    svg.setAttribute('data-hl', name);
+    if (c.tint) svg.classList.add('tint');
+    segs.forEach(function (e) { if (c.pick(e.dataset)) e.classList.add('on'); });
+    var tile = document.getElementById('stat-' + c.stat);
+    var val = tile && tile.querySelector('.v'), lab = tile && tile.querySelector('.l'), n = tile && tile.querySelector('[data-n]');
+    var v = document.createElement('span'); v.className = 'v';
+    if (val) { var b = document.createElement('b'); b.textContent = val.textContent; v.appendChild(b); v.appendChild(document.createTextNode(' ' + (lab ? lab.textContent : ''))); }
+    show([span('k', 'Claim to evidence'), v, span('s', n ? n.textContent : '')]);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-probe]'), function (a) {
+    var on = function () { claim(a.getAttribute('data-probe')); }, off = function () { select(-1); };
+    a.addEventListener('pointerenter', on); a.addEventListener('focus', on);
+    a.addEventListener('pointerleave', off); a.addEventListener('blur', off);
+  });
 
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var btn = document.querySelector('[data-motion]');

@@ -6,7 +6,9 @@ import type { MarkData } from './mark';
 
 /** mark.json joined with the project data file. Rings run oldest first (by release date); the site's own sessions are the outermost ring. */
 export function loadMarkData(): MarkData {
-  const mark = JSON.parse(readFileSync(resolve(process.cwd(), 'src/data/mark.json'), 'utf8')) as MarkJson;
+  // MARK_FIXTURE names a file under tests/fixtures/ and is used only by the fixture build in the tests.
+  const fixture = process.env.MARK_FIXTURE;
+  const mark = JSON.parse(readFileSync(resolve(process.cwd(), fixture ? `tests/fixtures/${fixture}` : 'src/data/mark.json'), 'utf8')) as MarkJson;
   const projects = loadProjects();
   const site = loadSite();
   const siteRepo = new URL(site.repo_url).pathname.slice(1);

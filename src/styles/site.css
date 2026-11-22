@@ -124,7 +124,7 @@ time{color:var(--text-2);white-space:nowrap}
 .mark[data-hl] .seg.on{opacity:1}
 .mark .on .arc{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--iris-2) calc(var(--glow)*70%),transparent))}
 .mark.tint .on.m0 .arc{stroke:var(--iris-1)}.mark.tint .on.m1 .arc{stroke:var(--iris-2)}.mark.tint .on.m2 .arc{stroke:var(--iris-3)}
-.mark .on.merged .spoke{opacity:.85}
+.mark[data-hl=seg] .on.merged .spoke,.mark[data-hl=merged] .on.merged .spoke{opacity:.85}
 .mark[data-hl=evidence] .on .nv{r:4}
 .ring{transform-box:view-box;transform-origin:50% 50%;animation:spin var(--dur) linear infinite var(--dir)}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -142,6 +142,19 @@ time{color:var(--text-2);white-space:nowrap}
 .stat .n{display:block;color:var(--text-2);margin-top:var(--s2)}
 .stat .none{display:block;font-size:1rem;line-height:1.35;font-weight:500;color:var(--text-2);min-height:2.125rem;max-width:14em}
 .stat:target{box-shadow:inset 0 0 0 2px var(--accent)}
+/* claims in the introduction (DESIGN.md 6.2) and the legend on Method (6.9) */
+.probe{text-decoration:none;background:var(--iris) 0 97%/100% 2px no-repeat;transition:background-size .25s,color .25s;border-radius:2px}
+.probe:hover,.probe:focus-visible{background-size:100% 100%;color:var(--bg);outline-offset:2px}
+.hint{color:var(--text-2);margin:var(--s5) 0 0}
+.tools a{color:var(--accent);font-weight:600;text-decoration:none}
+.legend{display:grid;grid-template-columns:minmax(0,24rem) minmax(0,1fr);gap:var(--s7);align-items:start}
+.legend dl{margin:0;display:grid;grid-template-columns:5.5rem 1fr;gap:var(--s3) var(--s4);align-items:center}
+.legend dt svg{width:5.5rem;height:1.5rem;display:block}
+.legend dd{margin:0;font-size:.9375rem;line-height:1.4}
+.legend dt .a{fill:none;stroke:var(--text)}
+.legend dt .d{fill:var(--warn)}
+.legend dt .u{fill:var(--ok)}
+.legend .readout{margin-top:var(--s5)}
 .more{display:inline-block;margin-top:var(--s5);font-size:.9375rem;font-weight:600;color:var(--accent);text-decoration:none;background:var(--iris) 0 100%/100% 2px no-repeat;padding-bottom:.2rem}
 
 /* method page */
@@ -186,7 +199,8 @@ footer nav{display:flex;gap:var(--s5)}
   .strip,.grid3{grid-template-columns:1fr 1fr;gap:var(--s3)}
   .stat{padding:var(--s4)}
   .stat .v{font-size:1.75rem}
-  .loop{grid-template-columns:1fr;gap:var(--s6)}
+  .loop,.legend{grid-template-columns:1fr;gap:var(--s6)}
+  .legend .mark-wrap{max-width:20rem}
   .two{grid-template-columns:1fr}
   .hero{grid-template-columns:1fr;gap:var(--s6)}
   .mark-wrap{max-width:30rem;width:100%;justify-self:center;padding:var(--s4)}

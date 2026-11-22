@@ -46,7 +46,7 @@ The last step runs the browser tests, including the axe accessibility check on e
 
 ## Limits
 
-- The proof mark and its legend are not built yet. The Method page shows no median until 20 pull requests exist.
+- The Method page shows no median until 20 pull requests exist.
 - The numbers are as of `generated_at`, not live. The agent and the owner share one GitHub account, so the comment and merge figures cannot tell who wrote a comment.
 - The legal text is pending the owner's decision. The build prints a warning for it and the deploy job publishes nothing, with a warning, while it is pending.
 - Analytics is off. `site.yml` has no endpoint and the repository holds no counting script.
