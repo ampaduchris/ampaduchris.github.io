@@ -17,3 +17,5 @@ Append-only. Read first, written last. One row per session.
 | 2026-11-22 | 5.6a | Opus 5.5 | high (app session record; run in the 5.6 conversation at the owner's request, owner override of 22 Nov 2026) | 13 (from the owner's message at 14:41:56Z to the PR at 14:55Z) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/19 |
 | 2026-11-22 | 5.7 | Sonnet 5.5 | medium (app session record) | 10 (from the timer hook start 15:05:00Z to the PR at 15:15Z) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/20 |
 | 2026-11-22 | 5.8 | Sonnet 5.5 | medium (app session record) | 3 (from the timer hook start 15:30:22Z to the PR at about 15:33Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/21 |
+
+Lighthouse, session 5.8 after-merge, run once on 22 Nov 2026 at 15:50Z against https://ampaduchris.github.io/ (Lighthouse 13.6.0, Home, desktop settings default, headless Chrome): performance 100, accessibility 100, best practices 100, SEO 100. One page, one run; not a gate (`STANDARD.md`).
