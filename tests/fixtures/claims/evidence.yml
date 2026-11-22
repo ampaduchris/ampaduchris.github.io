@@ -1,0 +1,6 @@
+- id: E1
+  date: 2026-10-19
+  observation: A fixture observation.
+- id: E2
+  date: 2026-10
+  observation: Another fixture observation.
