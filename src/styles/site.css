@@ -218,3 +218,5 @@ footer nav{display:flex;gap:var(--s5)}
 .notfound{padding-top:var(--s6)}
 .notfound .more{margin-top:var(--s5)}
 .more + details,.strip + .more + details{margin-top:var(--s4)}
+.where{margin-top:var(--s6)}
+.where + .links{margin-top:var(--s3)}

@@ -3,7 +3,14 @@ url: https://ampaduchris.github.io
 repo_url: https://github.com/ampaduchris/ampaduchris.github.io
 build_log_url: https://github.com/ampaduchris/ampaduchris.github.io/blob/main/docs/BUILD-LOG.md
 github_url: https://github.com/ampaduchris
+location: Remote, Europe
 contact:
+  - label: ply.nouveau1z@icloud.com
+    href: mailto:ply.nouveau1z@icloud.com
+    kind: email
+  - label: LinkedIn
+    href: https://www.linkedin.com/in/chris-nana-ampadu/
+    kind: linkedin
   - label: GitHub
     href: https://github.com/ampaduchris
     kind: github

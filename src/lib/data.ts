@@ -11,6 +11,7 @@ const read = (name: string) => readFileSync(resolve(root, 'src/data', name), 'ut
 
 export interface Site {
   name: string; url: string; repo_url: string; build_log_url: string; github_url: string;
+  location?: string;
   contact: { label: string; href: string; kind: string }[];
   analytics?: { endpoint: string | null };
 }

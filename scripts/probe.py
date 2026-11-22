@@ -37,6 +37,7 @@ probes=[
  ("REQ-058","src/styles/site.css",".mark:hover .ring,",".mark:hovr .ring,","npx playwright test -g REQ-058",True),
  ("REQ-058","src/styles/site.css","{.ring{animation:none}","{.ringx{animation:none}","npx playwright test -g REQ-058",True),
  ("REQ-053","src/components/Home.astro",'<Mark id="mark" />',"","npx playwright test -g REQ-053",True),
+ ("REQ-006","src/pages/contact.astro","{site.location && <p class=\"kicker where\">{site.location}</p>}","","npx playwright test -g \"the email is the first\"",True),
  ("REQ-042","src/styles/site.css","color-scheme:dark;","color-scheme:dark;--bg:#FFFFFF;","npx playwright test -g REQ-042",True),
 ]
 for rid,f,a,b,cmd,build in probes:

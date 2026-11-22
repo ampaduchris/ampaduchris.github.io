@@ -69,6 +69,14 @@ test('[REQ-006] Contact lists the channels in the data file and collects no data
   await expect(page.locator('form, iframe, input, textarea')).toHaveCount(0);
 });
 
+test('[REQ-006] the email is the first and largest link, and the location line comes from the data file', async ({ page }) => {
+  await page.goto('/contact/');
+  const first = page.locator('main a').first();
+  await expect(first).toHaveClass(/mail/);
+  await expect(first).toHaveAttribute('href', /^mailto:/);
+  await expect(page.locator('.where')).toHaveText(site.location);
+});
+
 test('[REQ-007] Legal has the imprint and privacy sections', async ({ page }) => {
   await page.goto('/legal/');
   await expect(page.locator('section#imprint')).toHaveCount(1);
