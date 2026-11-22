@@ -8,7 +8,7 @@ Status: active.
 
 ## What it is
 
-A static site built with Astro and TypeScript. It builds Home and Contact, the Legal and not-found pages, and two short paths, `/cv/` and `/in/`, that show Home's content with a canonical link to Home and no indexing. The Method page computes every number from public sources. The proof mark follows in a later session. A workflow deploys `dist/` to GitHub Pages from `main` only, after the checks pass, and publishes nothing while the legal text is pending. The live address will be https://ampaduchris.github.io once the owner has switched the Pages source and decided the legal text. It is not live on this build yet.
+A static site built with Astro and TypeScript. It builds Home and Contact, the Legal and not-found pages, and two short paths, `/cv/` and `/in/`, that show Home's content with a canonical link to Home and no indexing. The Method page computes every number from public sources. The proof mark follows in a later session. A workflow deploys `dist/` to GitHub Pages from `main` only, after the checks pass, and publishes nothing while the legal text is pending. The site is live at https://ampaduchris.github.io (Pages source switched to the workflow on 22 Nov 2026).
 
 The authority for behaviour is `docs/spec.md`. Requirements carry `REQ-###` and MUST or SHOULD, and `scripts/trace.py` fails CI when a MUST that is due has no test. `docs/phase.txt` lists the requirements that later sessions build.
 
