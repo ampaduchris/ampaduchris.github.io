@@ -44,3 +44,27 @@
     source_url: https://github.com/ampaduchris/german-b1-tutor/blob/v1.0.0/README.md
   sessions: 0
   models: []
+- slug: direct-and-approve
+  repo: ampaduchris/direct-and-approve
+  order: 3
+  portfolio:
+    name: direct-and-approve
+    pitch: The procedure one person uses to direct a coding agent and approve every change, published with the scripts that check it and one real session traced from instruction to merge.
+    stack: [markdown, python, uv, pytest, hypothesis]
+    tests: 206
+    release: v1.0.0
+    released_on: 2026-11-22
+    demo_url: https://github.com/ampaduchris/direct-and-approve/blob/main/docs/worked-example.md
+    repo_url: https://github.com/ampaduchris/direct-and-approve
+    example_pr_url: https://github.com/ampaduchris/direct-and-approve/pull/3
+  headline:
+    value: "206"
+    label: tests pass with no network or API key
+    n: null
+    kind: tests
+    source_url: https://github.com/ampaduchris/direct-and-approve/blob/v1.0.0/README.md#verify-it-yourself
+  sessions: 5
+  models:
+    - { name: Sonnet 5.5 / high, sessions: 3 }
+    - { name: Sonnet 5.5 / medium, sessions: 1 }
+    - { name: Opus 5.5 / high, sessions: 1 }
