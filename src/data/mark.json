@@ -4,6 +4,7 @@
   "projects": [
     {
       "repo": "ampaduchris/inkproof",
+      "log": "table",
       "sessions": [
         {
           "session": "1.1",
@@ -141,10 +142,12 @@
     },
     {
       "repo": "ampaduchris/german-b1-tutor",
+      "log": "not-table",
       "sessions": []
     },
     {
       "repo": "ampaduchris/ampaduchris.github.io",
+      "log": "table",
       "sessions": [
         {
           "session": "5.1",

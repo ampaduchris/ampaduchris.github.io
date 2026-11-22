@@ -13,6 +13,7 @@ export function loadMarkData(): MarkData {
   const site = loadSite();
   const siteRepo = new URL(site.repo_url).pathname.slice(1);
   const byRepo = new Map(mark.projects.map((p) => [p.repo, p]));
+  const logOf = (repo: string) => byRepo.get(repo)?.log ?? 'table';
   const toSessions = (repo: string) => (byRepo.get(repo)?.sessions ?? []).map((s) => ({
     id: s.session, model: s.model, effort: s.effort, minutes: s.minutes ?? 1,
     state: (s.merged_by_owner ? 'merged' : 'open') as 'merged' | 'open',
@@ -21,7 +22,7 @@ export function loadMarkData(): MarkData {
   }));
   const rings = [...projects]
     .sort((a, b) => (a.portfolio.released_on < b.portfolio.released_on ? -1 : 1))
-    .map((p) => ({ slug: p.slug, name: p.portfolio.name, sessions: toSessions(p.repo) }));
-  rings.push({ slug: 'site', name: 'this site', sessions: toSessions(siteRepo) });
+    .map((p) => ({ slug: p.slug, name: p.portfolio.name, log: logOf(p.repo), sessions: toSessions(p.repo) }));
+  rings.push({ slug: 'site', name: 'this site', log: logOf(siteRepo), sessions: toSessions(siteRepo) });
   return { projects: rings, upstream: mark.upstream.map((u) => ({ state: u.state })) };
 }

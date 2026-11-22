@@ -18,16 +18,16 @@ for (const problem of legalProblems({ imprint: read('imprint.md'), privacy: read
   description="Imprint and privacy notice for the personal site of Chris Ampadu."
   path="/legal/"
 >
-  <div class="legal wrap" data-src="content">
+  <div class="legal wrap">
     <p class="kicker">Legal</p>
     <h1>Imprint and privacy</h1>
     <section id="imprint" aria-labelledby="h-imprint">
       <h3 id="h-imprint">Imprint</h3>
-      <Imprint.Content />
+      <div data-src="content"><Imprint.Content /></div>
     </section>
     <section id="privacy" aria-labelledby="h-privacy">
       <h3 id="h-privacy">Privacy</h3>
-      <Privacy.Content />
+      <div data-src="content"><Privacy.Content /></div>
     </section>
   </div>
 </Base>

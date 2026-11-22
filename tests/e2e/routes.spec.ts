@@ -5,6 +5,7 @@ import { parse } from 'yaml';
 const ROUTES = ['/', '/method/', '/contact/', '/legal/'];
 const ALL = [...ROUTES, '/cv/', '/in/', '/no-such-page/'];
 const site = parse(readFileSync('src/data/site.yml', 'utf8'));
+const method = JSON.parse(readFileSync('src/data/method.json', 'utf8'));
 const projects = (parse(readFileSync('src/data/projects.yml', 'utf8')) as any[]).sort((a, b) => a.order - b.order);
 
 const blocks = (page: Page) => page.$$eval('[data-block]', (els) => els.map((e) => e.getAttribute('data-block')));
@@ -126,15 +127,28 @@ for (const route of ALL) {
 
   test(`[REQ-030] every number in the main content of ${route} sits inside an element that names its source`, async ({ page }) => {
     await page.goto(route);
-    const orphans = await page.evaluate(() => {
+    const problems = await page.evaluate(({ ids, slugs }) => {
       const bad: string[] = [];
+      const allowed = (v: string) => v === 'upstream.json' || v === 'mark.json' || v === 'site.yml' || v === 'content' || v === 'label'
+        || (v.startsWith('method.json#') && ids.includes(v.slice(12))) || (v.startsWith('projects.yml#') && slugs.includes(v.slice(13)));
+      const SECTIONING = new Set(['MAIN', 'SECTION', 'ARTICLE', 'ASIDE', 'NAV', 'HEADER', 'FOOTER', 'FIGURE', 'DETAILS', 'BODY']);
       const walker = document.createTreeWalker(document.querySelector('main')!, NodeFilter.SHOW_TEXT);
       for (let n = walker.nextNode(); n; n = walker.nextNode()) {
-        if (/\d/.test(n.textContent ?? '') && !n.parentElement!.closest('[data-src]')) bad.push(n.textContent!.trim());
+        const text = (n.textContent ?? '').trim();
+        if (!/\d/.test(text)) continue;
+        const el = n.parentElement!.closest('[data-src]') as HTMLElement | null;
+        if (!el) { bad.push(`no source: ${text}`); continue; }
+        const v = el.getAttribute('data-src')!;
+        // The source sits on the element that holds the number: not on a section, and not around a heading (5.6 F-03).
+        if (SECTIONING.has(el.tagName.toUpperCase())) bad.push(`source on a <${el.tagName.toLowerCase()}>: ${text}`);
+        if (el.querySelector('h1, h2, h3, h4, h5, h6')) bad.push(`source around a heading: ${text}`);
+        if (!allowed(v)) bad.push(`value not allowed (${v}): ${text}`);
+        // label is for the ordinal of a fixed sequence only: one or two digits at the start, no other digit.
+        if (v === 'label' && !/^\d{1,2}(\D*)$/.test((el.textContent ?? '').trim())) bad.push(`label on more than an ordinal: ${text}`);
       }
       return bad;
-    });
-    expect(orphans).toEqual([]);
+    }, { ids: [...method.stats.map((s: any) => s.id), 'recent', 'counts', 'cutoff'], slugs: projects.map((p: any) => p.slug) });
+    expect(problems).toEqual([]);
   });
 
   test(`[REQ-043] the first Tab reaches the skip link on ${route}`, async ({ page }) => {

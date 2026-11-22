@@ -25,13 +25,13 @@ const G = GEOMETRY;
 export interface MarkSession {
   id: string; model: string; effort: string; minutes: number; state: 'merged' | 'open'; pr: number | null; url: string | null; hours: number | null; nv: number;
 }
-export interface MarkProject { slug: string; name: string; sessions: MarkSession[] }
+export interface MarkProject { slug: string; name: string; log?: 'table' | 'not-table' | 'missing'; sessions: MarkSession[] }
 export interface MarkData { projects: MarkProject[]; upstream: { state: 'merged' | 'open' | 'closed' }[] }
 
 export interface Seg extends MarkSession {
   project: string; projectName: string; i: number; r: number; a0: number; a1: number; mid: number; width: number; cls: string;
 }
-export interface Ring { slug: string; name: string; r: number; segs: Seg[] }
+export interface Ring { slug: string; name: string; log: 'table' | 'not-table' | 'missing'; r: number; segs: Seg[] }
 
 const f = (n: number): number => Number(n.toFixed(2));
 export const esc = (s: unknown): string => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -72,7 +72,7 @@ export function layout(data: MarkData, { only = null }: { only?: string | null }
         width: (G.effortWidth[s.effort] ?? G.effortWidth.medium) * (only ? G.miniScale : 1), cls: modelClass(s.model, models),
       };
     });
-    return { slug: p.slug, name: p.name, r, segs };
+    return { slug: p.slug, name: p.name, log: p.log ?? 'table', r, segs };
   });
   const upstream = only ? [] : data.upstream.map((u, j) => ({ ...u, angle: G.upstreamStartDeg + j * G.upstreamStepDeg }));
   return { rings, upstream, models };
@@ -120,11 +120,14 @@ export function renderMark(data: MarkData, { only = null, id = 'mark', still = f
     }).join('');
     return `<g class="ring" data-ring="${esc(ring.slug)}" style="--dur:${420 + ri * 140}s;--dir:${ri % 2 ? 'reverse' : 'normal'}">${segs}</g>`;
   }).join('');
-  const lab = (r: number, txt: string, n: string | number) =>
+  const part = (src: string, txt: string) => `<tspan data-src="${src}">${esc(txt)}</tspan>`;
+  const lab = (r: number, inner: string, n: string | number) =>
     `<path id="${id}-l${n}" class="lpath" d="${arcPath(r - G.labelInset, G.labelStartDeg, G.labelStartDeg + G.labelSpanDeg)}"/>` +
-    `<text class="rlab" font-size="${G.labelSize}" aria-hidden="true"><textPath href="#${id}-l${n}">${esc(txt)}</textPath></text>`;
-  const labels = only ? '' : L.rings.map((ring, n) => lab(ring.r, `${ring.name} · ${ring.segs.length} sessions`.toUpperCase(), n)).join('') +
-    (L.upstream.length ? lab(G.orbitR, `OTHER PROJECTS · ${S.upstreamMerged} OF ${S.upstream} MERGED`, 'u') : '');
+    `<text class="rlab" font-size="${G.labelSize}" aria-hidden="true"><textPath href="#${id}-l${n}">${inner}</textPath></text>`;
+  const count = (ring: Ring) => (ring.log === 'not-table' ? 'LOG NOT A TABLE' : `${ring.segs.length} SESSIONS`);
+  const labels = only ? '' : L.rings.map((ring, n) =>
+    lab(ring.r, part(ring.slug === 'site' ? 'site.yml' : `projects.yml#${ring.slug}`, ring.name.toUpperCase()) + ' · ' + part('mark.json', count(ring)), n)).join('') +
+    (L.upstream.length ? lab(G.orbitR, 'OTHER PROJECTS · ' + part('mark.json', `${S.upstreamMerged} OF ${S.upstream} MERGED`), 'u') : '');
   const nodes = L.upstream.map((u, j) => {
     const [x, y] = polar(G.orbitR, u.angle);
     return `<circle class="up ${u.state === 'merged' ? 'merged' : 'open'}" data-u="${j}" cx="${x}" cy="${y}" r="${G.upstreamNodeR}"/>`;
@@ -143,5 +146,5 @@ export function tableHTML(data: MarkData): string {
   const rows = data.projects.flatMap((p) => p.sessions.map((s) =>
     `<tr><td>${esc(p.name)}</td><td>${esc(s.id)}</td><td>${esc(s.model)} / ${esc(s.effort)}</td><td>${s.minutes}</td>` +
     `<td>${s.pr === null ? 'none' : `#${s.pr}, ${s.state === 'merged' ? 'merged by me' : 'not merged by me'}`}</td><td>${s.hours ?? ''}</td><td>${s.nv}</td></tr>`)).join('');
-  return `<table><thead><tr><th>Project</th><th>Session</th><th>Model / effort</th><th>Minutes</th><th>Pull request</th><th>Hours to merge</th><th>Not verified</th></tr></thead><tbody>${rows}</tbody></table>`;
+  return `<table data-src="mark.json"><thead><tr><th>Project</th><th>Session</th><th>Model / effort</th><th>Minutes</th><th>Pull request</th><th>Hours to merge</th><th>Not verified</th></tr></thead><tbody>${rows}</tbody></table>`;
 }

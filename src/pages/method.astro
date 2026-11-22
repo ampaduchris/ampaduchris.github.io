@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import StatTile from '../components/StatTile.astro';
 import PrRow from '../components/PrRow.astro';
-import { loadMethod, loadSite } from '../lib/data';
+import { loadMethod, loadSite, loadProjects } from '../lib/data';
 import Mark from '../components/Mark.astro';
 import { tableHTML } from '../lib/mark';
 import { loadMarkData } from '../lib/markdata';
@@ -10,7 +10,10 @@ import { formatDate, dateOnly } from '../lib/dates';
 
 const method = loadMethod();
 const site = loadSite();
-const table = tableHTML(loadMarkData());
+const tutor = loadProjects().find((p) => p.slug === 'german-b1-tutor')!;
+const markData = loadMarkData();
+const unlogged = markData.projects.some((p) => p.log === 'not-table');
+const table = tableHTML(markData);
 const byId = (id: string) => method.stats.find((s) => s.id === id)!;
 const order = ['sessions', 'agent_commits', 'prs_merged', 'prs_commented', 'hours_to_merge', 'not_verified', 'upstream_merged', 'models'];
 const steps: [string, boolean][] = [
@@ -35,18 +38,18 @@ const steps: [string, boolean][] = [
     <h1 style="max-width:21em">The agent writes the code. I decide what would prove it wrong, and I do not merge until I have seen that proof.</h1>
   </div>
 
-  <section class="wrap" data-block="loop" aria-labelledby="h-loop" data-src="content">
+  <section class="wrap" data-block="loop" aria-labelledby="h-loop">
     <h2 id="h-loop">The loop</h2>
     <div class="loop">
       <svg viewBox="0 0 400 400" role="img" aria-label="The loop as a circle of six steps. Steps one, five and six are mine. Step five sits at the centre.">
         <circle class="track" cx="200" cy="200" r="140"/>
         <path class="path" d="M117.7 313.3L200 200L66.9 156.7"/>
-        <g data-step="1"><circle class="node me" cx="200" cy="60" r="9"/><text class="lab" x="200" y="36" text-anchor="middle">01 ME</text></g>
-        <g data-step="2"><rect class="node" x="324.1" y="147.7" width="18" height="18" transform="rotate(45 333.1 156.7)"/><text class="lab" x="354" y="161">02</text></g>
-        <g data-step="3"><rect class="node" x="273.3" y="304.3" width="18" height="18" transform="rotate(45 282.3 313.3)"/><text class="lab" x="300" y="336">03</text></g>
-        <g data-step="4"><rect class="node" x="108.7" y="304.3" width="18" height="18" transform="rotate(45 117.7 313.3)"/><text class="lab" x="100" y="336" text-anchor="end">04</text></g>
-        <g data-step="5"><circle class="node" cx="200" cy="200" r="26" style="fill:none"/><circle class="node me" cx="200" cy="200" r="8"/><text class="lab" x="200" y="246" text-anchor="middle">05 ME</text></g>
-        <g data-step="6"><circle class="node me" cx="66.9" cy="156.7" r="9"/><text class="lab" x="46" y="161" text-anchor="end">06 ME</text></g>
+        <g data-step="1"><circle class="node me" cx="200" cy="60" r="9"/><text class="lab" data-src="label" x="200" y="36" text-anchor="middle">01 ME</text></g>
+        <g data-step="2"><rect class="node" x="324.1" y="147.7" width="18" height="18" transform="rotate(45 333.1 156.7)"/><text class="lab" data-src="label" x="354" y="161">02</text></g>
+        <g data-step="3"><rect class="node" x="273.3" y="304.3" width="18" height="18" transform="rotate(45 282.3 313.3)"/><text class="lab" data-src="label" x="300" y="336">03</text></g>
+        <g data-step="4"><rect class="node" x="108.7" y="304.3" width="18" height="18" transform="rotate(45 117.7 313.3)"/><text class="lab" data-src="label" x="100" y="336" text-anchor="end">04</text></g>
+        <g data-step="5"><circle class="node" cx="200" cy="200" r="26" style="fill:none"/><circle class="node me" cx="200" cy="200" r="8"/><text class="lab" data-src="label" x="200" y="246" text-anchor="middle">05 ME</text></g>
+        <g data-step="6"><circle class="node me" cx="66.9" cy="156.7" r="9"/><text class="lab" data-src="label" x="46" y="161" text-anchor="end">06 ME</text></g>
       </svg>
       <ol class="steps" data-steps>
         {steps.map(([text, me], i) => (
@@ -56,7 +59,7 @@ const steps: [string, boolean][] = [
     </div>
   </section>
 
-  <section class="wrap" data-block="approval" aria-labelledby="h-app" data-src="content">
+  <section class="wrap" data-block="approval" aria-labelledby="h-app">
     <h2 id="h-app">What my approval means</h2>
     <p class="lede">I approve evidence, not code. In my own repositories I do not read the code. The effort saved on writing it goes into deciding, before it exists, what would prove it wrong, and how quality is to be maintained.</p>
     <div class="two" style="margin-top:var(--s6)" data-block="modes">
@@ -84,7 +87,7 @@ const steps: [string, boolean][] = [
     </div>
   </section>
 
-  <section class="wrap" id="reading" data-block="reading" aria-labelledby="h-read" data-src="mark.json">
+  <section class="wrap" id="reading" data-block="reading" aria-labelledby="h-read">
     <h2 id="h-read">How to read the mark</h2>
     <div class="legend">
       <figure class="mark-wrap">
@@ -100,6 +103,7 @@ const steps: [string, boolean][] = [
           <dt><svg viewBox="0 0 88 24" aria-hidden="true"><path class="a" d="M6 16h76" stroke-width="5"/><circle class="d" cx="44" cy="6" r="3.2"/></svg></dt><dd><b>A dot</b> outside an arc is one check the agent reported as not verified.</dd>
           <dt><svg viewBox="0 0 88 24" aria-hidden="true"><circle class="u" cx="30" cy="12" r="5.5"/><circle cx="58" cy="12" r="5.5" fill="none" stroke="var(--ok)" stroke-width="1.75"/></svg></dt><dd><b>Outer nodes</b> are pull requests to other people's projects. Filled means a maintainer merged it.</dd>
           <dt><svg viewBox="0 0 88 24" aria-hidden="true"><circle class="a" cx="44" cy="12" r="10" stroke-width="1.25"/><circle cx="44" cy="12" r="3.5" fill="var(--text)"/></svg></dt><dd><b>The centre</b> is me. Every solid arc passed through it.</dd>
+          {unlogged && <><dt><svg viewBox="0 0 88 24" aria-hidden="true"><circle class="a" cx="44" cy="12" r="9" stroke-width="1.5" stroke-dasharray="2 3"/></svg></dt><dd data-legend="unlogged"><b>A ring with no arcs</b> is a project whose build log is not in table form, so its sessions are not counted.</dd></>}
         </dl>
         <div class="readout" data-readout aria-live="polite">
           <span class="k">Try it</span>
@@ -126,19 +130,19 @@ const steps: [string, boolean][] = [
     </p>
   </section>
 
-  <section class="wrap" data-block="recent" aria-labelledby="h-recent" data-src="method.json#recent">
+  <section class="wrap" data-block="recent" aria-labelledby="h-recent">
     <h2 id="h-recent">The five most recent</h2>
     {method.recent.map((r) => (
-      <PrRow row={{ repo: r.repo, number: r.number, title: r.title, url: r.url, date: r.date, state: r.state, by: 'me', hours: r.hours_to_merge, model: r.model, effort: r.effort, minutes: r.minutes }} />
+      <PrRow row={{ repo: r.repo, number: r.number, title: r.title, url: r.url, date: r.date, state: r.state, by: 'me', hours: r.hours_to_merge, model: r.model, effort: r.effort, minutes: r.minutes }} src="method.json#recent" />
     ))}
   </section>
 
-  <section class="wrap" data-block="limits" aria-labelledby="h-limits" data-src="content">
+  <section class="wrap" data-block="limits" aria-labelledby="h-limits">
     <h2 id="h-limits">What this does not show</h2>
     <ul class="plain">
       <li>The numbers show that I merged each pull request and how long after it was ready. They do not show how carefully I looked.</li>
       <li>They are as of the date above. They are not live.</li>
-      <li>Before 15 Nov 2026 an automated routine merged pull requests in german-b1-tutor once its checks passed. Those are excluded from every number here.</li>
+      <li>Before <time datetime={method.cutoff} data-src="method.json#cutoff">{formatDate(method.cutoff)}</time> an automated routine merged pull requests in <span data-src={`projects.yml#${tutor.slug}`}>{tutor.portfolio.name}</span> once its checks passed. Those are excluded from every number here.</li>
       <li>The agent and I use one GitHub account. A comment or a merge from that account does not show who wrote it, and the rule that the agent never merges is one it follows, not one GitHub enforces.</li>
     </ul>
   </section>

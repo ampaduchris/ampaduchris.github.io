@@ -124,3 +124,13 @@ describe('geometry', () => {
     expect(ringRadii(3)).toEqual([92, 157, 222]);
   });
 });
+
+describe('ring labels (review 5.6, F-03 and F-09)', () => {
+  test('[REQ-030] [REQ-054] each part of a ring label names its source, and a ring whose log is not a table says so', () => {
+    const d: MarkData = { projects: [{ slug: 'old-1', name: 'old-1', log: 'not-table', sessions: [] }, { slug: 'new', name: 'new', sessions: [sess('n.1')] }], upstream: [] };
+    const svg = renderMark(d);
+    expect(svg).toContain('<tspan data-src="projects.yml#old-1">OLD-1</tspan> · <tspan data-src="mark.json">LOG NOT A TABLE</tspan>');
+    expect(svg).toContain('<tspan data-src="projects.yml#new">NEW</tspan> · <tspan data-src="mark.json">1 SESSIONS</tspan>');
+    expect(svg).not.toContain('0 SESSIONS');
+  });
+});

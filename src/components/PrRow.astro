@@ -8,12 +8,12 @@ export interface Row {
   by: 'maintainer' | 'me';
   hours?: number | null; model?: string | null; effort?: string | null; minutes?: number | null;
 }
-interface Props { row: Row }
-const { row: r } = Astro.props;
+interface Props { row: Row; src: string }
+const { row: r, src } = Astro.props;
 const state = r.state === 'merged' ? (r.by === 'maintainer' ? 'Merged by a maintainer' : r.hours != null ? `Merged by me after ${hoursText(r.hours)} hours` : 'Merged by me') : r.state === 'open' ? 'Open' : 'Closed';
 const detail = [`${r.repo} #${r.number}`, r.model && r.effort ? `${r.model} / ${r.effort}` : null, r.minutes != null ? `${r.minutes} minutes` : null].filter(Boolean).join(' · ');
 ---
-<a class="pr" href={r.url} data-pr>
+<a class="pr" href={r.url} data-pr data-src={src}>
   <span class={r.state === 'merged' ? 'state' : 'state open'}>{state}</span>
   <span class="body"><span class="t">{r.title}</span><span class="repo">{detail}</span></span>
   <time datetime={r.date}>{formatDate(r.date)}</time>

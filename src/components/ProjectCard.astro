@@ -6,16 +6,17 @@ import Mark from './Mark.astro';
 interface Props { project: Project }
 const { project: p } = Astro.props;
 const pf = p.portfolio;
+const src = `projects.yml#${p.slug}`;
 ---
-<article class="project" data-project={p.slug} data-src={`projects.yml#${p.slug}`}>
+<article class="project" data-project={p.slug}>
   <div class="ringbox" aria-hidden="true"><Mark only={p.slug} id={`ring-${p.slug}`} /></div>
   <div>
-    <h3>{pf.name}<span class="tag">{pf.release} · <time datetime={dateOnly(pf.released_on)}>{formatDate(pf.released_on)}</time></span></h3>
-    <p class="pitch" set:html={withAbbr(pf.pitch)} />
-    <div class="meta">
+    <h3 data-src={src}>{pf.name}<span class="tag">{pf.release} · <time datetime={dateOnly(pf.released_on)}>{formatDate(pf.released_on)}</time></span></h3>
+    <p class="pitch" data-src={src} set:html={withAbbr(pf.pitch)} />
+    <div class="meta" data-src={src}>
       {p.models.map((m) => <span class="prov" data-prov>{m.name} · {m.sessions} {m.sessions === 1 ? 'session' : 'sessions'}</span>)}
       <a href={pf.repo_url}>Repository</a><a href={pf.example_pr_url}>Example pull request</a><a href={pf.demo_url}>Demo</a>
     </div>
   </div>
-  <a class="figure" data-headline href={p.headline.source_url}><span class="v">{p.headline.value}</span><span class="l" set:html={withAbbr(p.headline.label)} />{p.headline.n !== null && <span class="n">n = {p.headline.n}</span>}</a>
+  <a class="figure" data-headline data-src={src} href={p.headline.source_url}><span class="v">{p.headline.value}</span><span class="l" set:html={withAbbr(p.headline.label)} />{p.headline.n !== null && <span class="n">n = {p.headline.n}</span>}</a>
 </article>
