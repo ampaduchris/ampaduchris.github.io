@@ -6,6 +6,7 @@ const ROUTES = ['/', '/method/', '/contact/', '/notes/', '/legal/'];
 const ALL = [...ROUTES, '/cv/', '/in/', '/no-such-page/'];
 const site = parse(readFileSync('src/data/site.yml', 'utf8'));
 const method = JSON.parse(readFileSync('src/data/method.json', 'utf8'));
+const evidenceIds = (parse(readFileSync('src/data/evidence.yml', 'utf8')) as { id: string }[]).map((r) => r.id);
 const projects = (parse(readFileSync('src/data/projects.yml', 'utf8')) as any[]).sort((a, b) => a.order - b.order);
 
 const blocks = (page: Page) => page.$$eval('[data-block]', (els) => els.map((e) => e.getAttribute('data-block')));
@@ -101,7 +102,7 @@ for (const route of ALL) {
     await expect(header.getByRole('link', { name: 'Method' })).toHaveAttribute('href', '/method/');
     await expect(header.getByRole('link', { name: 'Contact' })).toHaveAttribute('href', '/contact/');
     const current = await header.locator('[aria-current=page]').count();
-    expect(current).toBe(['/', '/method/', '/contact/'].includes(route) ? 1 : 0);
+    expect(current).toBe(['/', '/method/', '/contact/', '/notes/'].includes(route) ? 1 : 0);
   });
 
   test(`[REQ-012] one h1, a title, a description, a language and a canonical link on ${route}`, async ({ page }) => {
@@ -127,10 +128,11 @@ for (const route of ALL) {
 
   test(`[REQ-030] every number in the main content of ${route} sits inside an element that names its source`, async ({ page }) => {
     await page.goto(route);
-    const problems = await page.evaluate(({ ids, slugs }) => {
+    const problems = await page.evaluate(({ ids, slugs, rows }) => {
       const bad: string[] = [];
       const allowed = (v: string) => v === 'upstream.json' || v === 'mark.json' || v === 'site.yml' || v === 'content' || v === 'label'
-        || (v.startsWith('method.json#') && ids.includes(v.slice(12))) || (v.startsWith('projects.yml#') && slugs.includes(v.slice(13)));
+        || (v.startsWith('method.json#') && ids.includes(v.slice(12))) || (v.startsWith('projects.yml#') && slugs.includes(v.slice(13)))
+        || (v.startsWith('evidence.yml#') && rows.includes(v.slice(13))) || ['note#count', 'note#claims', 'note#rows'].includes(v);
       const SECTIONING = new Set(['MAIN', 'SECTION', 'ARTICLE', 'ASIDE', 'NAV', 'HEADER', 'FOOTER', 'FIGURE', 'DETAILS', 'BODY']);
       const walker = document.createTreeWalker(document.querySelector('main')!, NodeFilter.SHOW_TEXT);
       for (let n = walker.nextNode(); n; n = walker.nextNode()) {
@@ -147,7 +149,7 @@ for (const route of ALL) {
         if (v === 'label' && !/^\d{1,2}(\D*)$/.test((el.textContent ?? '').trim())) bad.push(`label on more than an ordinal: ${text}`);
       }
       return bad;
-    }, { ids: [...method.stats.map((s: any) => s.id), 'recent', 'counts', 'cutoff'], slugs: projects.map((p: any) => p.slug) });
+    }, { ids: [...method.stats.map((s: any) => s.id), 'recent', 'counts', 'cutoff'], slugs: projects.map((p: any) => p.slug), rows: evidenceIds });
     expect(problems).toEqual([]);
   });
 

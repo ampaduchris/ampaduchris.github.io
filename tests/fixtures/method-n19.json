@@ -1,0 +1,252 @@
+{
+  "generated_at": "2026-11-21T19:13:24Z",
+  "cutoff": "2026-11-15",
+  "sources": [
+    {
+      "repo": "ampaduchris/inkproof",
+      "build_log_commit": "1cef639809c2779c19e4783eaa0c53ba471ad290",
+      "queries": [
+        "gh api repos/ampaduchris/inkproof/commits/HEAD",
+        "gh api repos/ampaduchris/inkproof/contents/docs/BUILD-LOG.md",
+        "gh api repos/ampaduchris/inkproof/commits?since=2026-11-15T00:00:00Z&per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls?state=all&per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/16",
+        "gh api repos/ampaduchris/inkproof/issues/16/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/16/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/16/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/16/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/15",
+        "gh api repos/ampaduchris/inkproof/issues/15/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/15/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/15/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/15/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/14",
+        "gh api repos/ampaduchris/inkproof/issues/14/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/14/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/14/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/14/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/13",
+        "gh api repos/ampaduchris/inkproof/issues/13/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/13/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/13/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/13/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/8",
+        "gh api repos/ampaduchris/inkproof/issues/8/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/8/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/8/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/8/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/7",
+        "gh api repos/ampaduchris/inkproof/issues/7/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/7/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/7/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/7/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/6",
+        "gh api repos/ampaduchris/inkproof/issues/6/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/6/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/6/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/6/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/5",
+        "gh api repos/ampaduchris/inkproof/issues/5/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/5/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/5/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/5/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/4",
+        "gh api repos/ampaduchris/inkproof/issues/4/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/4/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/4/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/4/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/3",
+        "gh api repos/ampaduchris/inkproof/issues/3/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/3/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/3/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/3/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/2",
+        "gh api repos/ampaduchris/inkproof/issues/2/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/2/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/2/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/2/reviews?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/1",
+        "gh api repos/ampaduchris/inkproof/issues/1/timeline?per_page=100",
+        "gh api repos/ampaduchris/inkproof/issues/1/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/1/comments?per_page=100",
+        "gh api repos/ampaduchris/inkproof/pulls/1/reviews?per_page=100"
+      ]
+    },
+    {
+      "repo": "ampaduchris/german-b1-tutor",
+      "build_log_commit": "a7ab977cfe94ae3afe3431f329fe1ad9eb025ff0",
+      "queries": [
+        "gh api repos/ampaduchris/german-b1-tutor/commits/HEAD",
+        "gh api repos/ampaduchris/german-b1-tutor/contents/docs/BUILD-LOG.md",
+        "gh api repos/ampaduchris/german-b1-tutor/commits?since=2026-11-15T00:00:00Z&per_page=100",
+        "gh api repos/ampaduchris/german-b1-tutor/pulls?state=all&per_page=100",
+        "gh api repos/ampaduchris/german-b1-tutor/pulls/39",
+        "gh api repos/ampaduchris/german-b1-tutor/issues/39/timeline?per_page=100",
+        "gh api repos/ampaduchris/german-b1-tutor/issues/39/comments?per_page=100",
+        "gh api repos/ampaduchris/german-b1-tutor/pulls/39/comments?per_page=100",
+        "gh api repos/ampaduchris/german-b1-tutor/pulls/39/reviews?per_page=100"
+      ]
+    },
+    {
+      "repo": "ampaduchris/ampaduchris.github.io",
+      "build_log_commit": "d9e4242bc7a546d4ff26f14d298d6e6f1be8ba7f",
+      "queries": [
+        "gh api repos/ampaduchris/ampaduchris.github.io/commits/HEAD",
+        "gh api repos/ampaduchris/ampaduchris.github.io/contents/docs/BUILD-LOG.md",
+        "gh api repos/ampaduchris/ampaduchris.github.io/commits?since=2026-11-15T00:00:00Z&per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls?state=all&per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/3",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/3/timeline?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/3/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/3/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/3/reviews?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/1",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/1/timeline?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/1/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/1/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/1/reviews?per_page=100"
+      ]
+    }
+  ],
+  "counts": {
+    "build_log_rows": 14,
+    "pull_requests": 20
+  },
+  "stats": [
+    {
+      "id": "sessions",
+      "value": 14,
+      "n": 14,
+      "label": "agent sessions logged",
+      "definition": "Rows in the build logs of the listed repositories and the site repository."
+    },
+    {
+      "id": "agent_commits",
+      "value": "62 of 62",
+      "n": 62,
+      "label": "commits carry a model's co-author line",
+      "definition": "Commits on the default branch of each listed repository and the site repository, on or after the cut-off date, merge commits excluded, whose message has a Co-Authored-By line naming a model."
+    },
+    {
+      "id": "prs_merged",
+      "value": "19 of 19",
+      "n": 19,
+      "label": "pull requests opened by the agent and merged by me",
+      "definition": "Own pull requests whose state is merged and whose merger is the owner's account, out of own pull requests that are closed or merged."
+    },
+    {
+      "id": "prs_commented",
+      "value": "0 of 20",
+      "n": 20,
+      "label": "merged with my written check",
+      "definition": "Merged own pull requests on which the owner's account left a comment before the merge time. The agent and the owner share one account, so this cannot tell who wrote the comment."
+    },
+    {
+      "id": "hours_to_merge",
+      "value": null,
+      "n": 19,
+      "label": "median hours from ready for review to merge",
+      "definition": "Median over merged own pull requests of merge time minus the time the pull request was last marked ready for review, or opened if it was never a draft. Shown from 20 pull requests."
+    },
+    {
+      "id": "not_verified",
+      "value": 72,
+      "n": 14,
+      "label": "checks reported as not verified",
+      "definition": "Sum of the NOT VERIFIED column over all build-log rows."
+    },
+    {
+      "id": "upstream_merged",
+      "value": "0 of 0",
+      "n": 0,
+      "label": "upstream pull requests merged by their maintainers",
+      "definition": "Upstream pull requests whose state is merged, out of upstream pull requests opened."
+    },
+    {
+      "id": "models",
+      "value": [
+        {
+          "name": "Sonnet 5.5 / high",
+          "sessions": 7
+        },
+        {
+          "name": "Sonnet 5.5 / medium",
+          "sessions": 5
+        },
+        {
+          "name": "Opus 5.5 / high",
+          "sessions": 1
+        },
+        {
+          "name": "Sonnet 5.5 / low",
+          "sessions": 1
+        }
+      ],
+      "n": 14,
+      "label": "Sessions by model and effort",
+      "definition": "Count of build-log rows per distinct model and effort pair."
+    }
+  ],
+  "recent": [
+    {
+      "repo": "ampaduchris/ampaduchris.github.io",
+      "number": 3,
+      "title": "5.2: Deploy, legal, analytics",
+      "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/3",
+      "state": "merged",
+      "model": "Sonnet 5.5",
+      "effort": "high",
+      "minutes": 10,
+      "hours_to_merge": 0,
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ampaduchris/ampaduchris.github.io",
+      "number": 1,
+      "title": "5.1: Spec, scaffold and home",
+      "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/1",
+      "state": "merged",
+      "model": "Sonnet 5.5",
+      "effort": "high",
+      "minutes": 22,
+      "hours_to_merge": 0,
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ampaduchris/inkproof",
+      "number": 16,
+      "title": "1.10: Release",
+      "url": "https://github.com/ampaduchris/inkproof/pull/16",
+      "state": "merged",
+      "model": "Sonnet 5.5",
+      "effort": "low",
+      "minutes": 34,
+      "hours_to_merge": 0.5,
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ampaduchris/inkproof",
+      "number": 15,
+      "title": "1.9: Mutation",
+      "url": "https://github.com/ampaduchris/inkproof/pull/15",
+      "state": "merged",
+      "model": "Sonnet 5.5",
+      "effort": "medium",
+      "minutes": 25,
+      "hours_to_merge": 0.1,
+      "date": "2026-11-21"
+    },
+    {
+      "repo": "ampaduchris/inkproof",
+      "number": 14,
+      "title": "1.8: Close findings",
+      "url": "https://github.com/ampaduchris/inkproof/pull/14",
+      "state": "merged",
+      "model": "Sonnet 5.5",
+      "effort": "medium",
+      "minutes": 7,
+      "hours_to_merge": 0.1,
+      "date": "2026-11-21"
+    }
+  ]
+}

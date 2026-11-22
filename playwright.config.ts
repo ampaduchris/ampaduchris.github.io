@@ -19,5 +19,6 @@ export default defineConfig({
     { command: 'node scripts/serve.mjs dist 4321', url: 'http://127.0.0.1:4321/', reuseExistingServer: !process.env.CI },
     { command: 'node scripts/serve.mjs dist-fixture 4322', url: 'http://127.0.0.1:4322/', reuseExistingServer: !process.env.CI },
     { command: 'node scripts/serve.mjs dist-median 4323', url: 'http://127.0.0.1:4323/', reuseExistingServer: !process.env.CI },
+    { command: 'node scripts/serve.mjs dist-n19 4324', url: 'http://127.0.0.1:4324/', reuseExistingServer: !process.env.CI },
   ],
 });

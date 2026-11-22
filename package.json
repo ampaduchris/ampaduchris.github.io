@@ -15,7 +15,7 @@
     "e2e": "playwright test",
     "contrast": "python3 scripts/contrast.py src/styles/tokens.json",
     "trace": "python3 scripts/trace.py",
-    "build:fixture": "UPSTREAM_FIXTURE=upstream-seven.json MARK_FIXTURE=mark-mixed.json NOTES_FIXTURE=1 astro build --outDir dist-fixture && NOTES_FIXTURE=none METHOD_FIXTURE=method-n20.json astro build --outDir dist-median",
+    "build:fixture": "UPSTREAM_FIXTURE=upstream-seven.json MARK_FIXTURE=mark-mixed.json NOTES_FIXTURE=1 astro build --outDir dist-fixture && NOTES_FIXTURE=none METHOD_FIXTURE=method-n20.json astro build --outDir dist-median && NOTES_FIXTURE=none METHOD_FIXTURE=method-n19.json astro build --outDir dist-n19",
     "sync-check": "tsx scripts/sync-check.ts",
     "sizes": "node scripts/sizes.mjs",
     "numbers": "tsx scripts/numbers.ts",

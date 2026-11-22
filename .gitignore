@@ -2,6 +2,7 @@ node_modules/
 dist/
 dist-fixture/
 dist-median/
+dist-n19/
 .astro/
 test-results/
 playwright-report/
