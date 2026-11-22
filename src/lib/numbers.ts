@@ -94,7 +94,7 @@ export interface Recent {
 export interface MethodJson {
   generated_at: string;
   cutoff: string;
-  sources: { repo: string; build_log_commit: string | null; queries: string[] }[];
+  sources: SourceRecord[];
   counts: { build_log_rows: number; pull_requests: number };
   stats: Stat[];
   recent: Recent[];
@@ -103,14 +103,15 @@ export interface MarkRecord {
   session: string; model: string; effort: string; minutes: number | null; not_verified: number;
   pr_number: number | null; state: string; merged_by_owner: boolean; hours_to_merge: number | null;
 }
+export interface SourceRecord { repo: string; build_log_commit: string | null; queries: string[] }
 export interface MarkJson {
-  generated_at: string; cutoff: string;
+  generated_at: string; cutoff: string; sources: SourceRecord[];
   // log: 'table' when the build log has rows, 'not-table' when it exists without a row table, 'missing' when there is none.
   projects: { repo: string; log: 'table' | 'not-table' | 'missing'; sessions: MarkRecord[] }[];
   upstream: { repo: string; number: number; state: 'open' | 'closed' | 'merged' }[];
 }
 export interface UpstreamJson {
-  generated_at: string; cutoff: string;
+  generated_at: string; cutoff: string; queries: string[];
   prs: { repo: string; number: number; title: string; url: string; merged_at: string }[];
 }
 
@@ -161,9 +162,10 @@ export function computeNumbers(s: Snapshot): { method: MethodJson; mark: MarkJso
       };
     });
 
+  const sources = s.repos.map((r) => ({ repo: r.repo, build_log_commit: r.build_log_commit, queries: s.queries.filter((q) => q.includes(r.repo)) }));
   const prByKey = new Map(s.repos.flatMap((r) => r.prs.map((p) => [`${r.repo}#${p.number}`, p] as const)));
   const mark: MarkJson = {
-    generated_at: s.generated_at, cutoff: s.cutoff,
+    generated_at: s.generated_at, cutoff: s.cutoff, sources,
     projects: s.repos.map((r) => ({
       repo: r.repo,
       log: r.build_log === null ? 'missing' as const : rows.some((x) => x.repo === r.repo) ? 'table' as const : 'not-table' as const,
@@ -183,14 +185,13 @@ export function computeNumbers(s: Snapshot): { method: MethodJson; mark: MarkJso
   mark.upstream = [...s.upstream].sort((a, b) => (a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : a.number - b.number))
     .map((u) => ({ repo: u.repo, number: u.number, state: u.state }));
 
-  const sources = s.repos.map((r) => ({ repo: r.repo, build_log_commit: r.build_log_commit, queries: s.queries.filter((q) => q.includes(r.repo)) }));
   const method: MethodJson = {
     generated_at: s.generated_at, cutoff: s.cutoff, sources,
     counts: { build_log_rows: rows.length, pull_requests: ownPrs.length },
     stats, recent,
   };
   const upstream: UpstreamJson = {
-    generated_at: s.generated_at, cutoff: s.cutoff,
+    generated_at: s.generated_at, cutoff: s.cutoff, queries: s.queries.filter((q) => q.includes('search/issues')),
     prs: upMerged.map((u) => ({ repo: u.repo, number: u.number, title: u.title, url: u.url, merged_at: u.merged_at as string }))
       .sort((a, b) => (a.merged_at < b.merged_at ? 1 : -1)),
   };

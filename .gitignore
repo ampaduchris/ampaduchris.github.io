@@ -6,3 +6,5 @@ dist-median/
 test-results/
 playwright-report/
 .DS_Store
+reports/
+.stryker-tmp/
