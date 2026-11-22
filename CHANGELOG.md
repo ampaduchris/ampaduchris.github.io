@@ -8,3 +8,4 @@
 - Session 5.3: Method page, numbers script with snapshot, Home method summary, Method link in the header.
 - Session 5.3a: corrections: `german-b1-tutor` test count at its tag, deploy job warns instead of failing while the legal text is pending, Dependabot ignores TypeScript major updates, numbers refreshed, local browser test retry.
 - Session 5.4: the proof mark on Home (build-time SVG, readout, keyboard, table, pause, reduced motion), rings in the project cards.
+- Session 5.4a: the owner's copy edits, and Contact with a site-only email, LinkedIn and a location line.
