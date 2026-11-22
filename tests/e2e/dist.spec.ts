@@ -57,3 +57,11 @@ test('[REQ-038] the browser tests cannot reach the network, in the default conte
   await expect(local.locator('h1')).toHaveCount(1);
   await ctx.close();
 });
+
+test('[REQ-086] the sitemap lists /notes/ and each note when notes exist, and nothing under /notes/ when none does', () => {
+  const locs = (dir: string) => [...readFileSync(`${dir}/sitemap-0.xml`, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  expect(locs('dist').filter((l) => l.includes('/notes'))).toEqual([]);
+  expect(locs('dist-fixture').filter((l) => l.includes('/notes')).sort()).toEqual([
+    'https://ampaduchris.github.io/notes/', 'https://ampaduchris.github.io/notes/essay-a/',
+    'https://ampaduchris.github.io/notes/postmortem-a/', 'https://ampaduchris.github.io/notes/postmortem-b/']);
+});

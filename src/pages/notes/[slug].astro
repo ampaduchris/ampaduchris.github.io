@@ -1,0 +1,46 @@
+---
+import Base from '../../layouts/Base.astro';
+import NoteStat from '../../components/NoteStat.astro';
+import EvidenceTable from '../../components/EvidenceTable.astro';
+import Ref from '../../components/Ref.astro';
+import Fig from '../../components/Fig.astro';
+import Timeline from '../../components/Timeline.astro';
+import Event from '../../components/Event.astro';
+import { loadNotes, loadSessionRefs, provenanceTags, historyUrl, describe, BYLINE, type Note } from '../../lib/notes';
+import { noteContent } from '../../lib/notemodules';
+import { loadSite } from '../../lib/data';
+import { formatDate } from '../../lib/dates';
+
+export async function getStaticPaths() {
+  const notes = await loadNotes();
+  return Promise.all(notes.map(async (note) => ({ params: { slug: note.slug }, props: { note, Content: await noteContent(note.slug) } })));
+}
+
+interface Props { note: Note; Content: any }
+const { note, Content } = Astro.props;
+const site = loadSite();
+const tags = provenanceTags(note.sessions, note.review, await loadSessionRefs());
+const kind = note.kind === 'essay' ? 'Essay' : 'Postmortem';
+const fileUrl = `${site.repo_url}/blob/main/src/data/evidence.yml`;
+---
+<Base title={`${note.title}. Chris Ampadu`} description={describe(note.standfirst)} path={`/notes/${note.slug}/`}>
+  <article>
+    <div class="ahead wrap" data-block="note-head">
+      <div>
+        <p class="kicker"><a href="/notes/">Notes</a> · {kind} · <time datetime={note.date} data-src="content">{formatDate(note.date)}</time></p>
+        <h1>{note.title}</h1>
+        <p class="lede">{note.standfirst}</p>
+        <p class="byline">{tags.map((t) => <span class="prov" data-prov data-src="mark.json">{t.label}</span>)}<span>{BYLINE}</span><a href={historyUrl(site.repo_url, note.slug)}>History of this note</a></p>
+      </div>
+      <div class="tiles" data-block="note-numbers">
+        <NoteStat value={note.claims} label="claims in this note, each linked to an evidence row" src="note#claims" />
+        <NoteStat value={note.rows.length} label="dated evidence rows, listed at the foot" src="note#rows" />
+      </div>
+    </div>
+    <div class="prose wrap">
+      <div data-block="body"><Content components={{ Ref, Fig, Timeline, Event }} /></div>
+      <EvidenceTable rows={note.rows} fileUrl={fileUrl} />
+      <p class="links" data-block="note-links" style="margin-top:var(--s7);max-width:none"><a href="/notes/">All notes</a><a href="/notes/feed.xml">Follow by <abbr title="Really Simple Syndication">RSS</abbr> feed</a></p>
+    </div>
+  </article>
+</Base>

@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { parse } from 'yaml';
 
-const ROUTES = ['/', '/method/', '/contact/', '/legal/'];
+const ROUTES = ['/', '/method/', '/contact/', '/notes/', '/legal/'];
 const ALL = [...ROUTES, '/cv/', '/in/', '/no-such-page/'];
 const site = parse(readFileSync('src/data/site.yml', 'utf8'));
 const method = JSON.parse(readFileSync('src/data/method.json', 'utf8'));

@@ -82,7 +82,7 @@ The Method page repeats LIM-1 to LIM-3 and LIM-6 in the owner's words.
 | REQ-008 | MUST | Every page's footer links to `/legal/#imprint` with the text "Imprint" and to `/legal/#privacy` with the text "Privacy", and to `/contact/`. | PW on every route |
 | REQ-009 | MUST | An unknown path serves a `404.html` page with a link to Home, the same header and footer, and `noindex`. | PW: request `/no-such-page/` from the local server; assert status 404 and the link |
 | REQ-010 | MUST | `/cv/` and `/in/` render the same main content as Home, carry `<link rel="canonical">` pointing at `/` and `<meta name="robots" content="noindex">`, and are absent from the sitemap. (Session 5.2. They exist so that the analytics path shows which document sent the visitor.) | PW: main content text equals Home's; head tags present; VT on the sitemap |
-| REQ-011 | MUST | Every page has a header with the owner's name linking to `/` and navigation links to `/method/` and `/contact/`. The link to the current page carries `aria-current="page"`. | PW on every route |
+| REQ-011 | MUST | Every page has a header with the owner's name linking to `/` and navigation links to `/method/` and `/contact/` (and to `/notes/` first, once a note exists: REQ-074). The link to the current page carries `aria-current="page"`. | PW on every route |
 | REQ-012 | MUST | Every page has exactly one `h1`, a unique `<title>`, a meta description between 50 and 160 characters, `<html lang="en-GB">`, and a canonical link. | PW on every route; uniqueness across routes |
 | REQ-013 | SHOULD | A `sitemap.xml` lists the routes of this section except those marked `noindex`. | VT |
 
@@ -136,7 +136,7 @@ Appearance is in `DESIGN.md`. These rows fix what each component must contain.
 | REQ-023 | MUST | A statistic shows its value, its label and its sample size as `n = <integer>` in the same component, and the sample size is in the accessible name of the component. | PW: every `[data-stat]` contains `[data-n]`; accessible name contains "n =" |
 | REQ-024 | MUST | A proportion is shown as "k of n". A percentage sign MUST NOT appear in the main content of any page. | PW: no `%` in `main` on every route |
 | REQ-025 | MUST | A median is shown only when its sample size is at least 20 pull requests. Below 20 the component shows the text "Shown from 20 pull requests. Today: n = <n>." and no value. | VT on the numbers script at n = 19 and n = 20; PW with both fixtures |
-| REQ-026 | MUST | Dates are shown as day, month abbreviated to three letters, four-digit year (`15 Nov 2026`), inside a `<time datetime>` element. | PW: every `time` matches the pattern and has a valid `datetime` |
+| REQ-026 | MUST | Dates are shown as day, month abbreviated to three letters, four-digit year (`15 Nov 2026`), inside a `<time datetime>` element. An evidence row that holds only a month is shown as month and year (REQ-081). | PW: every `time` matches the pattern and has a valid `datetime` |
 
 ### 6.2 The mark
 
@@ -187,7 +187,7 @@ REQ-087 to REQ-089 stay reserved.
 | REQ-027 | MUST | `scripts/numbers` writes `src/data/method.json`, `src/data/mark.json` and `src/data/upstream.json` from two kinds of source only: the `docs/BUILD-LOG.md` of each listed repository and of the site repository, and GitHub's pull request records. Each output file records `generated_at`, the cut-off date, and for every source the repository and the commit or the query used. | VT on fixture logs and recorded responses; assert the output byte for byte |
 | REQ-028 | MUST | `method.json` holds exactly the statistics of table 7.1, each with `id`, `value`, `n`, `label` and `definition`, and a `recent` list of the five newest own pull requests (repository, number, title, state, model, effort, minutes, hours to merge, date). A median with `n` below 20 has `value: null`. `mark.json` holds, per project, one record per build-log row (session id, model, effort, minutes, NOT VERIFIED count, pull request number, state, whether the owner merged it, hours to merge), and one record per upstream pull request (repository, number, state). | VT |
 | REQ-029 | MUST | Running `scripts/numbers` twice on the same inputs gives byte-identical output apart from `generated_at`. | VT |
-| REQ-030 | MUST | In the built HTML of every route, every text node inside `main` that contains a digit is inside an element with a `data-src` attribute. The attribute sits on the element that holds the number: not on a sectioning element and not on an element that contains a heading. Allowed values: `method.json#<id>`, where `<id>` is a statistic id or one of the keys `recent`, `counts` and `cutoff`; `upstream.json`; `mark.json`; `projects.yml#<slug>`; `site.yml`; `content` for legal text and for a date or version the owner typed in a content file; and `label` for the ordinal of a fixed sequence typed in a template, such as a step number, with no other digit in the element. | PW: walk the text nodes of `main` on every route; check the value, the element and the `label` rule |
+| REQ-030 | MUST | In the built HTML of every route, every text node inside `main` that contains a digit is inside an element with a `data-src` attribute. The attribute sits on the element that holds the number: not on a sectioning element and not on an element that contains a heading. Allowed values: `method.json#<id>`, where `<id>` is a statistic id or one of the keys `recent`, `counts` and `cutoff`; `upstream.json`; `mark.json`; `projects.yml#<slug>`; `site.yml`; `content` for legal text and for a date or version the owner typed in a content file; and `label` for the ordinal of a fixed sequence typed in a template, such as a step number, with no other digit in the element; and, on notes pages, `evidence.yml#<id>` and `note#<key>` (REQ-085). | PW: walk the text nodes of `main` on every route; check the value, the element and the `label` rule |
 | REQ-031 | MUST | On `/method/`, every element with `data-src="method.json#<id>"` shows the value and the sample size that `method.json` holds for that id, and every id in `method.json` is shown. | PW: compare page against the file both ways |
 | REQ-032 | MUST | `/method/` shows `generated_at`, the cut-off date, and the count of build-log rows and of pull requests the numbers rest on. | PW |
 | REQ-033 | MUST | The README's "Verify it yourself" block gives three commands that rebuild `method.json` from public sources and compare it with the committed file. CI runs the same comparison against recorded responses. | CI step; VT |
@@ -272,6 +272,8 @@ Measured on 22 Nov 2026 in session 5.5: the browser suite (140 tests, axe in bot
 
 Measured on 22 Nov 2026 in session 5.6a: the REQ-030 browser test rejects a hand-typed number placed inside a section, which it accepted before (probe in the pull request). Pointing at a claim leaves the readout and the page text unchanged.
 
+Measured on 22 Nov 2026 in session N.1, with `@astrojs/mdx` 8.1.6: the Notes routes were built from three synthetic notes (`npm run build:fixture`) and tested in Chrome (61 tests, axe in both schemes at two widths on each note route, no sideways scroll at four widths, scripts off). The claims checker failed both planted cases in `tests/fixtures/claims/` and passed the good one. The real build holds no note, so `/notes/` shows "Nothing published yet." and the Notes link, the feed and the sitemap entries are absent.
+
 Not checked:
 
 1. (Resolved in session 5.2: see above.) Whether lychee's offline mode resolves root-relative links in `dist/` with `--root-dir`. It is not installed locally. The first CI run is the evidence.
@@ -284,3 +286,6 @@ Not checked:
 8. Whether the Latin font subset covers every character the copy uses. The 5.1 copy was read for the two missing characters (check mark, rightward arrow) and has neither.
 9. The rendering of the header and cards against the mockup captures was not compared pixel by pixel.
 10. Node 26 and the CI workflow as a whole have not run yet. The first CI run is the evidence.
+11. Whether the feed passes an external RSS validator (DEV-051), and whether a feed reader shows the items as intended.
+12. The Notes pages in Firefox and WebKit: the cross-browser CI job is the evidence.
+13. The claims checker's causal-word list is a heuristic. A causal claim phrased without any listed word, outside the four postmortem sections, is not seen by it. The review in N.4 reads for these.

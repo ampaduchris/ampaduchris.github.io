@@ -1,0 +1,55 @@
+# One dated observation per row. Rows are scrubbed from the owner's private record: no address, no operator or portal name, no search criterion.
+# Dates are the precision the source holds. The source gives a month for most rows, so most rows carry a month, not a day.
+# A row about a period carries the first day or month of it, and its text names the whole period.
+# Ids are never reused. Add rows at the end. The claims checker (npm run claims) reads this file.
+- id: E1
+  date: 2026-09
+  observation: In late September, flat scout v1 ran on the Haiku model and automated the whole outreach, not only the search.
+- id: E2
+  date: 2026-09
+  observation: Flat scout v1 searched one page of one rental portal.
+- id: E3
+  date: 2026-09
+  observation: Flat scout v1 missed major sources of listings.
+- id: E4
+  date: 2026-09
+  observation: The scheduled task of flat scout v1 was bound to a laptop. It did not run while the laptop slept.
+- id: E5
+  date: 2026-09
+  observation: I rated flat scout v1 unacceptable and ordered a full rebuild.
+- id: E6
+  date: 2026-10
+  observation: In mid October, the first run of flat scout v2, which ran on the Opus model and was search-only, fanned out to many subagents for about 50 minutes.
+- id: E7
+  date: 2026-10
+  observation: That run consumed the evening's usage allowance.
+- id: E8
+  date: 2026-10
+  observation: After that run I set all approvals to manual.
+- id: E9
+  date: 2026-10-19
+  observation: From 19 to 26 October, scheduled cloud sessions of flat scout v3, which ran on the Sonnet model, lacked the web-fetch tool.
+- id: E10
+  date: 2026-10-19
+  observation: During that week the scheduled runs failed silently or logged failed immediately.
+- id: E11
+  date: 2026-10-19
+  observation: During that week I paused the automation and asked for manual scans instead.
+- id: E12
+  date: 2026-10
+  observation: In October, the Monday sweep of job scout, a scheduled run on the Opus model, failed with the message usage limit reached.
+- id: E13
+  date: 2026-10
+  observation: That failure lost a weekly sweep.
+- id: E14
+  date: 2026-09
+  observation: Between September and October, job scout passed aggregator pages and posting addresses that were still rendering as live.
+- id: E15
+  date: 2026-09
+  observation: Dead roles surfaced in the results as live roles.
+- id: E16
+  date: 2026-10
+  observation: In October, in one class of rental listings, ads labelled for two occupants described three or more occupants in the body text.
+- id: E17
+  date: 2026-10
+  observation: Those listings were scored wrongly.
