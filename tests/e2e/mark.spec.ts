@@ -150,7 +150,7 @@ test('[REQ-057] on Method the mark has the counts in its name, the readout follo
   expect(name).toContain(`${merged} merged by the owner`);
   await svg.focus();
   for (let i = 0; i < 3; i++) await page.keyboard.press('ArrowRight');
-  const d = await reading(page).locator('.seg').nth(2).evaluate((e) => ({ ...(e as unknown as HTMLElement).dataset }));
+  const d = await reading(page).locator('.seg').nth(2).evaluate((e: Element) => ({ ...(e as HTMLElement).dataset }));
   const readout = await reading(page).locator('[data-readout]').innerText();
   expect(readout).toContain(`session ${d.session}`);
   expect(readout).toContain(`${d.minutes} minutes`);
