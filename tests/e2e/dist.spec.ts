@@ -46,3 +46,14 @@ test('[REQ-050] no social image tag, no frame and no external resource', () => {
   const css = files.filter((f) => f.endsWith('.css')).map((f) => readFileSync(f, 'utf8')).join('\n');
   expect(css).not.toMatch(/url\(\s*["']?https?:|@import/);
 });
+
+test('[REQ-038] the browser tests cannot reach the network, in the default context and in one a test creates', async ({ page, browser, baseURL }) => {
+  await expect(page.goto('https://example.com/', { timeout: 10_000 })).rejects.toThrow();
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const other = await ctx.newPage();
+  await expect(other.goto('https://example.com/', { timeout: 10_000 })).rejects.toThrow();
+  const local = await ctx.newPage(); // the local server is still reachable
+  await local.goto(baseURL + '/');
+  await expect(local.locator('h1')).toHaveCount(1);
+  await ctx.close();
+});

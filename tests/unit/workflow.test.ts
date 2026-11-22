@@ -30,9 +30,22 @@ describe('pull request workflow', () => {
 
   test('[REQ-046] the link check runs offline over the built pages', () => {
     const step = wf.jobs.test.steps.find((s) => s.name === 'Link check (offline)');
-    expect(step?.uses).toMatch(/^lycheeverse\/lychee-action@[0-9a-f]{40}$/);
-    expect(step?.with?.args).toContain('--offline');
-    expect(step?.with?.args).toContain('dist');
+    expect(step?.run).toMatch(/^lychee --offline .*dist/);
+  });
+
+  test('[REQ-038] the browser and the link checker are installed before the first test step, the checker from a pinned release with its hash checked', () => {
+    const first = Math.min(indexOf('Type check'), indexOf('Unit tests'), indexOf('Build'));
+    expect(indexOf('Install the browser')).toBeGreaterThan(indexOf('Install from the lockfile'));
+    expect(indexOf('Install the browser')).toBeLessThan(first);
+    expect(indexOf('Install the link checker')).toBeLessThan(first);
+    const step = wf.jobs.test.steps.find((s) => s.name === 'Install the link checker') as { run?: string; env?: Record<string, string> };
+    expect(step.env?.LYCHEE_URL).toMatch(/\/releases\/download\/lychee-v\d+\.\d+\.\d+\//);
+    expect(step.env?.LYCHEE_SHA256).toMatch(/^[0-9a-f]{64}$/);
+    expect(step.run).toContain('sha256sum -c');
+    // Nothing after the first test step installs or downloads.
+    const steps = wf.jobs.test.steps;
+    const firstStep = steps.findIndex((s) => s.name === names[first]);
+    for (const s of steps.slice(firstStep)) expect(`${s.run ?? ''} ${s.uses ?? ''}`).not.toMatch(/playwright install|curl |wget |lychee-action/);
   });
 });
 
