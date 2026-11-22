@@ -22,12 +22,12 @@ const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map(
   </div>
   <p class="hint">Each underlined phrase is a claim. Point at one, or tab to it, and the mark shows the evidence.</p>
   </div>
-  <figure class="mark-wrap" data-block="mark" data-src="mark.json">
+  <figure class="mark-wrap" data-block="mark">
     <Mark id="mark" />
     <figcaption>
       <div class="readout" data-readout aria-live="polite">
         <span class="k">The proof mark</span>
-        <span class="v"><b>{S.sessions}</b> agent sessions. <b>{S.merged}</b> merged by me. <b>{S.nv}</b> checks reported as not verified.</span>
+        <span class="v" data-src="mark.json"><b>{S.sessions}</b> agent sessions. <b>{S.merged}</b> merged by me. <b>{S.nv}</b> checks reported as not verified.</span>
         <span class="s">One arc per session. Point at an arc, tap it, or focus the mark and use the arrow keys.</span>
       </div>
       <div class="tools"><button type="button" data-motion aria-pressed="false" hidden>Pause motion</button><a href="/method/#reading">How to read the mark</a></div>
@@ -41,7 +41,7 @@ const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map(
     {summary.map((stat) => <StatTile stat={stat} />)}
   </div>
   <a class="more" href="/method/">How the work is checked</a>
-  <details data-src="mark.json">
+  <details>
     <summary>The mark as a table</summary>
     <div class="scroll" set:html={table} />
   </details>
@@ -53,9 +53,9 @@ const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map(
 </section>
 
 {upstream.length > 0 && (
-  <section class="wrap" data-block="upstream" aria-labelledby="h-up" data-src="upstream.json">
+  <section class="wrap" data-block="upstream" aria-labelledby="h-up">
     <h2 id="h-up">Accepted by other projects</h2>
-    {upstream.map((pr) => <PrRow row={{ repo: pr.repo, number: pr.number, title: pr.title, url: pr.url, date: pr.merged_at.slice(0, 10), state: 'merged', by: 'maintainer' }} />)}
+    {upstream.map((pr) => <PrRow row={{ repo: pr.repo, number: pr.number, title: pr.title, url: pr.url, date: pr.merged_at.slice(0, 10), state: 'merged', by: 'maintainer' }} src="upstream.json" />)}
   </section>
 )}
 

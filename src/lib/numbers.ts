@@ -105,7 +105,8 @@ export interface MarkRecord {
 }
 export interface MarkJson {
   generated_at: string; cutoff: string;
-  projects: { repo: string; sessions: MarkRecord[] }[];
+  // log: 'table' when the build log has rows, 'not-table' when it exists without a row table, 'missing' when there is none.
+  projects: { repo: string; log: 'table' | 'not-table' | 'missing'; sessions: MarkRecord[] }[];
   upstream: { repo: string; number: number; state: 'open' | 'closed' | 'merged' }[];
 }
 export interface UpstreamJson {
@@ -165,6 +166,7 @@ export function computeNumbers(s: Snapshot): { method: MethodJson; mark: MarkJso
     generated_at: s.generated_at, cutoff: s.cutoff,
     projects: s.repos.map((r) => ({
       repo: r.repo,
+      log: r.build_log === null ? 'missing' as const : rows.some((x) => x.repo === r.repo) ? 'table' as const : 'not-table' as const,
       sessions: rows.filter((x) => x.repo === r.repo).map((x) => {
         const pr = x.pr_number === null ? undefined : prByKey.get(`${r.repo}#${x.pr_number}`);
         return {

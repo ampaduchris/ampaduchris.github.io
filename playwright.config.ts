@@ -7,7 +7,9 @@ export default defineConfig({
   retries: process.env.CI ? 0 : 1, // locally one retry, reported as flaky; a stall has been seen about once in four runs on a busy machine, never in CI
   reporter: [['list']],
   // Locally the installed Chrome is used so that nothing is downloaded; CI installs Chromium.
-  use: { baseURL: 'http://127.0.0.1:4321' },
+  // REQ-038: every request goes to a dead proxy except those to the local servers, so a test that reaches the network fails.
+  // A launch option, so it also covers contexts that tests create themselves (scripts off).
+  use: { baseURL: 'http://127.0.0.1:4321', launchOptions: { proxy: { server: 'http://127.0.0.1:9', bypass: '127.0.0.1,localhost' } } },
   projects: [
     { name: 'chromium', use: { browserName: 'chromium', channel: process.env.CI ? undefined : 'chrome' } },
     // Firefox and WebKit run in CI only (the cross-browser job), so that nothing is downloaded locally.

@@ -10,12 +10,12 @@ const [first, ...rest] = site.contact;
   path="/contact/"
   current="/contact/"
 >
-  <div class="contact wrap" data-src="site.yml">
+  <div class="contact wrap">
     <p class="kicker">Contact</p>
     <h1>Write to me.</h1>
-    <p><a class="mail" href={first.href}>{first.label}</a></p>
+    <p data-src="site.yml"><a class="mail" href={first.href}>{first.label}</a></p>
     <p class="lede">This is my personal, non-commercial portfolio. You are welcome to write to me about the work and the method shown here.</p>
-    {site.location && <p class="kicker where">{site.location}</p>}
-    {rest.length > 0 && <p class="links">{rest.map((c) => <a href={c.href}>{c.label}</a>)}</p>}
+    {site.location && <p class="kicker where" data-src="site.yml">{site.location}</p>}
+    {rest.length > 0 && <p class="links" data-src="site.yml">{rest.map((c) => <a href={c.href}>{c.label}</a>)}</p>}
   </div>
 </Base>

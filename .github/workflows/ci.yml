@@ -33,6 +33,21 @@ jobs:
           cache: npm
       - name: Install from the lockfile
         run: npm ci
+      # Everything the tests need is installed here, before the first test step (REQ-038).
+      - name: Install the browser
+        run: npx playwright install --with-deps chromium
+      - name: Install the link checker
+        env:
+          LYCHEE_URL: https://github.com/lycheeverse/lychee/releases/download/lychee-v0.24.2/lychee-x86_64-unknown-linux-gnu.tar.gz
+          LYCHEE_SHA256: 1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a
+        run: |
+          mkdir -p "$RUNNER_TEMP/lychee" "$RUNNER_TEMP/bin"
+          curl -fsSL -o "$RUNNER_TEMP/lychee.tar.gz" "$LYCHEE_URL"
+          echo "$LYCHEE_SHA256  $RUNNER_TEMP/lychee.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/lychee.tar.gz" -C "$RUNNER_TEMP/lychee"
+          install -m 755 "$(find "$RUNNER_TEMP/lychee" -type f -name lychee | head -n 1)" "$RUNNER_TEMP/bin/lychee"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/bin/lychee" --version
       - name: Type check
         run: npm run check
       - name: Unit tests
@@ -45,15 +60,10 @@ jobs:
         run: npm run trace
       - name: Numbers match the snapshot
         run: npm run numbers -- --from-snapshot --check
-      - name: Install the browser
-        run: npx playwright install --with-deps chromium
       - name: Browser tests with axe
         run: npm run e2e
       - name: Link check (offline)
-        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
-        with:
-          args: --offline --no-progress --root-dir ${{ github.workspace }}/dist './dist/**/*.html'
-          fail: true
+        run: lychee --offline --no-progress --root-dir "$GITHUB_WORKSPACE/dist" './dist/**/*.html'
       - name: Transfer sizes (printed, not a gate)
         run: npm run sizes
 
@@ -83,10 +93,10 @@ jobs:
           cache: npm
       - name: Install from the lockfile
         run: npm ci
-      - name: Build
-        run: npm run build && npm run build:fixture
       - name: Install the browsers
         run: npx playwright install --with-deps firefox webkit
+      - name: Build
+        run: npm run build && npm run build:fixture
       - name: Browser tests in Firefox and WebKit
         run: npx playwright test --project=firefox --project=webkit
         env:

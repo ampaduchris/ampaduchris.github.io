@@ -120,17 +120,20 @@ test('[REQ-058] the drift stops while the mark is hovered', async ({ page }) => 
 
 const reading = (page: any) => page.locator('[data-block=reading]');
 
-test('[REQ-005] [REQ-053] Method has "How to read the mark": the mark with one arc per session, seven legend rows and the table', async ({ browser, baseURL }) => {
+test('[REQ-005] [REQ-053] Method has "How to read the mark": the mark with one arc per session, seven legend rows (eight with an unlogged project) and the table', async ({ browser, baseURL }) => {
   const ctx = await browser.newContext({ javaScriptEnabled: false });
   const page = await ctx.newPage();
   await page.goto(baseURL + '/method/');
   await expect(reading(page).locator('h2')).toHaveText('How to read the mark');
   await expect(reading(page).locator('svg.mark')).toHaveCount(1);
   await expect(reading(page).locator('svg.mark .seg')).toHaveCount(total);
-  await expect(reading(page).locator('dl dt')).toHaveCount(7);
-  await expect(reading(page).locator('dl dd')).toHaveCount(7);
+  // Seven rows, and an eighth while a project's build log is not in table form (5.6 F-09).
+  const unlogged = JSON.parse(readFileSync('src/data/mark.json', 'utf8')).projects.some((p: any) => p.log === 'not-table');
+  await expect(reading(page).locator('dl dt')).toHaveCount(unlogged ? 8 : 7);
+  await expect(reading(page).locator('dl dd')).toHaveCount(unlogged ? 8 : 7);
+  await expect(reading(page).locator('dd[data-legend=unlogged]')).toHaveCount(unlogged ? 1 : 0);
   const names = await reading(page).locator('dd > b:first-child').allInnerTexts();
-  expect(names).toEqual(['A ring', 'An arc', 'Thickness', 'Solid', 'A dot', 'Outer nodes', 'The centre']);
+  expect(names).toEqual(['A ring', 'An arc', 'Thickness', 'Solid', 'A dot', 'Outer nodes', 'The centre', ...(unlogged ? ['A ring with no arcs'] : [])]);
   await ctx.close();
 });
 
@@ -203,8 +206,10 @@ const expectedOn: Record<string, string[]> = {
 const onSessions = (page: any) => page.$$eval('figure[data-block=mark] .seg.on', (els: Element[]) => els.map((e) => (e as HTMLElement).dataset.session).sort());
 
 for (const c of CLAIMS) {
-  test(`[REQ-059] pointing at "${c.text}" lights exactly the arcs that support it and the readout repeats its statistic`, async ({ page }) => {
+  test(`[REQ-059] pointing at "${c.text}" lights exactly the arcs that support it and adds no text`, async ({ page }) => {
     await page.goto(`${FIXTURE}/`);
+    const resting = await page.locator('[data-readout]').innerText();
+    const mainBefore = await page.locator('main').innerText();
     const svg = page.locator('figure[data-block=mark] svg.mark');
     await page.locator(`a.probe[data-probe=${c.name}]`).hover();
     expect(await onSessions(page)).toEqual([...expectedOn[c.name]].sort());
@@ -214,12 +219,9 @@ for (const c of CLAIMS) {
       await expect(page.locator('figure[data-block=mark] .seg.open.on')).toHaveCount(0); // no dashed arc
       await expect(page.locator('figure[data-block=mark] .seg.merged.on')).toHaveCount(expectedOn.merged.length);
     }
-    const tile = page.locator(`#stat-${c.stat}`);
-    const readout = await page.locator('[data-readout]').innerText();
-    expect(readout).toContain('Claim to evidence');
-    expect(readout).toContain((await tile.locator('.v').innerText()).trim());
-    expect(readout).toContain((await tile.locator('.l').innerText()).trim());
-    expect(readout).toContain((await tile.locator('[data-n]').innerText()).trim());
+    // Highlighting and nothing else (REQ-059): the readout and the page text are as they were before the pointer arrived.
+    expect(await page.locator('[data-readout]').innerText()).toBe(resting);
+    expect(await page.locator('main').innerText()).toBe(mainBefore);
     await page.mouse.move(0, 0);
     await expect(page.locator('figure[data-block=mark] .seg.on')).toHaveCount(0);
     await expect(page.locator('[data-readout]')).toContainText('The proof mark');

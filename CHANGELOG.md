@@ -10,3 +10,5 @@
 - Session 5.4: the proof mark on Home (build-time SVG, readout, keyboard, table, pause, reduced motion), rings in the project cards.
 - Session 5.4a: the owner's copy edits, and Contact with a site-only email, LinkedIn and a location line.
 - Session 5.5: the four claims in Home's introduction link to their statistics and light the matching arcs; Method gains "How to read the mark" with the legend, a live mark and its table.
+- Session 5.6: independent review (`docs/reviews/5.6.md`), ten findings, six must-fix.
+- Session 5.6a: the owner's decisions on four findings. Claims light arcs only; every number's source sits on its own element; a ring whose build log is not a table says so; the browser and the link checker install before the tests, and the browser tests cannot reach the network.

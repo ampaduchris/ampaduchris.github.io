@@ -130,6 +130,13 @@ describe('the outputs', () => {
     expect(Object.keys(s[0]).sort()).toEqual(['effort', 'hours_to_merge', 'merged_by_owner', 'minutes', 'model', 'not_verified', 'pr_number', 'session', 'state']);
   });
 
+  test('[REQ-028] [REQ-054] mark.json says whether each build log has a row table', () => {
+    const s = snap(many(1));
+    s.repos.push({ repo: 'o/prose', build_log: '# Build log\n\nSession one went well.\n', build_log_commit: 'def', commits: [], prs: [] });
+    s.repos.push({ repo: 'o/none', build_log: null, build_log_commit: null, commits: [], prs: [] });
+    expect(computeNumbers(s).mark.projects.map((p) => [p.repo, p.log])).toEqual([['o/r', 'table'], ['o/prose', 'not-table'], ['o/none', 'missing']]);
+  });
+
   test('[REQ-029] two runs on the same input give identical bytes', () => {
     const a = serialise(computeNumbers(snap(many(5))).method);
     const b = serialise(computeNumbers(snap(many(5))).method);
