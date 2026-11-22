@@ -118,9 +118,31 @@ describe('the outputs', () => {
     expect(method.generated_at).toBe('2026-11-21T12:00:00Z');
     expect(method.cutoff).toBe('2026-11-15');
     expect(method.sources).toEqual([{ repo: 'o/r', build_log_commit: 'abc', queries: ['gh api repos/o/r/pulls'] }]);
+    expect(mark.generated_at).toBe('2026-11-21T12:00:00Z');
     expect(mark.cutoff).toBe('2026-11-15');
+    expect(mark.sources).toEqual(method.sources);
+    expect(upstream.cutoff).toBe('2026-11-15');
+    expect(upstream.queries).toEqual([]);
     expect(upstream.generated_at).toBe('2026-11-21T12:00:00Z');
-    expect(serialise(upstream)).toBe('{\n  "generated_at": "2026-11-21T12:00:00Z",\n  "cutoff": "2026-11-15",\n  "prs": []\n}\n');
+    expect(serialise(upstream)).toBe('{\n  "generated_at": "2026-11-21T12:00:00Z",\n  "cutoff": "2026-11-15",\n  "queries": [],\n  "prs": []\n}\n');
+  });
+
+  test('[REQ-027] upstream.json records the search query it came from', () => {
+    const q = 'gh api search/issues?q=type:pr+author:me+-user:me&per_page=100';
+    const { upstream } = computeNumbers(snap([], { queries: ['gh api repos/o/r/pulls', q] }));
+    expect(upstream.queries).toEqual([q]);
+  });
+
+  test('[REQ-028] recent holds the five newest own pull requests, newest first', () => {
+    const day = (n: number) => `2026-11-${String(16 + n).padStart(2, '0')}T00:00:00Z`;
+    const prs = [3, 7, 1, 5, 2, 6, 4].map((n) => pr(n, { created_at: day(n), merged_at: day(n), ready_at: day(n) }));
+    const { recent } = computeNumbers(snap(prs)).method;
+    expect(recent.map((r) => r.number)).toEqual([7, 6, 5, 4, 3]);
+  });
+
+  test('[REQ-028] [REQ-054] a pull request merged by another account is not marked as merged by the owner', () => {
+    const { mark } = computeNumbers(snap([pr(1), pr(2, { merged_by: 'someone' })]));
+    expect(mark.projects[0].sessions.slice(0, 2).map((x) => [x.state, x.merged_by_owner])).toEqual([['merged', true], ['merged', false]]);
   });
 
   test('[REQ-028] mark.json has one record per build-log row with the pull request state', () => {
