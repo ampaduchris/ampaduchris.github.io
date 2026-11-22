@@ -38,3 +38,13 @@ describe('deploy', () => {
     expect(steps.find((s: any) => s.name === 'Say why nothing was published').if).toContain("steps.legal.outcome == 'failure'");
   });
 });
+
+describe('cross-browser job', () => {
+  test('runs the browser tests in Firefox and WebKit with no secret and is not a dependency of the deploy', () => {
+    const job = ci.jobs['cross-browser'];
+    const run = job.steps.map((s: any) => s.run ?? '').join('\n');
+    expect(run).toContain('--project=firefox --project=webkit');
+    expect(JSON.stringify(job)).not.toContain('secrets.');
+    expect(ci.jobs.deploy.needs).not.toContain('cross-browser');
+  });
+});

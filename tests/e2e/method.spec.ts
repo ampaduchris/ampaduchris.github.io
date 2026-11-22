@@ -90,3 +90,26 @@ test('[REQ-021] an own pull request row shows its state, who merged it and how l
     await expect(row).toContainText(r.state === 'merged' ? `Merged by me after ${r.hours_to_merge.toFixed(1)} hours` : r.state === 'open' ? 'Open' : 'Closed');
   }
 });
+
+test('[REQ-040] the loop starts on step five and follows the pointer, a click and the keyboard; without scripts nothing is selected', async ({ page, browser, baseURL }) => {
+  await page.goto('/method/');
+  const on = () => page.$$eval('[data-steps] li.on', (els) => els.map((e) => e.getAttribute('data-step')));
+  const nodeOn = () => page.$$eval('.loop svg g.on', (els) => els.map((e) => e.getAttribute('data-step')));
+  expect(await on()).toEqual(['5']);
+  expect(await nodeOn()).toEqual(['5']);
+  await page.locator('[data-steps] li[data-step="2"]').hover();
+  expect(await on()).toEqual(['2']);
+  expect(await nodeOn()).toEqual(['2']);
+  await page.locator('.loop svg g[data-step="3"] .node').click();
+  expect(await on()).toEqual(['3']);
+  await page.locator('[data-steps] li[data-step="6"]').focus();
+  expect(await on()).toEqual(['6']);
+  await page.waitForTimeout(3000);
+  expect(await on()).toEqual(['6']); // it does not advance by itself
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const off = await ctx.newPage();
+  await off.goto(baseURL + '/method/');
+  await expect(off.locator('[data-steps] li.on')).toHaveCount(0);
+  await expect(off.locator('[data-steps] li')).toHaveCount(6);
+  await ctx.close();
+});

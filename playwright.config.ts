@@ -7,7 +7,12 @@ export default defineConfig({
   retries: process.env.CI ? 0 : 1, // locally one retry, reported as flaky; a stall has been seen about once in four runs on a busy machine, never in CI
   reporter: [['list']],
   // Locally the installed Chrome is used so that nothing is downloaded; CI installs Chromium.
-  use: { baseURL: 'http://127.0.0.1:4321', browserName: 'chromium', channel: process.env.CI ? undefined : 'chrome' },
+  use: { baseURL: 'http://127.0.0.1:4321' },
+  projects: [
+    { name: 'chromium', use: { browserName: 'chromium', channel: process.env.CI ? undefined : 'chrome' } },
+    // Firefox and WebKit run in CI only (the cross-browser job), so that nothing is downloaded locally.
+    ...(process.env.CROSS_BROWSER ? [{ name: 'firefox', use: { browserName: 'firefox' as const } }, { name: 'webkit', use: { browserName: 'webkit' as const } }] : []),
+  ],
   webServer: [
     { command: 'node scripts/serve.mjs dist 4321', url: 'http://127.0.0.1:4321/', reuseExistingServer: !process.env.CI },
     { command: 'node scripts/serve.mjs dist-fixture 4322', url: 'http://127.0.0.1:4322/', reuseExistingServer: !process.env.CI },
