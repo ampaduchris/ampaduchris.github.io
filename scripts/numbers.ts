@@ -12,6 +12,9 @@ import { loadProjects, loadSite } from '../src/lib/data';
 import { CUTOFF, computeNumbers, serialise, type Commit, type PrRecord, type RepoSource, type Snapshot, type UpstreamPr } from '../src/lib/numbers';
 
 const OUT = 'src/data';
+// NUMBERS_SITE_REF names a branch of this site's repository whose BUILD-LOG.md is read in place of the default branch's. A notes session cites its own
+// build-log row, which is on the pull request's branch until the merge (DEV-052). The ref is recorded in the queries.
+const SITE_REF = process.env.NUMBERS_SITE_REF;
 const args = new Set(process.argv.slice(2));
 
 function api(path: string, opts: { paginate?: boolean } = {}): any {
@@ -29,13 +32,15 @@ function api(path: string, opts: { paginate?: boolean } = {}): any {
 function fetchSnapshot(): Snapshot {
   const site = loadSite();
   const owner = new URL(site.github_url).pathname.replace(/\//g, '');
-  const repos = [...loadProjects().map((p) => p.repo), new URL(site.repo_url).pathname.slice(1)];
+  const siteRepo = new URL(site.repo_url).pathname.slice(1);
+  const repos = [...loadProjects().map((p) => p.repo), siteRepo];
   const queries: string[] = [];
   const q = (s: string) => { queries.push(`gh api ${s}`); return s; };
   const sources: RepoSource[] = [];
   for (const repo of repos) {
-    const head = api(q(`repos/${repo}/commits/HEAD`));
-    const log = api(q(`repos/${repo}/contents/docs/BUILD-LOG.md`));
+    const ref = repo === siteRepo && SITE_REF ? SITE_REF : null;
+    const head = api(q(`repos/${repo}/commits/${ref ?? 'HEAD'}`));
+    const log = api(q(`repos/${repo}/contents/docs/BUILD-LOG.md${ref ? `?ref=${ref}` : ''}`));
     const commits: Commit[] = (api(q(`repos/${repo}/commits?since=${CUTOFF}T00:00:00Z&per_page=100`), { paginate: true }) ?? []).map((c: any) => ({
       sha: c.sha, date: c.commit.author.date, parents: c.parents.length,
       coauthor_lines: String(c.commit.message).split('\n').filter((l) => /^co-authored-by:/i.test(l)).map((l) => l.trim()),
