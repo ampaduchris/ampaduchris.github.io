@@ -19,6 +19,7 @@
     "sync-check": "tsx scripts/sync-check.ts",
     "sizes": "node scripts/sizes.mjs",
     "numbers": "tsx scripts/numbers.ts",
+    "screenshots": "tsx scripts/screenshots.ts",
     "mutate": "stryker run"
   },
   "dependencies": {

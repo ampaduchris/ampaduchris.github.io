@@ -10,3 +10,9 @@ export function legalProblems(files: Record<string, string | undefined>): string
   }
   return problems;
 }
+
+/** Fails the build while a legal file is missing or pending (REQ-007). */
+export function assertLegal(files: Record<string, string | undefined>): void {
+  const problems = legalProblems(files);
+  if (problems.length) throw new Error(`[legal] ${problems.join('; ')}`);
+}

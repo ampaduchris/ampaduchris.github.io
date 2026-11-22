@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 (22 November 2026)
+
+- Session 5.8: release. `portfolio.yml`, the release workflow, the README with the live address as the demo and two screenshots, the legal guard now fails the build while the text is pending (DEV-004 closed), the scheduled run moved out of `ci.yml` (the weekly sync and link checks stay in `sync.yml`).
+- Session 5.7: Stryker mutation report; fixes for review findings; F-07, F-08 and F-10 logged.
+
+### Build history before release
 
 - Session 5.1: specification adopted, Astro scaffold, Home with project cards from the data file, Contact, Legal shell, not-found page, continuous integration.
 - CI versions chosen: Node 24 and 26 (the two newest long-term releases on 21 Nov 2026); both green in CI.
