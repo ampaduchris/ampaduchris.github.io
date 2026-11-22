@@ -1,0 +1,6 @@
+---
+// A number typed in prose, tied to the row that holds it (REQ-085).
+interface Props { row: string }
+const { row } = Astro.props;
+---
+<span data-src={`evidence.yml#${row}`}><slot /></span>

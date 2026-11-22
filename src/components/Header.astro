@@ -1,14 +1,15 @@
 ---
 // The links are a list so that a later session adds a link without touching the markup.
-// Notes joins in session N.1.
-import { NAV } from '../lib/nav';
+import { navLinks } from '../lib/nav';
+import { loadNotes } from '../lib/notes';
 interface Props { current?: string }
 const { current } = Astro.props;
+const links = navLinks((await loadNotes()).length > 0);
 ---
 <header class="site wrap" data-block="header">
   <a class="name" href="/" aria-current={current === '/' ? 'page' : undefined}><svg class="glyph" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle class="e" cx="12" cy="12" r="3"/></svg>Chris Ampadu</a>
   <nav aria-label="Main">
-    {NAV.map((l) => <a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>)}
+    {links.map((l) => <a href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>)}
     <button type="button" class="theme" data-theme-toggle hidden>Dark</button>
   </nav>
 </header>

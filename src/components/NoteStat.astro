@@ -1,0 +1,10 @@
+---
+// A statistic (REQ-023): value, label and sample size in one component. These two are counts of the whole page, so n is the value.
+interface Props { value: number; label: string; src: string }
+const { value, label, src } = Astro.props;
+---
+<div class="stat" role="group" aria-label={`${label}: ${value}. n = ${value}`} data-stat data-src={src}>
+  <span class="v">{value}</span>
+  <span class="l">{label}</span>
+  <span class="n" data-n>n = {value}</span>
+</div>

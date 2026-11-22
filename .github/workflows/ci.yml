@@ -56,6 +56,8 @@ jobs:
         run: npm run contrast
       - name: Requirement traceability
         run: npm run trace
+      - name: Claims checker
+        run: npm run claims
       - name: Numbers match the snapshot
         run: npm run numbers -- --from-snapshot --check
       - name: Browser tests with axe

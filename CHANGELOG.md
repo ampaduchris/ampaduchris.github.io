@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Session N.1: Notes section (`/notes/`, `/notes/<slug>/`, RSS feed, Notes link, byline), MDX, the scrubbed evidence table `src/data/evidence.yml`, and the claims checker (`npm run claims`). REQ-070 to REQ-086. No note is published yet.
+
 ## 1.0.0 (22 November 2026)
 
 - Session 5.8: release. `portfolio.yml`, the release workflow, the README with the live address as the demo and two screenshots, the legal guard now fails the build while the text is pending (DEV-004 closed), the scheduled run moved out of `ci.yml` (the weekly sync and link checks stay in `sync.yml`).

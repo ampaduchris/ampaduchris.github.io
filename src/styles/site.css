@@ -234,3 +234,63 @@ footer nav{display:flex;gap:var(--s5)}
 .more + details,.strip + .more + details{margin-top:var(--s4)}
 .where{margin-top:var(--s6)}
 .where + .links{margin-top:var(--s3)}
+
+/* Notes (F14, DESIGN.md section 7.1). The index and the note page. No new token and no new type role. The header rule for three links is with the other header rules above. */
+
+/* the index: one entry per note. The grid is the evidence row's, with the date and kind leading. */
+.listhead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s4);margin-bottom:var(--s5)}
+.listhead h2{margin:0}
+.feed{font-size:.9375rem;line-height:1.4;font-weight:600;color:var(--accent)}
+.entries{list-style:none;margin:0;padding:0}
+.entry{display:grid;grid-template-columns:9rem minmax(0,1fr);gap:var(--s2) var(--s6);padding:var(--s5) 0;border-bottom:1px solid var(--border);text-decoration:none}
+.entries li:first-child .entry{border-top:1px solid var(--border)}
+.entry .when{display:grid;gap:var(--s1);align-content:start;padding-top:.2rem}
+.kind{font-size:.875rem;line-height:1.5;font-weight:600}
+.entry:hover h3{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:1px;text-underline-offset:.18em}
+.entry .stand{margin:var(--s2) 0 0;max-width:40em}
+.entry .facts{font-size:.8125rem;line-height:1.5;color:var(--text-2);margin:var(--s2) 0 0}
+
+/* the note page: head, then one reading column */
+.ahead{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,22rem);gap:var(--s7);align-items:start;padding-top:var(--s6)}
+.ahead .kicker a{text-decoration:none}
+.ahead .kicker a:hover{text-decoration:underline}
+.ahead .lede{margin-top:var(--s4)}
+.byline{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:center;margin:var(--s5) 0 0;max-width:none;font-size:.8125rem;line-height:1.5;color:var(--text-2)}
+.byline a{font-weight:600;color:var(--accent)}
+.tiles{display:grid;gap:var(--s4)}
+.prose p,.prose ul,.prose ol,.prose h2{max-width:34rem}
+.prose h2{font-size:1.375rem;line-height:1.25;letter-spacing:-.015em;color:var(--text);margin:var(--s7) 0 var(--s4)}
+.prose .plain{margin-bottom:var(--s4)}
+.ref{font:400 .75rem/0 var(--mono);letter-spacing:.01em;color:var(--accent);text-decoration:none;vertical-align:.45em;margin-left:.2em}
+.ref:hover{text-decoration:underline}
+.timeline{list-style:none;margin:0 0 var(--s4);padding:0}
+.timeline li{display:grid;grid-template-columns:6.5rem minmax(0,1fr);gap:var(--s4);align-items:baseline;margin:var(--s2) 0}
+.unknown{list-style:none;margin:0 0 var(--s4);padding:0}
+.unknown li{position:relative;padding-left:var(--s5);margin:var(--s2) 0}
+.unknown li::before{content:"";position:absolute;left:.1rem;top:.55em;width:.55rem;height:.55rem;border-radius:50%;background:var(--warn)}
+
+/* the evidence table: cells wrap, nothing scrolls sideways. A row reached from a marker is drawn like the selected loop step. */
+.evidence{min-width:0;max-width:46rem;font-size:.9375rem;line-height:1.4}
+.evidence th,.evidence td{white-space:normal;vertical-align:top;padding:var(--s3) var(--s4) var(--s3) 0}
+.evidence th:first-child,.evidence td:first-child{padding-left:var(--s3)}
+.evidence .id,.evidence td:nth-child(2){white-space:nowrap}
+.evidence .id{font-family:var(--mono);font-size:.75rem;line-height:1.75;letter-spacing:.01em}
+.evidence time{line-height:1.75;display:block}
+.evidence .rec{display:block;font-size:.8125rem;line-height:1.5;color:var(--text-2);margin-top:var(--s1)}
+.evidence tr{scroll-margin-top:var(--s6)}
+.evidence tr:target td{background:var(--surface)}
+.evidence tr:target td:first-child{box-shadow:inset 3px 0 0 var(--iris-2)}
+
+@media (max-width:56rem){
+  .entry{grid-template-columns:1fr}
+  .entry .when{display:flex;gap:var(--s3);align-items:baseline;padding-top:0}
+  .ahead{grid-template-columns:1fr;gap:var(--s6)}
+  .tiles{grid-template-columns:1fr 1fr;gap:var(--s3)}
+  .timeline li{grid-template-columns:1fr;gap:0;margin:var(--s3) 0}
+  .evidence th,.evidence td{padding-right:var(--s3)}
+  .evidence th:first-child,.evidence td:first-child{padding-left:var(--s2)}
+}
+
+/* Markdown lists in a note take the plain list's look; only the markup differs from the mockup (MDX writes bare ul and ol). */
+.prose ul:not(.unknown),.prose ol:not(.timeline){margin:0 0 var(--s4);padding-left:1.1em}
+.prose ul:not(.unknown) li,.prose ol:not(.timeline) li{margin:.3rem 0}

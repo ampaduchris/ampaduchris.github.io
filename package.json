@@ -15,14 +15,16 @@
     "e2e": "playwright test",
     "contrast": "python3 scripts/contrast.py src/styles/tokens.json",
     "trace": "python3 scripts/trace.py",
-    "build:fixture": "UPSTREAM_FIXTURE=upstream-seven.json MARK_FIXTURE=mark-mixed.json astro build --outDir dist-fixture && METHOD_FIXTURE=method-n20.json astro build --outDir dist-median",
+    "build:fixture": "UPSTREAM_FIXTURE=upstream-seven.json MARK_FIXTURE=mark-mixed.json NOTES_FIXTURE=1 astro build --outDir dist-fixture && METHOD_FIXTURE=method-n20.json astro build --outDir dist-median",
     "sync-check": "tsx scripts/sync-check.ts",
     "sizes": "node scripts/sizes.mjs",
     "numbers": "tsx scripts/numbers.ts",
     "screenshots": "tsx scripts/screenshots.ts",
-    "mutate": "stryker run"
+    "mutate": "stryker run",
+    "claims": "tsx scripts/check-claims.ts"
   },
   "dependencies": {
+    "@astrojs/mdx": "8.1.6",
     "@astrojs/sitemap": "3.7.6",
     "astro": "7.4.13",
     "yaml": "2.9.1"
@@ -34,6 +36,7 @@
     "@stryker-mutator/core": "10.1.1",
     "@stryker-mutator/vitest-runner": "10.1.1",
     "fast-check": "4.11.0",
+    "fast-xml-parser": "5.12.1",
     "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vitest": "5.1.1"

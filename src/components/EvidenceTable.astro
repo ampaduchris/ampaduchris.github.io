@@ -1,0 +1,24 @@
+---
+import { formatEvidenceDate, type EvidenceRow } from '../lib/evidence';
+interface Props { rows: EvidenceRow[]; fileUrl: string }
+const { rows, fileUrl } = Astro.props;
+---
+<div data-block="evidence">
+  <h2 id="evidence">Evidence</h2>
+  <p class="note">Each row is one dated observation. A marker in the text links to its row. The rows for every note are kept in <a href={fileUrl}>one file in the repository</a>.</p>
+  <table class="evidence">
+    <thead><tr><th scope="col">Row</th><th scope="col">Date</th><th scope="col">Observation</th></tr></thead>
+    <tbody>
+      {rows.map((r) => {
+        const d = formatEvidenceDate(r.date);
+        return (
+          <tr id={r.id.toLowerCase()} data-src={`evidence.yml#${r.id}`}>
+            <td class="id">{r.id}</td>
+            <td><time datetime={d.datetime}>{d.text}</time></td>
+            <td>{r.observation}{r.recorded && <span class="rec">{r.recorded}</span>}</td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>

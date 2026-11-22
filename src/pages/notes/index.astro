@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import { loadNotes, loadSessionRefs } from '../../lib/notes';
+import { formatDate } from '../../lib/dates';
+const notes = await loadNotes();
+const refs = await loadSessionRefs();
+const drafter = (sessions: string[]) => {
+  const s = refs.find((r) => r.session === sessions[0])!;
+  return `${s.model} / ${s.effort}`;
+};
+const kindName = (k: string) => (k === 'essay' ? 'Essay' : 'Postmortem');
+---
+<Base
+  title="Notes. Chris Ampadu"
+  description="Notes by Chris Ampadu: postmortems of agent failures and essays, each claim tied to a dated evidence row that a reader can check."
+  path="/notes/"
+  current="/notes/"
+>
+  <div class="pagehead wrap">
+    <p class="kicker" style="margin:0">Notes</p>
+    <h1 style="max-width:21em">What failed, what I think caused it, and the evidence for each claim.</h1>
+  </div>
+  {notes.length === 0 ? (
+    <p class="wrap" style="color:var(--text-2);margin-top:var(--s5)">Nothing published yet.</p>
+  ) : (
+    <section class="wrap" data-block="entries" aria-labelledby="h-notes">
+      <div class="listhead">
+        <h2 id="h-notes"><span data-src="note#count">{notes.length}</span> {notes.length === 1 ? 'note' : 'notes'}, newest first</h2>
+        <a class="feed" href="/notes/feed.xml">Follow by <abbr title="Really Simple Syndication">RSS</abbr> feed</a>
+      </div>
+      <ul class="entries">
+        {notes.map((n) => (
+          <li><a class="entry" href={`/notes/${n.slug}/`}>
+            <div class="when"><span class="kind">{kindName(n.kind)}</span><time datetime={n.date} data-src="content">{formatDate(n.date)}</time></div>
+            <div class="body"><h3>{n.title}</h3>
+              <p class="stand">{n.standfirst}</p>
+              <p class="facts"><span data-src="note#rows">{n.rows.length} evidence {n.rows.length === 1 ? 'row' : 'rows'}</span> · <span data-src="mark.json">{drafter(n.sessions)}</span></p></div>
+          </a></li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Base>

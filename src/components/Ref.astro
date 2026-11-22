@@ -1,0 +1,6 @@
+---
+// The marker (DESIGN.md 7.1): the id of an evidence row, a link to that row at the foot of the page (REQ-078).
+interface Props { id: string }
+const { id } = Astro.props;
+---
+<a class="ref" href={`#${id.toLowerCase()}`} aria-label={`Evidence row ${id}`} data-src={`evidence.yml#${id}`}>{id}</a>
