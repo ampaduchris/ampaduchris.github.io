@@ -6,6 +6,8 @@ import { loadEvidence, type EvidenceRow } from './evidence';
 export const BYLINE = 'Drafted with Claude from my outline and evidence. Edited by me.';
 export const NOTES_DIR = 'src/content/notes';
 export const FIXTURE_DIR = 'tests/fixtures/notes';
+// NOTES_FIXTURE=none points at a folder that does not exist: a build with no note, for the empty state (REQ-071).
+export const EMPTY_DIR = 'tests/fixtures/notes-none';
 
 export interface SessionRef { session: string; model: string; effort: string }
 export interface Tag { label: string; model: string }
@@ -65,7 +67,8 @@ export function buildFeed(notes: FeedNote[], siteUrl: string): string {
 }
 
 export function notesDir(root = process.cwd()): string {
-  return resolve(root, process.env.NOTES_FIXTURE ? FIXTURE_DIR : NOTES_DIR);
+  const f = process.env.NOTES_FIXTURE;
+  return resolve(root, f === 'none' ? EMPTY_DIR : f ? FIXTURE_DIR : NOTES_DIR);
 }
 
 export interface Source { slug: string; file: string; raw: string }

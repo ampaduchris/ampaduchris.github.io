@@ -4,9 +4,10 @@ import { readFileSync } from 'node:fs';
 import { parse } from 'yaml';
 
 // The fixture build (npm run build:fixture) holds three synthetic notes from tests/fixtures/notes/ and is served on 4322.
-// The real build (4321) holds no note until the notes sessions publish one.
+// The real build (4321) holds the published notes. The empty build (4323, NOTES_FIXTURE=none) holds none, for the empty state (REQ-071).
 const FIX = 'http://127.0.0.1:4322';
 const REAL = 'http://127.0.0.1:4321';
+const EMPTY = 'http://127.0.0.1:4323';
 const NOTE_ROUTES = ['/notes/', '/notes/postmortem-a/', '/notes/postmortem-b/', '/notes/essay-a/'];
 const evidence = parse(readFileSync('src/data/evidence.yml', 'utf8')) as { id: string; date: string }[];
 const hrefs = (page: Page, sel: string) => page.$$eval(sel, (els) => els.map((e) => e.getAttribute('href')));
@@ -14,7 +15,7 @@ const texts = (page: Page, sel: string) => page.$$eval(sel, (els) => els.map((e)
 const idNum = (id: string) => Number(id.slice(1));
 
 test('[REQ-071] with no note the index shows its headline and one sentence, and nothing else', async ({ page }) => {
-  await page.goto(`${REAL}/notes/`);
+  await page.goto(`${EMPTY}/notes/`);
   await expect(page.locator('h1')).toHaveText('What failed, what I think caused it, and the evidence for each claim.');
   await expect(page.locator('main')).toContainText('Nothing published yet.');
   await expect(page.locator('.entries, .feed, .listhead, [data-block=entries]')).toHaveCount(0);
@@ -22,11 +23,11 @@ test('[REQ-071] with no note the index shows its headline and one sentence, and 
 
 test('[REQ-071] with no note there is no Notes link, no feed link in any head, and no feed file', async ({ page, request }) => {
   for (const r of ['/', '/method/', '/notes/']) {
-    await page.goto(`${REAL}${r}`);
+    await page.goto(`${EMPTY}${r}`);
     expect(await texts(page, 'header.site nav a')).toEqual(['Method', 'Contact']);
     await expect(page.locator('link[rel=alternate][type="application/rss+xml"]')).toHaveCount(0);
   }
-  expect((await request.get(`${REAL}/notes/feed.xml`)).status()).toBe(404);
+  expect((await request.get(`${EMPTY}/notes/feed.xml`)).status()).toBe(404);
 });
 
 test('[REQ-070] the index lists three notes newest first with kind, date, title, standfirst, rows and model', async ({ page }) => {
@@ -230,3 +231,23 @@ for (const route of NOTE_ROUTES) {
     }
   }
 }
+
+test('[REQ-070][REQ-077][REQ-078] the published notes list newest first, and each note links every marker to a row in its own table', async ({ page }) => {
+  await page.goto(`${REAL}/notes/`);
+  const slugs = (await hrefs(page, 'a.entry')).map((h) => h!.replace(/^\/notes\/|\/$/g, ''));
+  expect(slugs.length).toBeGreaterThan(0);
+  await expect(page.locator('#h-notes')).toHaveText(`${slugs.length} ${slugs.length === 1 ? 'note' : 'notes'}, newest first`);
+  for (const slug of slugs) {
+    await page.goto(`${REAL}/notes/${slug}/`);
+    const refs = await texts(page, 'a.ref');
+    const rows = await texts(page, 'table.evidence td.id');
+    expect(refs.length).toBeGreaterThan(0);
+    for (const r of refs) expect(rows).toContain(r);
+    expect(rows).toEqual([...rows].sort((a, b) => idNum(a) - idNum(b)));
+    expect(new Set(refs)).toEqual(new Set(rows));
+    // Each marker's href names a row of the table on the same page, and its accessible name names the row.
+    const links = await page.$$eval('a.ref', (as) => as.map((a) => ({ text: (a.textContent ?? '').trim(), label: a.getAttribute('aria-label'), target: document.querySelector(a.getAttribute('href') ?? '#none')?.closest('table.evidence') ? document.querySelector(a.getAttribute('href')!)!.querySelector('td.id')!.textContent!.trim() : null })));
+    for (const l of links) { expect(l.target, `marker ${l.text}`).toBe(l.text); expect(l.label).toBe(`Evidence row ${l.text}`); }
+    await expect(page.locator('[data-block=note-numbers] [data-src="note#rows"]')).toContainText(String(rows.length));
+  }
+});

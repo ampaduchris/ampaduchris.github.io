@@ -9,7 +9,8 @@ const html = files.filter((f) => f.endsWith('.html'));
 test('[REQ-013] the sitemap lists the indexable routes and not the 404 page', () => {
   const xml = readFileSync('dist/sitemap-0.xml', 'utf8');
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  expect(locs).toEqual(['https://ampaduchris.github.io/', 'https://ampaduchris.github.io/contact/', 'https://ampaduchris.github.io/legal/', 'https://ampaduchris.github.io/method/']);
+  const notes = readdirSync('src/content/notes').filter((f) => f.endsWith('.mdx')).map((f) => `https://ampaduchris.github.io/notes/${f.replace(/\.mdx$/, '')}/`);
+  expect([...locs].sort()).toEqual(['https://ampaduchris.github.io/', 'https://ampaduchris.github.io/contact/', 'https://ampaduchris.github.io/legal/', 'https://ampaduchris.github.io/method/', 'https://ampaduchris.github.io/notes/', ...notes].sort());
 });
 
 test('[REQ-037] fonts are WOFF2 files from the site and each family has its licence', () => {
@@ -60,7 +61,9 @@ test('[REQ-038] the browser tests cannot reach the network, in the default conte
 
 test('[REQ-086] the sitemap lists /notes/ and each note when notes exist, and nothing under /notes/ when none does', () => {
   const locs = (dir: string) => [...readFileSync(`${dir}/sitemap-0.xml`, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  expect(locs('dist').filter((l) => l.includes('/notes'))).toEqual([]);
+  const real = readdirSync('src/content/notes').filter((f) => f.endsWith('.mdx')).map((f) => `https://ampaduchris.github.io/notes/${f.replace(/\.mdx$/, '')}/`);
+  expect(locs('dist').filter((l) => l.includes('/notes')).sort()).toEqual(['https://ampaduchris.github.io/notes/', ...real].sort());
+  expect(locs('dist-median').filter((l) => l.includes('/notes'))).toEqual([]);
   expect(locs('dist-fixture').filter((l) => l.includes('/notes')).sort()).toEqual([
     'https://ampaduchris.github.io/notes/', 'https://ampaduchris.github.io/notes/essay-a/',
     'https://ampaduchris.github.io/notes/postmortem-a/', 'https://ampaduchris.github.io/notes/postmortem-b/']);

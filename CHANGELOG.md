@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Session N.1: Notes section (`/notes/`, `/notes/<slug>/`, RSS feed, Notes link, byline), MDX, the scrubbed evidence table `src/data/evidence.yml`, and the claims checker (`npm run claims`). REQ-070 to REQ-086. No note is published yet.
+- Session N.2: two postmortems, flat scout version one (coverage) and version two (subagent cost), and evidence rows E18 to E23 for the fixes. An empty-notes build for the empty-state tests; `NUMBERS_SITE_REF` for the numbers script (DEV-052 to DEV-054).
 
 ## 1.0.0 (22 November 2026)
 

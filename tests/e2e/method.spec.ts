@@ -61,11 +61,20 @@ test('[REQ-024] a proportion is written "k of n"', async ({ page }) => {
 });
 
 test('[REQ-025] below 20 pull requests the median is not shown, and at 20 it is', async ({ page }) => {
+  // The real data decides which side of the floor the real build is on; the two fixture builds hold one side each.
   await page.goto('/method/');
+  const real = method.stats.find((s: any) => s.id === 'hours_to_merge');
+  const live = page.locator('[data-src="method.json#hours_to_merge"]');
+  if (real.n < 20) {
+    await expect(live).toContainText(`Shown from 20 pull requests. Today: n = ${real.n}.`);
+    await expect(live.locator('.v')).toHaveCount(0);
+  } else {
+    await expect(live.locator('.v')).toHaveText(String(real.value));
+    await expect(live.locator('[data-n]')).toHaveText(`n = ${real.n}`);
+  }
+  await page.goto('http://127.0.0.1:4324/method/');
   const tile = page.locator('[data-src="method.json#hours_to_merge"]');
-  const merged = method.stats.find((s: any) => s.id === 'hours_to_merge').n;
-  expect(merged).toBeLessThan(20);
-  await expect(tile).toContainText(`Shown from 20 pull requests. Today: n = ${merged}.`);
+  await expect(tile).toContainText('Shown from 20 pull requests. Today: n = 19.');
   await expect(tile.locator('.v')).toHaveCount(0);
   await page.goto('http://127.0.0.1:4323/method/');
   const shown = page.locator('[data-src="method.json#hours_to_merge"]');
