@@ -1,0 +1,8 @@
+---
+import { renderMark } from '../lib/mark';
+import { loadMarkData } from '../lib/markdata';
+interface Props { only?: string; id?: string; still?: boolean }
+const { only, id = 'mark', still = false } = Astro.props;
+const svg = renderMark(loadMarkData(), { only: only ?? null, id, still });
+---
+<Fragment set:html={svg} />

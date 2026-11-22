@@ -27,6 +27,16 @@ probes=[
  ("REQ-052",".github/workflows/ci.yml","if: steps.legal.outcome == 'success'","if: always()","npx vitest run -t REQ-052",False),
  ("REQ-040","public/loop.js","go(4);\n})();","go(0);\n})();","npx playwright test -g \"the loop starts\"",True),
  ("REQ-040","public/loop.js","li.addEventListener('focus'","li.addEventListener('blur'","npx playwright test -g \"the loop starts\"",True),
+ ("REQ-054","src/lib/mark.ts","Array.from({ length: s.nv }","Array.from({ length: s.nv + 1 }","npx vitest run -t REQ-054",False),
+ ("REQ-054","src/lib/mark.ts","high: 10","high: 11","npx vitest run -t REQ-054",False),
+ ("REQ-055","src/lib/mark.ts","G.ringMin + (i * (G.ringMax - G.ringMin))","G.ringMax + (i * (G.ringMax - G.ringMin))","npx vitest run -t REQ-055",False),
+ ("REQ-055","src/lib/mark.ts","const k = total > 360 ? (360 - gaps) / (total - gaps) : 1;","const k = 1;","npx vitest run -t REQ-055",False),
+ ("REQ-056","src/lib/mark.ts","'not merged by me'","'merged by me'","npx vitest run -t REQ-056",False),
+ ("REQ-057","public/mark.js","i = (i + 1) % n;","i = (i + 2) % n;","npx playwright test -g REQ-057",True),
+ ("REQ-057","src/components/Home.astro",'aria-live="polite"','aria-live="off"',"npx playwright test -g REQ-057",True),
+ ("REQ-058","src/styles/site.css",".mark:hover .ring,",".mark:hovr .ring,","npx playwright test -g REQ-058",True),
+ ("REQ-058","src/styles/site.css","{.ring{animation:none}","{.ringx{animation:none}","npx playwright test -g REQ-058",True),
+ ("REQ-053","src/components/Home.astro",'<Mark id="mark" />',"","npx playwright test -g REQ-053",True),
  ("REQ-042","src/styles/site.css","color-scheme:dark;","color-scheme:dark;--bg:#FFFFFF;","npx playwright test -g REQ-042",True),
 ]
 for rid,f,a,b,cmd,build in probes:

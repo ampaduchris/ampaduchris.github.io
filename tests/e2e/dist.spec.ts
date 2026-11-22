@@ -25,12 +25,13 @@ test('[REQ-037] fonts are WOFF2 files from the site and each family has its lice
   expect(files.some((f) => /\.(ttf|otf|woff)$/.test(f))).toBe(false);
 });
 
-test('[REQ-040] the only scripts the site ships are the theme script and the loop module, and only Method loads the loop', () => {
-  expect(files.filter((f) => f.endsWith('.js')).map((f) => f.replace(/^dist\//, '')).sort()).toEqual(['loop.js', 'theme.js']);
+test('[REQ-040] the only scripts the site ships are the theme script, the loop module and the mark module, loaded only where they are used', () => {
+  expect(files.filter((f) => f.endsWith('.js')).map((f) => f.replace(/^dist\//, '')).sort()).toEqual(['loop.js', 'mark.js', 'theme.js']);
   for (const f of html) {
     const srcs = [...readFileSync(f, 'utf8').matchAll(/<script[^>]*>/g)].map((m) => m[0]);
-    for (const s of srcs) expect(s).toMatch(/src="\/(theme|loop)\.js"/);
+    for (const s of srcs) expect(s).toMatch(/src="\/(theme|loop|mark)\.js"/);
     expect(srcs.some((s) => s.includes('loop.js')), f).toBe(f.endsWith('method/index.html'));
+    expect(srcs.some((s) => s.includes('mark.js')), f).toBe(['index.html', 'cv/index.html', 'in/index.html'].some((n) => f === `dist/${n}`));
   }
 });
 

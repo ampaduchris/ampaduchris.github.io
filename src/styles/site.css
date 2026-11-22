@@ -8,7 +8,7 @@
   --border:#DCE2EA;--border-strong:#76828F;--accent:#1549D6;--on-accent:#FFFFFF;
   --ok:#0B6B45;--ok-bg:#DFF1E8;--warn:#7A4300;--warn-bg:#FBEBD3;
   --iris-1:#1549D6;--iris-2:#0C69A6;--iris-3:#007070;
-  color-scheme:light;
+  color-scheme:light;--glow:0;
   --sans:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   --s1:.25rem;--s2:.5rem;--s3:.75rem;--s4:1rem;--s5:1.5rem;--s6:2rem;--s7:3rem;--s8:4rem;--s9:6rem;
   --iris:linear-gradient(90deg,var(--iris-1),var(--iris-2),var(--iris-3));
@@ -18,7 +18,7 @@
   --border:#232C3D;--border-strong:#66728A;--accent:#8FB0FF;--on-accent:#06102A;
   --ok:#7FE0B0;--ok-bg:#0F2A1E;--warn:#F2B45A;--warn-bg:#33240C;
   --iris-1:#8FB0FF;--iris-2:#5CC8F0;--iris-3:#4FE0D0;
-  color-scheme:dark;
+  color-scheme:dark;--glow:1;
 }
 
 *{box-sizing:border-box}
@@ -61,11 +61,10 @@ section{padding-top:var(--s7)}
 main{padding-bottom:var(--s9)}
 
 /* hero */
-.hero{padding-top:var(--s6)}
-.hero h1{max-width:24em}
 
 /* project card with one number */
-.project{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,15rem);gap:var(--s6);align-items:center;background:var(--surface);border-radius:8px;padding:var(--s5) var(--s6);margin-bottom:var(--s4)}
+.project{display:grid;grid-template-columns:6.5rem minmax(0,1fr) minmax(0,15rem);gap:var(--s6);align-items:center;background:var(--surface);border-radius:8px;padding:var(--s5) var(--s6);margin-bottom:var(--s4)}
+.project .ringbox{width:6.5rem}
 .project h3 a{text-decoration:none}
 .project h3 a:hover{text-decoration:underline}
 .tag{display:inline-block;color:var(--text-2);margin-left:var(--s3);vertical-align:.15em;letter-spacing:0}
@@ -88,6 +87,50 @@ main{padding-bottom:var(--s9)}
 .pr .t{display:block;font-weight:500}
 .pr .repo{display:block;color:var(--text-2)}
 time{color:var(--text-2);white-space:nowrap}
+
+
+/* hero with the mark */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,28rem);gap:var(--s7);align-items:center;padding-top:var(--s2)}
+.mark-wrap{margin:0;background:var(--surface);border-radius:20px;padding:var(--s5)}
+.readout{min-height:6.4rem;border-top:1px solid var(--border);margin-top:var(--s4);padding-top:var(--s4);display:grid;gap:.15rem;align-content:start}
+.readout .k{color:var(--text-2)}
+.readout .v{font-size:1.0625rem;line-height:1.4}
+.readout .v b{font-weight:600}
+.readout .s{color:var(--text-2)}
+.readout a{font-size:.8125rem;font-weight:600;color:var(--accent);justify-self:start}
+.tools{display:flex;gap:var(--s5);align-items:center;color:var(--text-2);margin-top:var(--s2)}
+.tools button{font:inherit;color:inherit;background:none;border:1px solid var(--border-strong);border-radius:999px;padding:.15rem .7rem;cursor:pointer}
+.tools button:hover{color:var(--text);border-color:var(--text)}
+.hero h1{max-width:24em}
+
+/* the mark */
+.mark{display:block;width:100%;height:auto;overflow:visible;transition:transform .2s ease-out;outline-offset:8px;border-radius:50%}
+.mark .dial{fill:none;stroke:var(--border);stroke-width:1}
+.mark .tick{stroke:var(--border-strong);stroke-width:1}
+.mark .i1{stop-color:var(--iris-1)}.mark .i2{stop-color:var(--iris-2)}.mark .i3{stop-color:var(--iris-3)}
+.mark .arc{fill:none;stroke:var(--iris);transition:stroke .25s}
+.mark .lpath{fill:none;stroke:none}
+.mark .rlab{font-family:var(--mono);letter-spacing:.14em;fill:var(--text-2)}
+.mark .seg,.mark .up{transition:opacity .25s}
+.mark .open .arc{stroke-dasharray:6 4}
+.mark .nv{fill:var(--warn)}
+.mark .spoke{stroke:var(--iris-1);stroke-width:1;opacity:0;transition:opacity .25s}
+.mark .hit{fill:none;stroke:transparent;stroke-width:30;pointer-events:stroke;cursor:pointer}
+.mark .eye{fill:var(--text)}
+.mark .halo{fill:none;stroke:var(--text);stroke-width:1.25}
+.mark .up{fill:var(--surface);stroke:var(--ok);stroke-width:1.75}
+.mark .up.merged{fill:var(--ok)}
+.mark[data-hl] .seg,.mark[data-hl] .up{opacity:.2}
+.mark[data-hl] .seg.on{opacity:1}
+.mark .on .arc{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--iris-2) calc(var(--glow)*70%),transparent))}
+.mark.tint .on.m0 .arc{stroke:var(--iris-1)}.mark.tint .on.m1 .arc{stroke:var(--iris-2)}.mark.tint .on.m2 .arc{stroke:var(--iris-3)}
+.mark .on.merged .spoke{opacity:.85}
+.mark[data-hl=evidence] .on .nv{r:4}
+.ring{transform-box:view-box;transform-origin:50% 50%;animation:spin var(--dur) linear infinite var(--dir)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mark.paused .ring,.mark:hover .ring,.mark:focus .ring{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.ring{animation:none}.mark{transition:none}}
+.mark.mini .hit{display:none}
 
 /* statistic with its sample size: a tile */
 .strip,.grid3{display:grid;gap:var(--s4)}
@@ -145,8 +188,13 @@ footer nav{display:flex;gap:var(--s5)}
   .stat .v{font-size:1.75rem}
   .loop{grid-template-columns:1fr;gap:var(--s6)}
   .two{grid-template-columns:1fr}
-  .project{grid-template-columns:1fr;gap:var(--s4);padding:var(--s5)}
-  .project .figure{grid-row:1;text-align:left}
+  .hero{grid-template-columns:1fr;gap:var(--s6)}
+  .mark-wrap{max-width:30rem;width:100%;justify-self:center;padding:var(--s4)}
+  .mark .rlab{display:none}
+  .project{grid-template-columns:3.5rem minmax(0,1fr);gap:var(--s4);padding:var(--s5)}
+  .project .ringbox{width:3.5rem;grid-row:1}
+  .project .figure{grid-column:2;grid-row:1;text-align:left}
+  .project > div:not(.ringbox){grid-column:1/-1}
   .prov{white-space:normal}
   .pr{grid-template-columns:minmax(0,1fr) auto}
   .pr .state{white-space:normal}
@@ -167,3 +215,6 @@ footer nav{display:flex;gap:var(--s5)}
 .strip + .more{margin-top:var(--s5)}
 .pr .body{min-width:0}
 .pr .t,.pr .repo{overflow-wrap:anywhere}
+.notfound{padding-top:var(--s6)}
+.notfound .more{margin-top:var(--s5)}
+.more + details,.strip + .more + details{margin-top:var(--s4)}

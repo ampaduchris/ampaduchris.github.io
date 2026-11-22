@@ -2,15 +2,34 @@
 import ProjectCard from './ProjectCard.astro';
 import PrRow from './PrRow.astro';
 import StatTile from './StatTile.astro';
+import Mark from './Mark.astro';
+import { tableHTML, summary as markSummary } from '../lib/mark';
+import { loadMarkData } from '../lib/markdata';
 import { loadProjects, loadUpstream, loadMethod } from '../lib/data';
 
 const projects = loadProjects();
 const upstream = loadUpstream();
 const method = loadMethod();
+const markData = loadMarkData();
+const S = markSummary(markData);
+const table = tableHTML(markData);
 const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map((id) => method.stats.find((s) => s.id === id)!);
 ---
-  <section class="hero wrap" data-block="intro">
-  <h1>I direct coding agents to build software, and I do not write the code by hand. I write the specification, decide what evidence would prove the work wrong, and approve every change myself.</h1>
+<section class="hero wrap">
+  <div data-block="intro">
+    <h1>I direct coding agents to build software, and I do not write the code by hand. I write the specification, decide what evidence would prove the work wrong, and approve every change myself.</h1>
+  </div>
+  <figure class="mark-wrap" data-block="mark" data-src="mark.json">
+    <Mark id="mark" />
+    <figcaption>
+      <div class="readout" data-readout aria-live="polite">
+        <span class="k">The proof mark</span>
+        <span class="v"><b>{S.sessions}</b> agent sessions. <b>{S.merged}</b> merged by me. <b>{S.nv}</b> checks reported as not verified.</span>
+        <span class="s">One arc per session. Point at an arc, tap it, or focus the mark and use the arrow keys.</span>
+      </div>
+      <div class="tools"><button type="button" data-motion aria-pressed="false" hidden>Pause motion</button></div>
+    </figcaption>
+  </figure>
 </section>
 
 <section class="wrap" data-block="method-summary" aria-labelledby="h-proof">
@@ -19,6 +38,10 @@ const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map(
     {summary.map((stat) => <StatTile stat={stat} />)}
   </div>
   <a class="more" href="/method/">How the work is checked</a>
+  <details data-src="mark.json">
+    <summary>The mark as a table</summary>
+    <div class="scroll" set:html={table} />
+  </details>
 </section>
 
 <section class="wrap" data-block="projects" aria-labelledby="h-projects">
@@ -32,3 +55,5 @@ const summary = ['sessions', 'agent_commits', 'not_verified', 'prs_merged'].map(
     {upstream.map((pr) => <PrRow row={{ repo: pr.repo, number: pr.number, title: pr.title, url: pr.url, date: pr.merged_at.slice(0, 10), state: 'merged', by: 'maintainer' }} />)}
   </section>
 )}
+
+<script is:inline defer src="/mark.js"></script>

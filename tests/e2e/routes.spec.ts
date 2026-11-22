@@ -11,8 +11,8 @@ const blocks = (page: Page) => page.$$eval('[data-block]', (els) => els.map((e) 
 
 test('[REQ-001] Home shows its blocks in the specified order', async ({ page }) => {
   await page.goto('/');
-  // The mark is a later session (docs/phase.txt); the upstream list is absent while empty (REQ-004).
-  expect(await blocks(page)).toEqual(['header', 'intro', 'method-summary', 'projects', 'footer']);
+  // The upstream list is absent while empty (REQ-004).
+  expect(await blocks(page)).toEqual(['header', 'intro', 'mark', 'method-summary', 'projects', 'footer']);
 });
 
 test('[REQ-002] each project card shows name, pitch, one number, release and two links', async ({ page }) => {
@@ -141,6 +141,8 @@ for (const route of ALL) {
   test(`[REQ-040] ${route} shows the same main text with scripts off`, async ({ browser, baseURL }) => {
     const on = await browser.newPage();
     await on.goto(baseURL + route);
+    // The pause button is the one thing a script adds to the text: it controls motion, which scripts may add (REQ-040).
+    await on.addStyleTag({ content: '[data-motion]{display:none!important}' });
     const withJs = await on.locator('main').innerText();
     await on.close();
     const ctx = await browser.newContext({ javaScriptEnabled: false });

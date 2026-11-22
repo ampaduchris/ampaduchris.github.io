@@ -106,6 +106,7 @@ export interface MarkRecord {
 export interface MarkJson {
   generated_at: string; cutoff: string;
   projects: { repo: string; sessions: MarkRecord[] }[];
+  upstream: { repo: string; number: number; state: 'open' | 'closed' | 'merged' }[];
 }
 export interface UpstreamJson {
   generated_at: string; cutoff: string;
@@ -174,7 +175,11 @@ export function computeNumbers(s: Snapshot): { method: MethodJson; mark: MarkJso
         };
       }),
     })),
+    upstream: [],
   };
+
+  mark.upstream = [...s.upstream].sort((a, b) => (a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : a.number - b.number))
+    .map((u) => ({ repo: u.repo, number: u.number, state: u.state }));
 
   const sources = s.repos.map((r) => ({ repo: r.repo, build_log_commit: r.build_log_commit, queries: s.queries.filter((q) => q.includes(r.repo)) }));
   const method: MethodJson = {
