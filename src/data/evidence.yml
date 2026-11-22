@@ -1,6 +1,7 @@
 # One dated observation per row. Rows are scrubbed from the owner's private record: no address, no operator or portal name, no search criterion.
 # Dates are the precision the source holds. The source gives a month for most rows, so most rows carry a month, not a day.
 # A row about a period carries the first day or month of it, and its text names the whole period.
+# Rows E18 to E23 are fixes. The source dates the failures, not the fixes, so each fix row carries the month its version is first known to have run and says so in `recorded`.
 # Ids are never reused. Add rows at the end. The claims checker (npm run claims) reads this file.
 - id: E1
   date: 2026-09
@@ -53,3 +54,27 @@
 - id: E17
   date: 2026-10
   observation: Those listings were scored wrongly.
+- id: E18
+  date: 2026-10
+  observation: Flat scout v2, the rebuild, paginated its searches.
+  recorded: The record does not date this change. The row carries the month of the first run of version two.
+- id: E19
+  date: 2026-10
+  observation: Flat scout v2 had a coverage dashboard.
+  recorded: The record does not date this change. The row carries the month of the first run of version two.
+- id: E20
+  date: 2026-10
+  observation: Flat scout v3 ran three times a day.
+  recorded: The record does not date this change. The row carries the month in which version three is first known to have run.
+- id: E21
+  date: 2026-10
+  observation: Flat scout v3 searched page one only.
+  recorded: The record does not date this change. The row carries the month in which version three is first known to have run.
+- id: E22
+  date: 2026-10
+  observation: Flat scout v3 used no subagents.
+  recorded: The record does not date this change. The row carries the month in which version three is first known to have run.
+- id: E23
+  date: 2026-10
+  observation: Flat scout v3 capped each run at 15 minutes and 25 fetches.
+  recorded: The record does not date this change. The row carries the month in which version three is first known to have run.

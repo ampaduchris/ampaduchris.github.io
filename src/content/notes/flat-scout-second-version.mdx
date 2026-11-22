@@ -1,0 +1,43 @@
+---
+title: "Flat scout, second version: one run spent the evening's allowance"
+kind: postmortem
+date: 2026-11-22
+standfirst: The rebuilt flat scout fanned out to many subagents on its first run and used up the evening's usage allowance. I moved every approval to manual, and the next version dropped subagents and capped each run.
+sessions: [N.2]
+---
+
+## What happened
+
+In mid October, the first run of the second version of flat scout, which ran on the Opus model and was search-only, fanned out to many subagents for <Fig row="E6">about 50 minutes</Fig>.<Ref id="E6" /> That run consumed the evening's usage allowance.<Ref id="E7" /> After that run I set all approvals to manual.<Ref id="E8" />
+
+## Timeline
+
+<Timeline>
+<Event date="2026-10">The second version made its first run.<Ref id="E6" /> It fanned out to many subagents for <Fig row="E6">about 50 minutes</Fig>.<Ref id="E6" /></Event>
+<Event date="2026-10">The run consumed the evening's usage allowance.<Ref id="E7" /></Event>
+<Event date="2026-10">I set all approvals to manual.<Ref id="E8" /></Event>
+</Timeline>
+
+## Causes
+
+1. The run was broad and long: many subagents for <Fig row="E6">about 50 minutes</Fig>.<Ref id="E6" /> The allowance was gone by the end of the evening.<Ref id="E7" /> I read the run's breadth and length as the reason.<Ref id="E6" /><Ref id="E7" />
+2. Approvals were not all manual before the run, because I set them all to manual afterwards.<Ref id="E8" />
+
+## What changed
+
+- I set all approvals to manual.<Ref id="E8" />
+- The third version ran three times a day.<Ref id="E20" />
+- It searched page one only.<Ref id="E21" />
+- It used no subagents.<Ref id="E22" />
+- It capped each run at <Fig row="E23">15 minutes</Fig> and <Fig row="E23">25 fetches</Fig>.<Ref id="E23" />
+
+## What is still not known
+
+<ul className="unknown">
+<li>Whether the second version had any limit on subagents, run time or fetches. The record shows the limits the third version added. It does not say what, if anything, the second one had.</li>
+<li>Whether a manual approval would have stopped the run, or only slowed it.</li>
+<li>How much of the allowance the run used, or how large the allowance was. The record says only that the run consumed the evening's allowance.</li>
+<li>How many subagents the run started. The record says "many".</li>
+<li>Which of the third version's limits mattered most. They arrived together.</li>
+<li>When the fixes were made. The rows for the third version carry the month in which it is first known to have run.</li>
+</ul>

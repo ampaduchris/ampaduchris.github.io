@@ -1,0 +1,44 @@
+---
+title: "Flat scout, first version: it covered too little"
+kind: postmortem
+date: 2026-11-22
+standfirst: My first flat-hunting agent searched one page of one rental portal and stopped running when my laptop slept. The record shows what it missed but cannot separate the design from the small model it ran on.
+sessions: [N.2]
+---
+
+## What happened
+
+In late September, the first version of flat scout ran on the Haiku model and automated the whole outreach, not only the search.<Ref id="E1" /> It searched one page of one rental portal.<Ref id="E2" /> It missed major sources of listings.<Ref id="E3" /> Its scheduled task was bound to my laptop, and did not run while the laptop slept.<Ref id="E4" /> I rated it unacceptable and ordered a full rebuild.<Ref id="E5" />
+
+## Timeline
+
+<Timeline>
+<Event date="2026-09">The first version was running on Haiku and automated the whole outreach.<Ref id="E1" /> It searched one page of one portal and missed major sources.<Ref id="E2" /><Ref id="E3" /> Its scheduled task did not run while the laptop slept.<Ref id="E4" /></Event>
+<Event date="2026-09">I rated it unacceptable and ordered a full rebuild.<Ref id="E5" /></Event>
+<Event date="2026-10">The rebuilt version made its first run, on the Opus model and search-only.<Ref id="E6" /></Event>
+</Timeline>
+
+## Causes
+
+1. The search was narrow.<Ref id="E2" /> It covered one page of one portal,<Ref id="E2" /> and it missed major sources.<Ref id="E3" /> I read the first as the main reason for the second.<Ref id="E2" /><Ref id="E3" />
+2. The schedule depended on a laptop that was awake.<Ref id="E4" /> When the laptop slept, the task did not run.<Ref id="E4" />
+
+## What changed
+
+- I ordered a full rebuild.<Ref id="E5" />
+- The second version was search-only.<Ref id="E6" />
+- It paginated its searches.<Ref id="E18" />
+- It had a coverage dashboard.<Ref id="E19" />
+- It ran on the Opus model, where the first version had run on Haiku.<Ref id="E1" /><Ref id="E6" />
+
+## What is still not known
+
+<ul className="unknown">
+<li>Which change improved coverage. The rebuild changed the model, the search and the reporting at the same time.</li>
+<li>Whether the model mattered. The first version ran on a small model. I did not test the same design on a larger one, or the old model with the new paging.</li>
+<li>How many listings the first version missed. The record says "major sources" and holds no count.</li>
+<li>How many scheduled runs the sleeping laptop cost. The record holds no count of missed runs.</li>
+<li>Whether automating the whole outreach counted in my rating, or only the coverage.</li>
+<li>The day of each event. The record dates the first version to a month.</li>
+<li>When the fixes were made. The rows for them carry the month of the second version's first run.</li>
+</ul>
