@@ -6,7 +6,7 @@ const [first, ...rest] = site.contact;
 ---
 <Base
   title="Contact. Chris Ampadu"
-  description="How to reach Chris Ampadu: email first, then GitHub. He is open to conversations about expert-track roles and about his method."
+  description="How to reach Chris Ampadu: email first, then GitHub. Personal, non-commercial portfolio; write about the work and the method."
   path="/contact/"
   current="/contact/"
 >
@@ -14,7 +14,7 @@ const [first, ...rest] = site.contact;
     <p class="kicker">Contact</p>
     <h1>Write to me.</h1>
     <p><a class="mail" href={first.href}>{first.label}</a></p>
-    <p class="lede">I am open to conversations about expert-track roles in strategy and applied artificial intelligence, and about the method on this site.</p>
+    <p class="lede">This is my personal, non-commercial portfolio. You are welcome to write to me about the work and the method shown here.</p>
     {site.location && <p class="kicker where">{site.location}</p>}
     {rest.length > 0 && <p class="links">{rest.map((c) => <a href={c.href}>{c.label}</a>)}</p>}
   </div>
