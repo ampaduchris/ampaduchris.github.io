@@ -4,13 +4,23 @@ The personal site of Chris Ampadu. It states one claim: I direct coding agents a
 
 Built by directing Claude Code. No hand-written code. Every pull request was opened by the agent and approved and merged by me. Model and effort for every session are recorded in docs/BUILD-LOG.md.
 
-Status: active.
+Status: released, dependencies reviewed monthly.
+
+## Demo
+
+The live site is the demo: https://ampaduchris.github.io
+
+Two screenshots of Home, taken by Playwright with `npm run screenshots`. CI runs the same script on every pull request to prove it still works, and discards the output.
+
+![Home at 1280 pixels wide](docs/screenshots/home-wide.png)
+
+![Home at 375 pixels wide](docs/screenshots/home-narrow.png)
 
 ## What it is
 
-A static site built with Astro and TypeScript. It builds Home and Contact, the Legal and not-found pages, and two short paths, `/cv/` and `/in/`, that show Home's content with a canonical link to Home and no indexing. The Method page computes every number from public sources. The proof mark follows in a later session. A workflow deploys `dist/` to GitHub Pages from `main` only, after the checks pass, and publishes nothing while the legal text is pending. The site is live at https://ampaduchris.github.io (Pages source switched to the workflow on 22 Nov 2026).
+A static site built with Astro and TypeScript: Home, Method, Contact, Legal, a not-found page, and two short paths, `/cv/` and `/in/`, that show Home's content with a canonical link to Home and no indexing. The Method page and the proof mark compute every number from public build logs and pull request records. A workflow deploys `dist/` to GitHub Pages from `main` only, after the checks pass. The build fails while the legal text is missing or pending.
 
-The authority for behaviour is `docs/spec.md`. Requirements carry `REQ-###` and MUST or SHOULD, and `scripts/trace.py` fails CI when a MUST that is due has no test. `docs/phase.txt` lists the requirements that later sessions build.
+The authority for behaviour is `docs/spec.md`. Requirements carry `REQ-###` and MUST or SHOULD, and `scripts/trace.py` fails CI when a MUST has no test. Version 1.0.0 is the first release; see `CHANGELOG.md`.
 
 ## Verify it yourself
 
@@ -20,7 +30,7 @@ Set up once, with Node 24 or 26 and the GitHub command line (`gh`) logged in:
 git clone https://github.com/ampaduchris/ampaduchris.github.io && cd ampaduchris.github.io && npm ci
 ```
 
-The numbers on the Method page are computed from public build logs and pull request records. Three commands rebuild them and compare them with the committed file. CI runs the second command against the recorded snapshot on every pull request.
+The numbers on the Method page are computed from public build logs and pull request records. Three commands rebuild them and compare them with the committed file. CI runs the second command against the recorded snapshot on every pull request. The first command needs the network and is not run in CI; the third is a plain `git diff`.
 
 ```bash
 npm run numbers -- --live
@@ -48,10 +58,12 @@ The last step runs the browser tests, including the axe accessibility check on e
 
 - The Method page shows no median until 20 pull requests exist.
 - The numbers are as of `generated_at`, not live. The agent and the owner share one GitHub account, so the comment and merge figures cannot tell who wrote a comment.
-- The legal text is pending the owner's decision. The build prints a warning for it and the deploy job publishes nothing, with a warning, while it is pending.
 - Analytics is off. `site.yml` has no endpoint and the repository holds no counting script.
-- Project data in `src/data/projects.yml` is checked against each project repository by `npm run sync-check`, which needs the network. It is not part of the pull request checks. Today it reports that `german-b1-tutor` has no `portfolio.yml`.
-- Link checking in CI is offline and covers internal links only.
+- Project data in `src/data/projects.yml` is checked against each project repository by `npm run sync-check`, which needs the network. A weekly workflow runs it and opens an issue on a difference. It is not part of the pull request checks. `german-b1-tutor` has no `portfolio.yml` until its pull request 40 merges, and the check reports that.
+- Link checking in pull requests is offline and covers internal links only. A weekly workflow checks external links.
+- Mutation testing (Stryker) runs by hand, not in CI, on the numbers script, the data schema check and the mark layout. The score and every surviving mutant are in `docs/MUTATION.md`. The schema check is untested for most invalid values.
+- Lighthouse is reported, not gated. There is no social preview image.
+- Firefox and WebKit tests run in CI but are not required checks.
 
 ## Disclosure
 

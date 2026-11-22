@@ -2,7 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { formatDate } from '../../src/lib/dates';
 import { selectUpstream, type UpstreamPr } from '../../src/lib/upstream';
-import { legalProblems } from '../../src/lib/legal';
+import { assertLegal, legalProblems } from '../../src/lib/legal';
 import { withAbbr } from '../../src/lib/abbr';
 
 describe('dates', () => {
@@ -31,6 +31,11 @@ describe('legal guard', () => {
       'privacy.md is missing',
     ]);
     expect(legalProblems({ imprint: 'text', privacy: 'text' })).toEqual([]);
+  });
+  test('[REQ-007] the build guard throws on a pending file and passes on real text', () => {
+    expect(() => assertLegal({ imprint: 'OWNER-DECISION-PENDING', privacy: 'text' })).toThrow(/imprint\.md still contains/);
+    expect(() => assertLegal({ imprint: 'text' })).toThrow(/privacy\.md is missing/);
+    expect(() => assertLegal({ imprint: 'text', privacy: 'text' })).not.toThrow();
   });
 });
 

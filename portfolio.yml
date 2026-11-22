@@ -1,0 +1,9 @@
+name: ampaduchris.github.io
+pitch: A personal site on directing coding agents, where every number is computed from public build logs and pull request records.
+stack: [typescript, astro, playwright, axe, vitest, fast-check, stryker, lychee]
+tests: 211
+release: v1.0.0
+released_on: 2026-11-22
+demo_url: https://ampaduchris.github.io
+repo_url: https://github.com/ampaduchris/ampaduchris.github.io
+example_pr_url: https://github.com/ampaduchris/ampaduchris.github.io/pull/20
