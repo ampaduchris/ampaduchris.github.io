@@ -1,0 +1,60 @@
+---
+title: "Agents fail in operations, not demos"
+kind: essay
+date: 2026-11-23
+standfirst: A demonstration asks whether an agent can do the task once while you watch. Operations ask whether it will do it every time, unwatched, inside a budget, and tell you when it did not.
+sessions: [N.5]
+---
+
+## Two different questions
+
+A demonstration asks one thing. Can the agent do this task, once, while I watch? Operations ask another. Will it do the task every time, unwatched, inside a budget, and tell me when it did not?
+
+I read six failures of my own agents through that difference. They are six incidents from one person's side projects, over about two months in September and October. I wrote them up from memory afterwards. The dates are approximate, and no log, transcript or measurement stands behind them. Nothing here is measured data, and six incidents are anecdotes. I recall no further incident in those two months that was plainly a model error.<Ref id="E32" />
+
+My reading is this. In these six, the model's intelligence was rarely what broke. What broke was what a demonstration leaves out: whether the run started, which tools it had, what it cost, what it covered, and what counted as true. Every fix the record shows was an operating rule, apart from one rebuild that also changed the model.
+
+## The run that never happened
+
+The first version of flat scout, my flat-hunting agent, was scheduled on my laptop. It did not run while the laptop slept.<Ref id="E4" /> Later, from <Fig row="E9">19 to 26 October</Fig>, the scheduled cloud sessions of its third version lacked the web-fetch tool.<Ref id="E9" /> The runs failed silently, with no message.<Ref id="E31" /> I paused the automation and asked for manual scans instead.<Ref id="E11" />
+
+No improvement in the model changes whether a laptop is awake, or which tools a session is given. A better model might have noticed the missing tool and said so. Mine gave no message.<Ref id="E31" /> A demonstration cannot show silence. You are watching.
+
+I also did not record how long the failures went unnoticed. What I adopted was a first step that checks that the tools are loaded. When a tool is absent, it writes a failed entry and stops.<Ref id="E24" /> The run can now say that it failed.
+
+## The most capable model spent the most
+
+In mid October, the first run of the second version of flat scout fanned out to many subagents for <Fig row="E6">about 50 minutes</Fig>.<Ref id="E6" /> It ran on the Opus model and was search-only.<Ref id="E6" /> The first version had run on Haiku and the third ran on Sonnet.<Ref id="E1" /><Ref id="E9" /> The Opus run consumed the evening's usage allowance.<Ref id="E7" /> Afterwards I set all approvals to manual.<Ref id="E8" />
+
+This is the incident that turns the usual objection round. The objection says these are capability failures with an operations label. A good enough model pages without being told and paces its own spending. Here the most capable of the three models was the one that spent the evening. I read the breadth and length of that run as the reason it spent so much.<Ref id="E6" /><Ref id="E7" /> One run cannot show that capability raises the price of running without limits, and I do not claim it does.
+
+Its instructions did not ask it to cover every source.<Ref id="E30" /> It was built after a coverage failure, to paginate and to report coverage.<Ref id="E18" /><Ref id="E19" /> So the spend was not an instruction obeyed. It was a run with nothing to stop it, and the record does not say whether the second version had any limit.
+
+Those limits were these. The third version ran three times a day.<Ref id="E20" /> It searched page one only.<Ref id="E21" /> It used no subagents.<Ref id="E22" /> It capped each run at <Fig row="E23">15 minutes</Fig> and <Fig row="E23">25 fetches</Fig>.<Ref id="E23" /> They arrived together, and I cannot say which one mattered.
+
+Job scout, my job-search agent, met the same wall from another side. Its Monday sweep, a scheduled run on the Opus model, failed in October with the message "usage limit reached".<Ref id="E12" /> A weekly sweep was lost.<Ref id="E13" /> I pinned its model for each task, moved its frequent jobs to cheaper lanes and spread out its scheduled runs.<Ref id="E25" /><Ref id="E26" /><Ref id="E27" /> The record does not date those changes. A run that reaches a usage limit stops, whatever the model.
+
+## Nobody had said what true meant
+
+Two of the six failures involved judgement, and I count them as such. The first version of flat scout searched one page of one portal<Ref id="E2" /> and missed major sources of listings.<Ref id="E3" /> A small model, or the same model told to page, would probably have covered more. The other half is that nobody had written down what covered meant. The rebuild added paging and a coverage dashboard, and moved from Haiku to Opus.<Ref id="E18" /><Ref id="E19" /><Ref id="E1" /><Ref id="E6" /> It changed the model, the search and the reporting at once. I cannot say which of them improved coverage, or whether coverage improved.
+
+Job scout passed aggregator pages and posting addresses that still rendered as live.<Ref id="E14" /> Dead roles surfaced as live roles.<Ref id="E15" /> That was in part the agent accepting weak evidence, a failure of judgement, and I do not argue otherwise. What I did was write down what live means. A role counts as live only on the employer's own board, or as a full employer-hosted posting within <Fig row="E28">60 days</Fig>.<Ref id="E28" />
+
+My argument is that live and covered are not facts a model can infer. They are the operator's standards. A better model guesses them better and still guesses. I adopted the rule, and I did not measure whether it held. A stricter rule can drop roles that were live, and the record does not look.
+
+The same shape shows in one more incident. In one class of rental listings, ads labelled for two occupants described three or more occupants in the body text.<Ref id="E16" /> Those listings were scored wrongly.<Ref id="E17" /> The input disagreed with itself, and a rule about which part counts is a definition the operator owes. The record dates no fix for this one, so I claim none.
+
+## What I would run before trusting a schedule
+
+Four rules, each tied to an incident above.
+
+- Check the tools first, and fail loudly when one is missing.<Ref id="E24" />
+- Cap the time and the fetches of each run.<Ref id="E23" />
+- Pin the model for each task.<Ref id="E25" />
+- Write down what counts as evidence.<Ref id="E28" />
+
+I adopted each. I recall none of these failures coming back after its fix.<Ref id="E29" /> Nothing was measured, so I do not claim any fix held. They lived in private systems, so no code for them is public.
+
+The one public check is this site's claims checker. It fails the build when a claim has no evidence row. It tests the link, not the support. A review of the four postmortems, by a different model from the one that wrote them, found three places where I had inferred a reason from the fix that came after it. I removed them.
+
+My prediction, which you can hold me to: as models improve, the share of agent failures that are operational will go up, not down. The judgement failures shrink. The schedule, the tool list and the budget do not.
