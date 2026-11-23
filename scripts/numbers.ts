@@ -5,15 +5,20 @@
 //   npm run numbers -- --check           with --from-snapshot: fail if the committed outputs differ (CI)
 //   npm run numbers -- --live --check    fetch live and fail if the committed outputs differ (the reader's check)
 //
+// A plain refresh reuses the records of pull requests that the committed snapshot.json already holds as merged at the same merge time
+// (reusableRecord), so it fetches details only for new or changed pull requests. --live fetches everything and never reads the snapshot.
+//
 // Needs the gh CLI, logged in, for live fetches. The only network access in this repository's data path.
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { loadProjects, loadSite } from '../src/lib/data';
-import { CUTOFF, computeNumbers, serialise, type Commit, type PrRecord, type RepoSource, type Snapshot, type UpstreamPr } from '../src/lib/numbers';
+import { CUTOFF, computeNumbers, reusableRecord, serialise, type Commit, type PrRecord, type RepoSource, type Snapshot, type UpstreamPr } from '../src/lib/numbers';
 
 const OUT = 'src/data';
 // NUMBERS_SITE_REF names a branch of this site's repository whose BUILD-LOG.md is read in place of the default branch's. A notes session cites its own
 // build-log row, which is on the pull request's branch until the merge (DEV-052). The ref is recorded in the queries.
+// NUMBERS_SITE_REF=local reads the site's BUILD-LOG.md from the local HEAD commit instead, so a row committed but not yet pushed is seen
+// (DEV-058). The file must have no uncommitted change; the commit is recorded, and must be pushed before the pull request is opened.
 const SITE_REF = process.env.NUMBERS_SITE_REF;
 const args = new Set(process.argv.slice(2));
 
@@ -29,6 +34,30 @@ function api(path: string, opts: { paginate?: boolean } = {}): any {
   }
 }
 
+function git(...a: string[]): string {
+  return execFileSync('git', a, { encoding: 'utf8', maxBuffer: 1 << 28, stdio: ['ignore', 'pipe', 'pipe'] });
+}
+
+function localLog(): { sha: string; text: string } {
+  if (git('status', '--porcelain', '--', 'docs/BUILD-LOG.md').trim()) throw new Error('NUMBERS_SITE_REF=local: docs/BUILD-LOG.md has uncommitted changes; commit the row first');
+  const sha = git('rev-parse', 'HEAD').trim();
+  return { sha, text: git('show', `${sha}:docs/BUILD-LOG.md`) };
+}
+
+// The detail requests for one merged own pull request, in the order they are made.
+const detail = (repo: string, n: number) => ({
+  pull: `repos/${repo}/pulls/${n}`,
+  timeline: `repos/${repo}/issues/${n}/timeline?per_page=100`,
+  issueComments: `repos/${repo}/issues/${n}/comments?per_page=100`,
+  reviewComments: `repos/${repo}/pulls/${n}/comments?per_page=100`,
+  reviews: `repos/${repo}/pulls/${n}/reviews?per_page=100`,
+});
+
+function previousSnapshot(): Snapshot | null {
+  if (args.has('--live')) return null;
+  try { return JSON.parse(readFileSync(`${OUT}/snapshot.json`, 'utf8')); } catch { return null; }
+}
+
 function fetchSnapshot(): Snapshot {
   const site = loadSite();
   const owner = new URL(site.github_url).pathname.replace(/\//g, '');
@@ -37,10 +66,22 @@ function fetchSnapshot(): Snapshot {
   const queries: string[] = [];
   const q = (s: string) => { queries.push(`gh api ${s}`); return s; };
   const sources: RepoSource[] = [];
+  const prev = previousSnapshot();
+  let reused = 0;
   for (const repo of repos) {
     const ref = repo === siteRepo && SITE_REF ? SITE_REF : null;
-    const head = api(q(`repos/${repo}/commits/${ref ?? 'HEAD'}`));
-    const log = api(q(`repos/${repo}/contents/docs/BUILD-LOG.md${ref ? `?ref=${ref}` : ''}`));
+    let head: { sha: string } | null;
+    let logText: string | null;
+    if (ref === 'local') {
+      const local = localLog();
+      queries.push(`git show ${local.sha}:docs/BUILD-LOG.md`);
+      head = { sha: local.sha };
+      logText = local.text;
+    } else {
+      head = api(q(`repos/${repo}/commits/${ref ?? 'HEAD'}`));
+      const log = api(q(`repos/${repo}/contents/docs/BUILD-LOG.md${ref ? `?ref=${ref}` : ''}`));
+      logText = log?.content ? Buffer.from(log.content, 'base64').toString('utf8') : null;
+    }
     const commits: Commit[] = (api(q(`repos/${repo}/commits?since=${CUTOFF}T00:00:00Z&per_page=100`), { paginate: true }) ?? []).map((c: any) => ({
       sha: c.sha, date: c.commit.author.date, parents: c.parents.length,
       coauthor_lines: String(c.commit.message).split('\n').filter((l) => /^co-authored-by:/i.test(l)).map((l) => l.trim()),
@@ -49,18 +90,25 @@ function fetchSnapshot(): Snapshot {
     const list = api(q(`repos/${repo}/pulls?state=all&per_page=100`), { paginate: true }) ?? [];
     for (const p of list) {
       if (p.created_at.slice(0, 10) < CUTOFF) continue;
+      const kept = reusableRecord(prev, repo, p.number, p.title, p.merged_at ?? null);
+      if (kept) {
+        // Record the queries the kept data came from, in the order a live fetch makes them, so a refresh and --live write the same outputs.
+        if (kept.author === owner) for (const d of Object.values(detail(repo, p.number))) q(d);
+        prs.push(kept); reused++; continue;
+      }
       const rec: PrRecord = {
         number: p.number, title: p.title, url: p.html_url, state: p.merged_at ? 'merged' : p.state === 'open' ? 'open' : 'closed',
         author: p.user.login, created_at: p.created_at, merged_at: p.merged_at ?? null, merged_by: null, ready_at: null, owner_comment_times: [],
       };
       if (rec.state === 'merged' && rec.author === owner) {
-        rec.merged_by = api(q(`repos/${repo}/pulls/${p.number}`))?.merged_by?.login ?? null;
-        const ready = (api(q(`repos/${repo}/issues/${p.number}/timeline?per_page=100`), { paginate: true }) ?? []).filter((e: any) => e.event === 'ready_for_review');
+        const d = detail(repo, p.number);
+        rec.merged_by = api(q(d.pull))?.merged_by?.login ?? null;
+        const ready = (api(q(d.timeline), { paginate: true }) ?? []).filter((e: any) => e.event === 'ready_for_review');
         rec.ready_at = ready.length ? ready[ready.length - 1].created_at : null;
         const times: string[] = [];
-        for (const e of api(q(`repos/${repo}/issues/${p.number}/comments?per_page=100`), { paginate: true }) ?? []) if (e.user?.login === owner) times.push(e.created_at);
-        for (const e of api(q(`repos/${repo}/pulls/${p.number}/comments?per_page=100`), { paginate: true }) ?? []) if (e.user?.login === owner) times.push(e.created_at);
-        for (const e of api(q(`repos/${repo}/pulls/${p.number}/reviews?per_page=100`), { paginate: true }) ?? []) if (e.user?.login === owner && e.submitted_at) times.push(e.submitted_at);
+        for (const e of api(q(d.issueComments), { paginate: true }) ?? []) if (e.user?.login === owner) times.push(e.created_at);
+        for (const e of api(q(d.reviewComments), { paginate: true }) ?? []) if (e.user?.login === owner) times.push(e.created_at);
+        for (const e of api(q(d.reviews), { paginate: true }) ?? []) if (e.user?.login === owner && e.submitted_at) times.push(e.submitted_at);
         rec.owner_comment_times = times.sort();
       }
       prs.push(rec);
@@ -68,10 +116,11 @@ function fetchSnapshot(): Snapshot {
     prs.sort((a, b) => a.number - b.number);
     sources.push({
       repo, build_log_commit: head?.sha ?? null,
-      build_log: log?.content ? Buffer.from(log.content, 'base64').toString('utf8') : null,
+      build_log: logText,
       commits: commits.sort((a, b) => (a.sha < b.sha ? -1 : 1)), prs,
     });
   }
+  if (prev) console.log(`reused ${reused} merged pull request record(s) from snapshot.json; run with --live to fetch all`);
   const found = api(q(`search/issues?q=type:pr+author:${owner}+-user:${owner}&per_page=100`));
   const upstream: UpstreamPr[] = (found?.items ?? []).map((i: any) => ({
     repo: String(i.repository_url).replace('https://api.github.com/repos/', ''), number: i.number, title: i.title, url: i.html_url,

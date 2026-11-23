@@ -75,6 +75,16 @@ export function isOwn(pr: PrRecord, owner: string, cutoff: string): boolean {
   return pr.author === owner && pr.created_at.slice(0, 10) >= cutoff;
 }
 
+// A refresh may reuse a pull request's record from the previous snapshot when that pull request was already merged there, at the same
+// merge time. After the merge no field the outputs read can change: merged_by and ready_at are fixed, and only comments before the
+// merge time count (prs_commented). The returned record still carries the title from the current listing.
+export function reusableRecord(prev: Snapshot | null, repo: string, number: number, title: string, mergedAt: string | null): PrRecord | null {
+  if (!prev || !mergedAt) return null;
+  const old = prev.repos.find((r) => r.repo === repo)?.prs.find((p) => p.number === number);
+  if (!old || old.state !== 'merged' || old.merged_at !== mergedAt) return null;
+  return { ...old, title };
+}
+
 export function median(values: number[]): number | null {
   if (values.length === 0) return null;
   const v = [...values].sort((a, b) => a - b);
