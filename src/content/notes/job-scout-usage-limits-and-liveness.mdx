@@ -1,0 +1,47 @@
+---
+title: "Job scout: a lost weekly sweep and dead roles passed as live"
+kind: postmortem
+date: 2026-11-22
+standfirst: My job-search agent lost a weekly sweep to a usage limit and passed dead roles as live. The second failure was in part the agent accepting weak evidence, and the fix was a written definition of live.
+sessions: [N.3]
+---
+
+## What happened
+
+Between September and October, job scout passed aggregator pages and posting addresses that were still rendering as live.<Ref id="E14" /> Dead roles surfaced in the results as live roles.<Ref id="E15" /> In October, the Monday sweep of job scout, a scheduled run on the Opus model, failed with the message "usage limit reached".<Ref id="E12" /> That failure lost a weekly sweep.<Ref id="E13" />
+
+## Timeline
+
+<Timeline>
+<Event date="2026-09">Job scout passed aggregator pages and posting addresses that still rendered.<Ref id="E14" /> The record gives the period as September to October.<Ref id="E14" /> Dead roles surfaced as live roles.<Ref id="E15" /></Event>
+<Event date="2026-10">The Monday sweep failed with the message "usage limit reached".<Ref id="E12" /> A weekly sweep was lost.<Ref id="E13" /></Event>
+<Event date="2026-10">Job scout's model was pinned for each task, its frequent jobs moved to cheaper lanes, and its scheduled runs were spread out.<Ref id="E25" /><Ref id="E26" /><Ref id="E27" /> The record does not date these changes, so this entry carries the month of the failure.<Ref id="E25" /></Event>
+</Timeline>
+
+## Causes
+
+1. The Monday sweep was a scheduled run on the Opus model, and it hit a usage limit.<Ref id="E12" /> I read the limit as the reason the sweep did not complete.<Ref id="E12" /><Ref id="E13" />
+2. The fix moved frequent jobs to cheaper lanes and spread the schedule, so I read the lack of both as part of the cause.<Ref id="E26" /><Ref id="E27" />
+3. The agent accepted weak evidence that a role was open.<Ref id="E14" /> An aggregator page, or an address that still rendered, passed as proof, and dead roles surfaced.<Ref id="E14" /><Ref id="E15" />
+4. I count the third cause as partly a failure of the agent's judgement, not only of the setup around it.<Ref id="E14" /><Ref id="E15" />
+5. The fix was a written definition of live, so I read the lack of one as the other part of the cause.<Ref id="E28" />
+
+## What changed
+
+- Job scout's model was pinned for each task.<Ref id="E25" />
+- Its frequent jobs moved to cheaper lanes.<Ref id="E26" />
+- Its scheduled runs were spread out.<Ref id="E27" />
+- It adopted a liveness rule: a role counts as live only on the employer's own board, or as a full employer-hosted posting within <Fig row="E28">60 days</Fig>.<Ref id="E28" />
+
+## What is still not known
+
+<ul className="unknown">
+<li>Which model judged liveness, and whether a more capable one would have rejected the aggregator pages. The record names the model for the Monday sweep only, and nothing here tests another.</li>
+<li>How many dead roles surfaced. No count was kept.</li>
+<li>Whether the liveness rule held after it was adopted. The record shows the rule, not what followed.</li>
+<li>Whether the rule rejected roles that were live. A stricter rule can drop real ones, and the record does not look.</li>
+<li>What the age limit in the rule is measured from.</li>
+<li>How much of the usage allowance the sweep needed, and what else used it. The record holds no figures.</li>
+<li>Which of the three changes for usage mattered most. The record lists them together and does not test them one by one.</li>
+<li>When the fixes were made. Their rows carry the month, or the first month of the period, of the failure they answer.</li>
+</ul>

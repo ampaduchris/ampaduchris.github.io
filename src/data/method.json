@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T20:35:51Z",
+  "generated_at": "2026-11-22T21:02:26Z",
   "cutoff": "2026-11-15",
   "sources": [
     {
@@ -129,12 +129,17 @@
     },
     {
       "repo": "ampaduchris/ampaduchris.github.io",
-      "build_log_commit": "b27e5092f454372477b7aafeb486a3af04cb8f94",
+      "build_log_commit": "b2dce74f72997110261fd78d2ff0a7927fd58e30",
       "queries": [
-        "gh api repos/ampaduchris/ampaduchris.github.io/commits/s/N.2",
-        "gh api repos/ampaduchris/ampaduchris.github.io/contents/docs/BUILD-LOG.md?ref=s/N.2",
+        "gh api repos/ampaduchris/ampaduchris.github.io/commits/s/N.3",
+        "gh api repos/ampaduchris/ampaduchris.github.io/contents/docs/BUILD-LOG.md?ref=s/N.3",
         "gh api repos/ampaduchris/ampaduchris.github.io/commits?since=2026-11-15T00:00:00Z&per_page=100",
         "gh api repos/ampaduchris/ampaduchris.github.io/pulls?state=all&per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/25",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/25/timeline?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/25/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/25/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/25/reviews?per_page=100",
         "gh api repos/ampaduchris/ampaduchris.github.io/pulls/24",
         "gh api repos/ampaduchris/ampaduchris.github.io/issues/24/timeline?per_page=100",
         "gh api repos/ampaduchris/ampaduchris.github.io/issues/24/comments?per_page=100",
@@ -224,49 +229,49 @@
     }
   ],
   "counts": {
-    "build_log_rows": 32,
-    "pull_requests": 37
+    "build_log_rows": 33,
+    "pull_requests": 38
   },
   "stats": [
     {
       "id": "sessions",
-      "value": 32,
-      "n": 32,
+      "value": 33,
+      "n": 33,
       "label": "agent sessions logged",
       "definition": "Rows in the build logs of the listed repositories and the site repository."
     },
     {
       "id": "agent_commits",
-      "value": "125 of 125",
-      "n": 125,
+      "value": "135 of 135",
+      "n": 135,
       "label": "commits carry a model's co-author line",
       "definition": "Commits on the default branch of each listed repository and the site repository, on or after the cut-off date, merge commits excluded, whose message has a Co-Authored-By line naming a model."
     },
     {
       "id": "prs_merged",
-      "value": "36 of 36",
-      "n": 36,
+      "value": "37 of 37",
+      "n": 37,
       "label": "pull requests opened by the agent and merged by me",
       "definition": "Own pull requests whose state is merged and whose merger is the owner's account, out of own pull requests that are closed or merged."
     },
     {
       "id": "prs_commented",
-      "value": "0 of 36",
-      "n": 36,
+      "value": "0 of 37",
+      "n": 37,
       "label": "merged with my written check",
       "definition": "Merged own pull requests on which the owner's account left a comment before the merge time. The agent and the owner share one account, so this cannot tell who wrote the comment."
     },
     {
       "id": "hours_to_merge",
       "value": 0.1,
-      "n": 36,
+      "n": 37,
       "label": "median hours from ready for review to merge",
       "definition": "Median over merged own pull requests of merge time minus the time the pull request was last marked ready for review, or opened if it was never a draft. Shown from 20 pull requests."
     },
     {
       "id": "not_verified",
-      "value": 169,
-      "n": 32,
+      "value": 173,
+      "n": 33,
       "label": "checks reported as not verified",
       "definition": "Sum of the NOT VERIFIED column over all build-log rows."
     },
@@ -282,7 +287,7 @@
       "value": [
         {
           "name": "Sonnet 5.5 / high",
-          "sessions": 18
+          "sessions": 19
         },
         {
           "name": "Sonnet 5.5 / medium",
@@ -297,7 +302,7 @@
           "sessions": 1
         }
       ],
-      "n": 32,
+      "n": 33,
       "label": "Sessions by model and effort",
       "definition": "Count of build-log rows per distinct model and effort pair."
     }
@@ -305,14 +310,26 @@
   "recent": [
     {
       "repo": "ampaduchris/ampaduchris.github.io",
-      "number": 25,
-      "title": "N.2: Postmortems 1 and 2",
-      "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/25",
+      "number": 26,
+      "title": "N.3: Postmortems 3 and 4",
+      "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/26",
       "state": "open",
       "model": "Sonnet 5.5",
       "effort": "high",
-      "minutes": 21,
+      "minutes": 16,
       "hours_to_merge": null,
+      "date": "2026-11-22"
+    },
+    {
+      "repo": "ampaduchris/ampaduchris.github.io",
+      "number": 25,
+      "title": "N.2: Postmortems 1 and 2",
+      "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/25",
+      "state": "merged",
+      "model": "Sonnet 5.5",
+      "effort": "high",
+      "minutes": 21,
+      "hours_to_merge": 0,
       "date": "2026-11-22"
     },
     {
@@ -349,18 +366,6 @@
       "effort": "high",
       "minutes": 35,
       "hours_to_merge": 0.3,
-      "date": "2026-11-22"
-    },
-    {
-      "repo": "ampaduchris/direct-and-approve",
-      "number": 10,
-      "title": "9.4: Independent review",
-      "url": "https://github.com/ampaduchris/direct-and-approve/pull/10",
-      "state": "merged",
-      "model": "Opus 5.5",
-      "effort": "high",
-      "minutes": 24,
-      "hours_to_merge": 0.4,
       "date": "2026-11-22"
     }
   ]

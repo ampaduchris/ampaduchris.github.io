@@ -78,3 +78,23 @@
   date: 2026-10
   observation: Flat scout v3 capped each run at 15 minutes and 25 fetches.
   recorded: The record does not date this change. The row carries the month in which version three is first known to have run.
+- id: E24
+  date: 2026-10
+  observation: Flat scout gained a first step that checks that the tools it needs are loaded. When a required tool is absent, it writes a failed entry and stops.
+  recorded: The record does not date this change. The row carries the month of the failure it answers, not the month of the fix.
+- id: E25
+  date: 2026-10
+  observation: Job scout's model was pinned for each task.
+  recorded: The record does not date this change. The row carries the month of the failure it answers, not the month of the fix.
+- id: E26
+  date: 2026-10
+  observation: Job scout's frequent jobs moved to cheaper lanes.
+  recorded: The record does not date this change. The row carries the month of the failure it answers, not the month of the fix.
+- id: E27
+  date: 2026-10
+  observation: Job scout's scheduled runs were spread out.
+  recorded: The record does not date this change. The row carries the month of the failure it answers, not the month of the fix.
+- id: E28
+  date: 2026-09
+  observation: Job scout adopted a liveness rule. A role counts as live only on the employer's own board, or as a full employer-hosted posting within 60 days.
+  recorded: The record does not date this change. The row carries the first month of the period of the failure it answers, not the month of the fix.

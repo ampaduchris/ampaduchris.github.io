@@ -1,9 +1,11 @@
 import { expect, test, type Page } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { parse } from 'yaml';
 
 const ROUTES = ['/', '/method/', '/contact/', '/notes/', '/legal/'];
-const ALL = [...ROUTES, '/cv/', '/in/', '/no-such-page/'];
+// Every published note is a route too (N.3: a bare digit in a real note passed REQ-030 while only fixture notes were walked).
+const NOTE_PAGES = readdirSync('src/content/notes').filter((f) => f.endsWith('.mdx')).map((f) => `/notes/${f.replace(/\.mdx$/, '')}/`);
+const ALL = [...ROUTES, ...NOTE_PAGES, '/cv/', '/in/', '/no-such-page/'];
 const site = parse(readFileSync('src/data/site.yml', 'utf8'));
 const method = JSON.parse(readFileSync('src/data/method.json', 'utf8'));
 const evidenceIds = (parse(readFileSync('src/data/evidence.yml', 'utf8')) as { id: string }[]).map((r) => r.id);
