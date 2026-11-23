@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { computeNumbers, median, parseBuildLog, serialise, type PrRecord, type Snapshot } from '../../src/lib/numbers';
+import { computeNumbers, median, parseBuildLog, reusableRecord, serialise, type PrRecord, type Snapshot } from '../../src/lib/numbers';
 
 const OWNER = 'me';
 const LOG = `# Build log
@@ -170,5 +170,24 @@ describe('the outputs', () => {
     const fwd = computeNumbers(snap(many(6))).method;
     const rev = computeNumbers(snap([...many(6)].reverse())).method;
     expect(serialise(rev)).toBe(serialise(fwd));
+  });
+
+  test('[REQ-029] a refresh reuses only a record that was merged at the same time, and keeps the current title', () => {
+    const prev = snap([pr(1, { owner_comment_times: ['2026-11-20T01:05:00Z'] }), pr(2, { state: 'open', merged_at: null, merged_by: null })]);
+    const kept = reusableRecord(prev, 'o/r', 1, 'New title', '2026-11-20T01:30:00Z');
+    expect(kept).toEqual({ ...pr(1, { owner_comment_times: ['2026-11-20T01:05:00Z'] }), title: 'New title' });
+    expect(reusableRecord(prev, 'o/r', 1, 'PR 1', '2026-11-20T02:00:00Z')).toBeNull(); // merge time differs
+    expect(reusableRecord(prev, 'o/r', 2, 'PR 2', '2026-11-20T02:30:00Z')).toBeNull(); // open in the previous snapshot
+    expect(reusableRecord(prev, 'o/r', 1, 'PR 1', null)).toBeNull(); // not merged now
+    expect(reusableRecord(prev, 'x/y', 1, 'PR 1', '2026-11-20T01:30:00Z')).toBeNull(); // other repository
+    expect(reusableRecord(null, 'o/r', 1, 'PR 1', '2026-11-20T01:30:00Z')).toBeNull(); // no snapshot
+  });
+
+  test('[REQ-029] outputs from reused records equal outputs from freshly fetched ones', () => {
+    const fresh = snap(many(6));
+    const reused = snap(many(6).map((p) => reusableRecord(fresh, 'o/r', p.number, p.title, p.merged_at) ?? p));
+    const a = computeNumbers(fresh), b = computeNumbers(reused);
+    expect(serialise(b.method)).toBe(serialise(a.method));
+    expect(serialise(b.mark)).toBe(serialise(a.mark));
   });
 });
