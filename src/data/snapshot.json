@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T21:02:26Z",
+  "generated_at": "2026-11-23T13:56:15Z",
   "cutoff": "2026-11-15",
   "owner": "ampaduchris",
   "queries": [
@@ -110,10 +110,20 @@
     "gh api repos/ampaduchris/direct-and-approve/issues/1/comments?per_page=100",
     "gh api repos/ampaduchris/direct-and-approve/pulls/1/comments?per_page=100",
     "gh api repos/ampaduchris/direct-and-approve/pulls/1/reviews?per_page=100",
-    "gh api repos/ampaduchris/ampaduchris.github.io/commits/s/N.3",
-    "gh api repos/ampaduchris/ampaduchris.github.io/contents/docs/BUILD-LOG.md?ref=s/N.3",
+    "gh api repos/ampaduchris/ampaduchris.github.io/commits/s/N.5",
+    "gh api repos/ampaduchris/ampaduchris.github.io/contents/docs/BUILD-LOG.md?ref=s/N.5",
     "gh api repos/ampaduchris/ampaduchris.github.io/commits?since=2026-11-15T00:00:00Z&per_page=100",
     "gh api repos/ampaduchris/ampaduchris.github.io/pulls?state=all&per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/29",
+    "gh api repos/ampaduchris/ampaduchris.github.io/issues/29/timeline?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/issues/29/comments?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/29/comments?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/29/reviews?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/26",
+    "gh api repos/ampaduchris/ampaduchris.github.io/issues/26/timeline?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/issues/26/comments?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/26/comments?per_page=100",
+    "gh api repos/ampaduchris/ampaduchris.github.io/pulls/26/reviews?per_page=100",
     "gh api repos/ampaduchris/ampaduchris.github.io/pulls/25",
     "gh api repos/ampaduchris/ampaduchris.github.io/issues/25/timeline?per_page=100",
     "gh api repos/ampaduchris/ampaduchris.github.io/issues/25/comments?per_page=100",
@@ -882,6 +892,18 @@
           "merged_by": "ampaduchris",
           "ready_at": "2026-11-21T19:47:27Z",
           "owner_comment_times": []
+        },
+        {
+          "number": 41,
+          "title": "Bump astral-sh/setup-uv from 10.3.3 to 10.4.0",
+          "url": "https://github.com/ampaduchris/german-b1-tutor/pull/41",
+          "state": "open",
+          "author": "dependabot[bot]",
+          "created_at": "2026-11-23T06:37:21Z",
+          "merged_at": null,
+          "merged_by": null,
+          "ready_at": null,
+          "owner_comment_times": []
         }
       ]
     },
@@ -1158,8 +1180,8 @@
     },
     {
       "repo": "ampaduchris/ampaduchris.github.io",
-      "build_log_commit": "b2dce74f72997110261fd78d2ff0a7927fd58e30",
-      "build_log": "# Build log\n\nAppend-only. Read first, written last. One row per session.\n\n| Date | Session | Model | Effort (source) | Minutes | Tiers passed | NOT VERIFIED | PR |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| 2026-11-21 | 5.1 | Sonnet 5.5 (adopted draft: Fable 5.2 / high, 15 Nov 2026) | high (app session record; started at low, raised to high by the owner before work began) | 22 (from the timer hook start 18:11:35Z; includes the wait for the owner's answer on the Contact address) | V1-V6 PASS (CI green on Node 24 and 26) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/1 |\n| 2026-11-21 | 5.2 | Sonnet 5.5 | high (app session record; session line says medium, owner override of 21 Nov 2026) | 10 (from 18:49Z, no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 6 | https://github.com/ampaduchris/ampaduchris.github.io/pull/3 |\n| 2026-11-21 | 5.3 | Sonnet 5.5 | high (app session record; owner override of 21 Nov 2026) | 14 (from 19:09Z, the merge of 5.2; no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 5 | https://github.com/ampaduchris/ampaduchris.github.io/pull/4 |\n| 2026-11-21 | 5.3a | Sonnet 5.5 | high (app session record; owner override of 21 Nov 2026) | 20 (from 19:27Z, no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 6 | https://github.com/ampaduchris/ampaduchris.github.io/pull/5 |\n| 2026-11-21 | 5.3b | Sonnet 5.5 | high (app session record; owner override of 21 Nov 2026) | 25 (from the timer hook start 20:03:43Z) | V1-V6 PASS (CI green incl. Firefox and WebKit) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/6 |\n| 2026-11-22 | 5.4 | Sonnet 5.5 | high (app session record) | 14 (from 12:15Z, no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 5 | https://github.com/ampaduchris/ampaduchris.github.io/pull/7 |\n| 2026-11-22 | 5.4a | Sonnet 5.5 | high (app session record) | 4 (from the merge of 5.4 at 12:39Z; no timer hook output) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/8 |\n| 2026-11-22 | 5.2 (resume) | Sonnet 5.5 | medium (app session record) | 12 (from the timer hook start 12:56:20Z) | V1-V6 PASS (CI green incl. cross-browser) | 1 | https://github.com/ampaduchris/ampaduchris.github.io/pull/9 |\n| 2026-11-22 | 5.5 | Sonnet 5.5 | high (app session record) | 17 (from the timer hook start 13:19:06Z to the PR at 13:36Z) | V1-V6 PASS (CI green incl. cross-browser, run 45028891880) | 3 | https://github.com/ampaduchris/ampaduchris.github.io/pull/11 |\n| 2026-11-22 | 5.6 | Opus 5.5 | high (app session record) | 16 (from the timer hook start 14:04:45Z to the PR at 14:20Z) | V1-V6 PASS (review only; CI result linked in the PR) | 7 | https://github.com/ampaduchris/ampaduchris.github.io/pull/18 |\n| 2026-11-22 | 5.6a | Opus 5.5 | high (app session record; run in the 5.6 conversation at the owner's request, owner override of 22 Nov 2026) | 13 (from the owner's message at 14:41:56Z to the PR at 14:55Z) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/19 |\n| 2026-11-22 | 5.7 | Sonnet 5.5 | medium (app session record) | 10 (from the timer hook start 15:05:00Z to the PR at 15:15Z) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/20 |\n| 2026-11-22 | 5.8 | Sonnet 5.5 | medium (app session record) | 3 (from the timer hook start 15:30:22Z to the PR at about 15:33Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/21 |\n| 2026-11-22 | N.1 | Sonnet 5.5 | high (app session record) | 23 (from the timer hook start 19:34:32Z to the PR at 19:57Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 7 | https://github.com/ampaduchris/ampaduchris.github.io/pull/24 |\n| 2026-11-22 | N.2 | Sonnet 5.5 | high (app session record) | 21 (from the timer hook start 20:03:44Z to the PR body at about 20:25Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/25 |\n| 2026-11-22 | N.3 | Sonnet 5.5 | high (app session record) | 16 (from the timer hook start 20:46:42Z to the PR body at about 21:03Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/26 |\n\nLighthouse, session 5.8 after-merge, run once on 22 Nov 2026 at 15:50Z against https://ampaduchris.github.io/ (Lighthouse 13.6.0, Home, desktop settings default, headless Chrome): performance 100, accessibility 100, best practices 100, SEO 100. One page, one run; not a gate (`STANDARD.md`).\n",
+      "build_log_commit": "f593cb94239fd73a29483eca318f51cbe688535e",
+      "build_log": "# Build log\n\nAppend-only. Read first, written last. One row per session.\n\n| Date | Session | Model | Effort (source) | Minutes | Tiers passed | NOT VERIFIED | PR |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| 2026-11-21 | 5.1 | Sonnet 5.5 (adopted draft: Fable 5.2 / high, 15 Nov 2026) | high (app session record; started at low, raised to high by the owner before work began) | 22 (from the timer hook start 18:11:35Z; includes the wait for the owner's answer on the Contact address) | V1-V6 PASS (CI green on Node 24 and 26) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/1 |\n| 2026-11-21 | 5.2 | Sonnet 5.5 | high (app session record; session line says medium, owner override of 21 Nov 2026) | 10 (from 18:49Z, no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 6 | https://github.com/ampaduchris/ampaduchris.github.io/pull/3 |\n| 2026-11-21 | 5.3 | Sonnet 5.5 | high (app session record; owner override of 21 Nov 2026) | 14 (from 19:09Z, the merge of 5.2; no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 5 | https://github.com/ampaduchris/ampaduchris.github.io/pull/4 |\n| 2026-11-21 | 5.3a | Sonnet 5.5 | high (app session record; owner override of 21 Nov 2026) | 20 (from 19:27Z, no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 6 | https://github.com/ampaduchris/ampaduchris.github.io/pull/5 |\n| 2026-11-21 | 5.3b | Sonnet 5.5 | high (app session record; owner override of 21 Nov 2026) | 25 (from the timer hook start 20:03:43Z) | V1-V6 PASS (CI green incl. Firefox and WebKit) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/6 |\n| 2026-11-22 | 5.4 | Sonnet 5.5 | high (app session record) | 14 (from 12:15Z, no timer hook output; override lifts the 45-minute stop) | V1-V6 PASS (CI result linked in the PR) | 5 | https://github.com/ampaduchris/ampaduchris.github.io/pull/7 |\n| 2026-11-22 | 5.4a | Sonnet 5.5 | high (app session record) | 4 (from the merge of 5.4 at 12:39Z; no timer hook output) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/8 |\n| 2026-11-22 | 5.2 (resume) | Sonnet 5.5 | medium (app session record) | 12 (from the timer hook start 12:56:20Z) | V1-V6 PASS (CI green incl. cross-browser) | 1 | https://github.com/ampaduchris/ampaduchris.github.io/pull/9 |\n| 2026-11-22 | 5.5 | Sonnet 5.5 | high (app session record) | 17 (from the timer hook start 13:19:06Z to the PR at 13:36Z) | V1-V6 PASS (CI green incl. cross-browser, run 45028891880) | 3 | https://github.com/ampaduchris/ampaduchris.github.io/pull/11 |\n| 2026-11-22 | 5.6 | Opus 5.5 | high (app session record) | 16 (from the timer hook start 14:04:45Z to the PR at 14:20Z) | V1-V6 PASS (review only; CI result linked in the PR) | 7 | https://github.com/ampaduchris/ampaduchris.github.io/pull/18 |\n| 2026-11-22 | 5.6a | Opus 5.5 | high (app session record; run in the 5.6 conversation at the owner's request, owner override of 22 Nov 2026) | 13 (from the owner's message at 14:41:56Z to the PR at 14:55Z) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/19 |\n| 2026-11-22 | 5.7 | Sonnet 5.5 | medium (app session record) | 10 (from the timer hook start 15:05:00Z to the PR at 15:15Z) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/20 |\n| 2026-11-22 | 5.8 | Sonnet 5.5 | medium (app session record) | 3 (from the timer hook start 15:30:22Z to the PR at about 15:33Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/21 |\n| 2026-11-22 | N.1 | Sonnet 5.5 | high (app session record) | 23 (from the timer hook start 19:34:32Z to the PR at 19:57Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 7 | https://github.com/ampaduchris/ampaduchris.github.io/pull/24 |\n| 2026-11-22 | N.2 | Sonnet 5.5 | high (app session record) | 21 (from the timer hook start 20:03:44Z to the PR body at about 20:25Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/25 |\n| 2026-11-22 | N.3 | Sonnet 5.5 | high (app session record) | 16 (from the timer hook start 20:46:42Z to the PR body at about 21:03Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/26 |\n| 2026-11-23 | N.4 | Opus 5.5 | high (app session record) | 6 (from the timer hook start 13:14:39Z to the PR at 13:20:45Z by the machine clock) | V1-V6 PASS (review only; CI result linked in the PR) | 5 | https://github.com/ampaduchris/ampaduchris.github.io/pull/29 |\n| 2026-11-23 | N.5 | Sonnet 5.5 | high (app session record) | 4 (from the timer hook start 13:45:56Z to the PR at 13:49:30Z by the machine clock) | V1-V6 PASS (CI result linked in the PR) | 4 | https://github.com/ampaduchris/ampaduchris.github.io/pull/30 |\n\nLighthouse, session 5.8 after-merge, run once on 22 Nov 2026 at 15:50Z against https://ampaduchris.github.io/ (Lighthouse 13.6.0, Home, desktop settings default, headless Chrome): performance 100, accessibility 100, best practices 100, SEO 100. One page, one run; not a gate (`STANDARD.md`).\n",
       "commits": [
         {
           "sha": "0910b33b5c301171cdb822bd4949ce19458924ac",
@@ -1264,6 +1286,30 @@
           ]
         },
         {
+          "sha": "2425d6984e454b8cb3e34f9479371d18fadebd50",
+          "date": "2026-11-22T20:57:22Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
+          "sha": "249de0d4dce49805497ece394d96d46de8adc13d",
+          "date": "2026-11-22T20:59:09Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
+          "sha": "2569a72a33b58d4e5b8fc8bffc21d215a3736a78",
+          "date": "2026-11-23T13:19:07Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
           "sha": "26b6ba33bbfe7078f3e963d59f2cf7e9d818ecdd",
           "date": "2026-11-21T18:53:46Z",
           "parents": 1,
@@ -1332,6 +1378,22 @@
           "date": "2026-11-22T15:54:15Z",
           "parents": 2,
           "coauthor_lines": []
+        },
+        {
+          "sha": "33325fd441efaa2651bee8417b16e14daf746528",
+          "date": "2026-11-22T21:03:28Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
+          "sha": "35d6139c51179c472c15f8b28d5b92322c831bbf",
+          "date": "2026-11-22T20:52:52Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
         },
         {
           "sha": "3c8141db6aebca18a0d33c6922acec809d490bfa",
@@ -1500,6 +1562,14 @@
           ]
         },
         {
+          "sha": "7913d45a27fbf2808c63e89530b51ef6125bed61",
+          "date": "2026-11-22T20:53:14Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
           "sha": "7be41158b88a26de781589a1c57a32e63614a674",
           "date": "2026-11-22T13:00:22Z",
           "parents": 1,
@@ -1566,6 +1636,12 @@
           "coauthor_lines": [
             "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
           ]
+        },
+        {
+          "sha": "92afeeea75ac270c504783f45c891e27633cc93c",
+          "date": "2026-11-23T13:12:52Z",
+          "parents": 2,
+          "coauthor_lines": []
         },
         {
           "sha": "94956e1cf3a782c5946966ce6b386cbca122c793",
@@ -1642,6 +1718,14 @@
           ]
         },
         {
+          "sha": "b2dce74f72997110261fd78d2ff0a7927fd58e30",
+          "date": "2026-11-22T20:59:32Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
           "sha": "b547cca781d737a5127914368fa1baad5f661564",
           "date": "2026-11-22T15:01:37Z",
           "parents": 2,
@@ -1708,6 +1792,20 @@
           "coauthor_lines": [
             "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
           ]
+        },
+        {
+          "sha": "d58b8370bfdf45cf1730bd2b3bb7d7afa259b81b",
+          "date": "2026-11-23T13:20:57Z",
+          "parents": 1,
+          "coauthor_lines": [
+            "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+          ]
+        },
+        {
+          "sha": "d6c45939bb0c22cff9c9723d4159d2b0345c62c8",
+          "date": "2026-11-23T13:43:13Z",
+          "parents": 2,
+          "coauthor_lines": []
         },
         {
           "sha": "d9e4242bc7a546d4ff26f14d298d6e6f1be8ba7f",
@@ -2015,9 +2113,33 @@
           "number": 26,
           "title": "N.3: Postmortems 3 and 4",
           "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/26",
-          "state": "open",
+          "state": "merged",
           "author": "ampaduchris",
           "created_at": "2026-11-22T20:53:06Z",
+          "merged_at": "2026-11-23T13:12:54Z",
+          "merged_by": "ampaduchris",
+          "ready_at": "2026-11-22T21:10:00Z",
+          "owner_comment_times": []
+        },
+        {
+          "number": 29,
+          "title": "N.4: Review of causal claims",
+          "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/29",
+          "state": "merged",
+          "author": "ampaduchris",
+          "created_at": "2026-11-23T13:20:45Z",
+          "merged_at": "2026-11-23T13:43:14Z",
+          "merged_by": "ampaduchris",
+          "ready_at": "2026-11-23T13:34:18Z",
+          "owner_comment_times": []
+        },
+        {
+          "number": 30,
+          "title": "N.5: Close findings and essay 5",
+          "url": "https://github.com/ampaduchris/ampaduchris.github.io/pull/30",
+          "state": "open",
+          "author": "ampaduchris",
+          "created_at": "2026-11-23T13:49:29Z",
           "merged_at": null,
           "merged_by": null,
           "ready_at": null,
