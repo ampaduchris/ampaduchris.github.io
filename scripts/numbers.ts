@@ -44,6 +44,15 @@ function localLog(): { sha: string; text: string } {
   return { sha, text: git('show', `${sha}:docs/BUILD-LOG.md`) };
 }
 
+// The detail requests for one merged own pull request, in the order they are made.
+const detail = (repo: string, n: number) => ({
+  pull: `repos/${repo}/pulls/${n}`,
+  timeline: `repos/${repo}/issues/${n}/timeline?per_page=100`,
+  issueComments: `repos/${repo}/issues/${n}/comments?per_page=100`,
+  reviewComments: `repos/${repo}/pulls/${n}/comments?per_page=100`,
+  reviews: `repos/${repo}/pulls/${n}/reviews?per_page=100`,
+});
+
 function previousSnapshot(): Snapshot | null {
   if (args.has('--live')) return null;
   try { return JSON.parse(readFileSync(`${OUT}/snapshot.json`, 'utf8')); } catch { return null; }
@@ -82,19 +91,24 @@ function fetchSnapshot(): Snapshot {
     for (const p of list) {
       if (p.created_at.slice(0, 10) < CUTOFF) continue;
       const kept = reusableRecord(prev, repo, p.number, p.title, p.merged_at ?? null);
-      if (kept) { prs.push(kept); reused++; continue; }
+      if (kept) {
+        // Record the queries the kept data came from, in the order a live fetch makes them, so a refresh and --live write the same outputs.
+        if (kept.author === owner) for (const d of Object.values(detail(repo, p.number))) q(d);
+        prs.push(kept); reused++; continue;
+      }
       const rec: PrRecord = {
         number: p.number, title: p.title, url: p.html_url, state: p.merged_at ? 'merged' : p.state === 'open' ? 'open' : 'closed',
         author: p.user.login, created_at: p.created_at, merged_at: p.merged_at ?? null, merged_by: null, ready_at: null, owner_comment_times: [],
       };
       if (rec.state === 'merged' && rec.author === owner) {
-        rec.merged_by = api(q(`repos/${repo}/pulls/${p.number}`))?.merged_by?.login ?? null;
-        const ready = (api(q(`repos/${repo}/issues/${p.number}/timeline?per_page=100`), { paginate: true }) ?? []).filter((e: any) => e.event === 'ready_for_review');
+        const d = detail(repo, p.number);
+        rec.merged_by = api(q(d.pull))?.merged_by?.login ?? null;
+        const ready = (api(q(d.timeline), { paginate: true }) ?? []).filter((e: any) => e.event === 'ready_for_review');
         rec.ready_at = ready.length ? ready[ready.length - 1].created_at : null;
         const times: string[] = [];
-        for (const e of api(q(`repos/${repo}/issues/${p.number}/comments?per_page=100`), { paginate: true }) ?? []) if (e.user?.login === owner) times.push(e.created_at);
-        for (const e of api(q(`repos/${repo}/pulls/${p.number}/comments?per_page=100`), { paginate: true }) ?? []) if (e.user?.login === owner) times.push(e.created_at);
-        for (const e of api(q(`repos/${repo}/pulls/${p.number}/reviews?per_page=100`), { paginate: true }) ?? []) if (e.user?.login === owner && e.submitted_at) times.push(e.submitted_at);
+        for (const e of api(q(d.issueComments), { paginate: true }) ?? []) if (e.user?.login === owner) times.push(e.created_at);
+        for (const e of api(q(d.reviewComments), { paginate: true }) ?? []) if (e.user?.login === owner) times.push(e.created_at);
+        for (const e of api(q(d.reviews), { paginate: true }) ?? []) if (e.user?.login === owner && e.submitted_at) times.push(e.submitted_at);
         rec.owner_comment_times = times.sort();
       }
       prs.push(rec);
