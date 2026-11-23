@@ -10,17 +10,17 @@ sessions: [N.5]
 
 A demonstration asks one thing. Can the agent do this task, once, while I watch? Operations ask another. Will it do the task every time, unwatched, inside a budget, and tell me when it did not?
 
-I read six failures of my own agents through that difference. They are six incidents from one person's side projects, over about two months in September and October. I wrote them up from memory afterwards. The dates are approximate, and no log, transcript or measurement stands behind them. Nothing here is measured data, and six incidents are anecdotes.
+I read six failures of my own agents through that difference. They are six incidents from one person's side projects, over about two months in September and October. I wrote them up from memory afterwards. The dates are approximate, and no log, transcript or measurement stands behind them. Nothing here is measured data, and six incidents are anecdotes. I recall no further incident in those two months that was plainly a model error.<Ref id="E32" />
 
 My reading is this. In these six, the model's intelligence was rarely what broke. What broke was what a demonstration leaves out: whether the run started, which tools it had, what it cost, what it covered, and what counted as true. Every fix the record shows was an operating rule, apart from one rebuild that also changed the model.
 
 ## The run that never happened
 
-The first version of flat scout, my flat-hunting agent, was scheduled on my laptop. It did not run while the laptop slept.<Ref id="E4" /> Later, from <Fig row="E9">19 to 26 October</Fig>, the scheduled cloud sessions of its third version lacked the web-fetch tool.<Ref id="E9" /> The runs failed silently, or logged a failure at once.<Ref id="E10" /> I paused the automation and asked for manual scans instead.<Ref id="E11" />
+The first version of flat scout, my flat-hunting agent, was scheduled on my laptop. It did not run while the laptop slept.<Ref id="E4" /> Later, from <Fig row="E9">19 to 26 October</Fig>, the scheduled cloud sessions of its third version lacked the web-fetch tool.<Ref id="E9" /> The runs failed silently, with no message.<Ref id="E31" /> I paused the automation and asked for manual scans instead.<Ref id="E11" />
 
-No improvement in the model changes whether a laptop is awake, or which tools a session is given. A better model might have noticed the missing tool and said so. The record does not say whether mine did. "Failed silently" and "logged a failure at once" are different events. In one, nobody is told. In the other, a failed entry exists and I may not have read it. The record joins them in one phrase, and I cannot separate them now.<Ref id="E10" />
+No improvement in the model changes whether a laptop is awake, or which tools a session is given. A better model might have noticed the missing tool and said so. Mine gave no message.<Ref id="E31" /> A demonstration cannot show silence. You are watching.
 
-I also did not record how long the failures went unnoticed. What I adopted was a first step that checks that the tools are loaded. When a tool is absent, it writes a failed entry and stops.<Ref id="E24" /> If the failures were logged and unread, the rule that matters is who gets told. I do not know which it was.
+I also did not record how long the failures went unnoticed. What I adopted was a first step that checks that the tools are loaded. When a tool is absent, it writes a failed entry and stops.<Ref id="E24" /> The run can now say that it failed.
 
 ## The most capable model spent the most
 
@@ -28,7 +28,7 @@ In mid October, the first run of the second version of flat scout fanned out to 
 
 This is the incident that turns the usual objection round. The objection says these are capability failures with an operations label. A good enough model pages without being told and paces its own spending. Here the most capable of the three models was the one that spent the evening. I read the breadth and length of that run as the reason it spent so much.<Ref id="E6" /><Ref id="E7" /> One run cannot show that capability raises the price of running without limits, and I do not claim it does.
 
-I do not know whether the rebuild's instructions asked it to cover every source. It was built after a coverage failure, to paginate and to report coverage.<Ref id="E18" /><Ref id="E19" /> If it was told to be exhaustive, the failure is a missing cap plus a request that asked for the spend, and the argument from capability weakens. The argument for the cap does not. The record does not say whether the second version had any limit.
+Its instructions did not ask it to cover every source.<Ref id="E30" /> It was built after a coverage failure, to paginate and to report coverage.<Ref id="E18" /><Ref id="E19" /> So the spend was not an instruction obeyed. It was a run with nothing to stop it, and the record does not say whether the second version had any limit.
 
 Those limits were these. The third version ran three times a day.<Ref id="E20" /> It searched page one only.<Ref id="E21" /> It used no subagents.<Ref id="E22" /> It capped each run at <Fig row="E23">15 minutes</Fig> and <Fig row="E23">25 fetches</Fig>.<Ref id="E23" /> They arrived together, and I cannot say which one mattered.
 
@@ -53,7 +53,7 @@ Four rules, each tied to an incident above.
 - Pin the model for each task.<Ref id="E25" />
 - Write down what counts as evidence.<Ref id="E28" />
 
-I adopted each. I did not measure whether each held. They lived in private systems, so no code for them is public.
+I adopted each. I recall none of these failures coming back after its fix.<Ref id="E29" /> Nothing was measured, so I do not claim any fix held. They lived in private systems, so no code for them is public.
 
 The one public check is this site's claims checker. It fails the build when a claim has no evidence row. It tests the link, not the support. A review of the four postmortems, by a different model from the one that wrote them, found three places where I had inferred a reason from the fix that came after it. I removed them.
 
