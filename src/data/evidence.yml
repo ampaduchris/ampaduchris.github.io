@@ -2,6 +2,7 @@
 # Dates are the precision the source holds. The source gives a month for most rows, so most rows carry a month, not a day.
 # A row about a period carries the first day or month of it, and its text names the whole period.
 # Rows E18 to E23 are fixes. The source dates the failures, not the fixes, so each fix row carries the month its version is first known to have run and says so in `recorded`.
+# Rows E29 to E32 are the owner's recollections of 23 Nov 2026, dated that day, and say so in `recorded`.
 # Ids are never reused. Add rows at the end. The claims checker (npm run claims) reads this file.
 - id: E1
   date: 2026-09
@@ -98,3 +99,19 @@
   date: 2026-09
   observation: Job scout adopted a liveness rule. A role counts as live only on the employer's own board, or as a full employer-hosted posting within 60 days.
   recorded: The record does not date this change. The row carries the first month of the period of the failure it answers, not the month of the fix.
+- id: E29
+  date: 2026-11-23
+  observation: I do not recall any of these failures coming back after its fix was adopted.
+  recorded: Recalled by the owner on 23 Nov 2026 and not recorded at the time. Nothing was measured.
+- id: E30
+  date: 2026-11-23
+  observation: The instructions of flat scout v2 did not ask it to cover every source.
+  recorded: Recalled by the owner on 23 Nov 2026 and not recorded at the time. The row's date is the day of the recollection, not the day of the run.
+- id: E31
+  date: 2026-11-23
+  observation: In the week of 19 to 26 October, the scheduled runs of flat scout v3 failed silently. They gave no message.
+  recorded: Recalled by the owner on 23 Nov 2026 and not recorded at the time. It settles the "or" in E10 as the first half. The row's date is the day of the recollection, not the day of the runs.
+- id: E32
+  date: 2026-11-23
+  observation: I recall no further incident in those two months that was plainly a model error.
+  recorded: Recalled by the owner on 23 Nov 2026 and not recorded at the time.

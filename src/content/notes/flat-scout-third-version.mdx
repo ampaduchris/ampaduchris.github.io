@@ -2,19 +2,19 @@
 title: "Flat scout, third version: the scheduled runs had no way to fetch a page"
 kind: postmortem
 date: 2026-11-22
-standfirst: For about a week, the scheduled runs of my flat-hunting agent lacked the web-fetch tool and either failed silently or logged a failure at once. The fix was a first step that checks for the tools and writes a failed entry.
+standfirst: For about a week, the scheduled runs of my flat-hunting agent lacked the web-fetch tool and failed silently, with no message. The fix was a first step that checks for the tools and writes a failed entry.
 sessions: [N.3]
 ---
 
 ## What happened
 
-From <Fig row="E9">19 to 26 October</Fig>, the scheduled cloud sessions of the third version of flat scout, which ran on the Sonnet model, lacked the web-fetch tool.<Ref id="E9" /> The scheduled runs failed silently or logged failed immediately.<Ref id="E10" /> During that week I paused the automation and asked for manual scans instead.<Ref id="E11" />
+From <Fig row="E9">19 to 26 October</Fig>, the scheduled cloud sessions of the third version of flat scout, which ran on the Sonnet model, lacked the web-fetch tool.<Ref id="E9" /> The first record read "failed silently or logged failed immediately".<Ref id="E10" /> I now recall them as silent, with no message.<Ref id="E31" /> During that week I paused the automation and asked for manual scans instead.<Ref id="E11" />
 
 ## Timeline
 
 <Timeline>
 <Event date="2026-10-19">The scheduled cloud sessions lacked the web-fetch tool.<Ref id="E9" /> They lacked it until <Fig row="E9">26 October</Fig>.<Ref id="E9" /></Event>
-<Event date="2026-10-19">During that week the scheduled runs failed silently or logged failed immediately.<Ref id="E10" /></Event>
+<Event date="2026-10-19">During that week the scheduled runs failed silently, with no message.<Ref id="E31" /></Event>
 <Event date="2026-10-19">During that week I paused the automation and asked for manual scans instead.<Ref id="E11" /></Event>
 <Event date="2026-10">Flat scout gained a first step that checks for its tools.<Ref id="E24" /> The record does not date the change, so this entry carries the month of the failure.<Ref id="E24" /></Event>
 </Timeline>
@@ -22,8 +22,7 @@ From <Fig row="E9">19 to 26 October</Fig>, the scheduled cloud sessions of the t
 ## Causes
 
 1. The scheduled cloud sessions did not have the web-fetch tool.<Ref id="E9" /> I read that as the reason the runs failed.<Ref id="E9" /><Ref id="E10" />
-2. The runs failed silently or logged failed immediately.<Ref id="E10" /> I read that as a failure the run did not explain.<Ref id="E10" />
-3. The fix was a first step that checks for the tools, so I read the lack of that step as part of the cause.<Ref id="E24" />
+2. The runs failed silently, with no message.<Ref id="E31" /> I read that as a failure the run did not explain.<Ref id="E31" />
 
 ## What changed
 
@@ -35,8 +34,7 @@ From <Fig row="E9">19 to 26 October</Fig>, the scheduled cloud sessions of the t
 
 <ul className="unknown">
 <li>Why the scheduled cloud sessions lacked the web-fetch tool. The record says only that they lacked it.</li>
-<li>Which of the two failures happened, and how often. "Failed silently" and "logged failed immediately" are different events. In one, nobody is told. In the other, a failed entry exists and may go unread. The record joins them in one phrase.</li>
-<li>Whether the agent reported the missing tool and I missed the report.</li>
+<li>Whether the lack of a first step that checks for the tools was a cause. The step was added; nothing tested it.</li>
 <li>How long the failures went unnoticed before I paused the automation.</li>
 <li>How many scheduled runs were lost. The record holds no count.</li>
 <li>Whether the first step has caught a missing tool since. The record shows that the step was added, not that it has fired.</li>

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T21:02:26Z",
+  "generated_at": "2026-11-23T13:56:15Z",
   "cutoff": "2026-11-15",
   "sources": [
     {
@@ -129,12 +129,22 @@
     },
     {
       "repo": "ampaduchris/ampaduchris.github.io",
-      "build_log_commit": "b2dce74f72997110261fd78d2ff0a7927fd58e30",
+      "build_log_commit": "f593cb94239fd73a29483eca318f51cbe688535e",
       "queries": [
-        "gh api repos/ampaduchris/ampaduchris.github.io/commits/s/N.3",
-        "gh api repos/ampaduchris/ampaduchris.github.io/contents/docs/BUILD-LOG.md?ref=s/N.3",
+        "gh api repos/ampaduchris/ampaduchris.github.io/commits/s/N.5",
+        "gh api repos/ampaduchris/ampaduchris.github.io/contents/docs/BUILD-LOG.md?ref=s/N.5",
         "gh api repos/ampaduchris/ampaduchris.github.io/commits?since=2026-11-15T00:00:00Z&per_page=100",
         "gh api repos/ampaduchris/ampaduchris.github.io/pulls?state=all&per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/29",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/29/timeline?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/29/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/29/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/29/reviews?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/26",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/26/timeline?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/issues/26/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/26/comments?per_page=100",
+        "gh api repos/ampaduchris/ampaduchris.github.io/pulls/26/reviews?per_page=100",
         "gh api repos/ampaduchris/ampaduchris.github.io/pulls/25",
         "gh api repos/ampaduchris/ampaduchris.github.io/issues/25/timeline?per_page=100",
         "gh api repos/ampaduchris/ampaduchris.github.io/issues/25/comments?per_page=100",
@@ -609,6 +619,28 @@
           "minutes": 16,
           "not_verified": 4,
           "pr_number": 26,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 16
+        },
+        {
+          "session": "N.4",
+          "model": "Opus 5.5",
+          "effort": "high",
+          "minutes": 6,
+          "not_verified": 5,
+          "pr_number": 29,
+          "state": "merged",
+          "merged_by_owner": true,
+          "hours_to_merge": 0.1
+        },
+        {
+          "session": "N.5",
+          "model": "Sonnet 5.5",
+          "effort": "high",
+          "minutes": 4,
+          "not_verified": 4,
+          "pr_number": 30,
           "state": "open",
           "merged_by_owner": false,
           "hours_to_merge": null
